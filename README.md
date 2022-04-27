@@ -4,12 +4,12 @@ ONE-PARAGRAPH DESCRIPTION OF YOUR GAME
 
 ## Team Members
 
-* FIRSTNAME LASTNAME (EMAIL), GITHUBACCOUNT
+* Jeferson Morales Mariciano (moralj@usi.ch), JekxDevil
 * FIRSTNAME LASTNAME (EMAIL), GITHUBACCOUNT
 
 ## Mentor
 
-* TA NAME (TA must have agreed to mentor you)
+* Tom
 
 ## Project Structure
 
