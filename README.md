@@ -1,11 +1,11 @@
 # Project PROJECTNAME
 
-ONE-PARAGRAPH DESCRIPTION OF YOUR GAME
+Our game Risk-Kellogg's is a Risk-based game: the goal of every play is to conquer the whole world.
 
 ## Team Members
 
 * Jeferson Morales Mariciano (moralj@usi.ch), JekxDevil
-* FIRSTNAME LASTNAME (EMAIL), GITHUBACCOUNT
+* Michele Dalle Rive (dallem@usi.ch), micheledallerive
 
 ## Mentor
 
