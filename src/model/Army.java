@@ -6,7 +6,6 @@ import model.enums.ArmyType;
 /**
  * Describes a single piece of army, using it's type (i.e. the shape) and the color.
  */
-
 public class Army {
 
     private ArmyType type;

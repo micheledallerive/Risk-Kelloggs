@@ -3,6 +3,7 @@ package model;
 import model.enums.TerritoryName;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Describes a Territory in the Risk map.
@@ -13,6 +14,8 @@ public class Territory {
     private Player owner;
     private ArrayList<Army> armies;
     private TerritoryName name;
+
+    public static HashMap<Territory, ArrayList<Territory>> adjacency = new HashMap<>();
 
     /**
      * Creates a new territory and initializes it.

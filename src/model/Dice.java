@@ -6,6 +6,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
 
+/**
+ * Represents a single dice in the game.
+ */
 public class Dice implements Comparable<Dice>{
 
     private DiceColor color;
@@ -85,6 +88,7 @@ public class Dice implements Comparable<Dice>{
      * @return an array of colors, each of which is the winner of a single roll.
      */
     public static ArrayList<DiceColor> winner() {
+        // The dice are divided between attack dice and defence dice.
         ArrayList<Dice> redDices = new ArrayList<>();
         ArrayList<Dice> blueDices = new ArrayList<>();
         for(Dice dice : dices) {
@@ -98,10 +102,12 @@ public class Dice implements Comparable<Dice>{
 
         ArrayList<DiceColor> outcomes = new ArrayList<>();
 
+        // The lists are sorted in order to be able to be compared.
         Collections.sort(redDices, Collections.<Dice>reverseOrder());
         Collections.sort(blueDices, Collections.<Dice>reverseOrder());
 
-        for (int i = 0; i < Math.min(redDices.size(), blueDices.size()); i++) {
+        for (int i = 0; i < redDices.size(); i++) {
+            if (redDices.get(i).getLastOutcome() == -1 || blueDices.get(i).getLastOutcome() == -1) break;
             if (redDices.get(i).getLastOutcome() > blueDices.get(i).getLastOutcome()) {
                 // red wins
                 outcomes.add(DiceColor.RED);
