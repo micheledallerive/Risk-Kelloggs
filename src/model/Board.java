@@ -1,7 +1,5 @@
 package model;
 
-import model.enums.TerritoryName;
-
 import java.util.ArrayList;
 
 /**

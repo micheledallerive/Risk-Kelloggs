@@ -55,7 +55,9 @@ public class Continent {
      */
     public boolean isOccupied() {
         for (int i = 1; i < countries.size(); i++) {
-            if (countries.get(i).getOwner() != countries.get(i-1).getOwner()) return false;
+            if (countries.get(i).getOwner() != countries.get(i-1).getOwner()) {
+                return false;
+            }
         }
         return true;
     }
@@ -66,7 +68,9 @@ public class Continent {
      *          otherwise returns the person that owns all the continent
      */
     public Player getOwner() {
-        if(isOccupied()) return countries.get(0).getOwner();
+        if (isOccupied()) {
+            return countries.get(0).getOwner();
+        }
         return null;
     }
 }

@@ -3,7 +3,6 @@ package model;
 import model.enums.ArmyColor;
 
 import java.util.ArrayList;
-import java.util.function.Predicate;
 
 /**
  * Describes each player of the game.
@@ -73,5 +72,13 @@ public class Player {
     public void attack(Territory territory, int armies) {
         assert this.armies.size() > armies;
 
+    }
+
+    /**
+     * Returns all the card combinations that the player could play.
+     * @return a list of all the card combinations.
+     */
+    public ArrayList<ArrayList<Card>> getCardCombinations() {
+        return new ArrayList<>(); // TODO complete the function
     }
 }

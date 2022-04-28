@@ -29,4 +29,19 @@ public class Army {
         this.color = color;
     }
 
+    /**
+     * Returns the type of the army.
+     * @return the type of the army.
+     */
+    public ArmyType getType() {
+        return type;
+    }
+
+    /**
+     * Returns the color of the army.
+     * @return the color of the army.
+     */
+    public ArmyColor getColor() {
+        return color;
+    }
 }

@@ -45,7 +45,7 @@ public class Territory {
      * @return returns true if some player owns the territory
      */
     public boolean isOccupied() {
-        return !(this.owner == null);
+        return this.owner != null;
     }
 
     /**
@@ -72,4 +72,19 @@ public class Territory {
         return this.armies.size();
     }
 
+    /**
+     * Returns the Territories that are adjacent to this.
+     * @return the adjacent territories.
+     */
+    public ArrayList<Territory> getAdjacent() {
+        return adjacent;
+    }
+
+    /**
+     * Returns the list of the armies owned by the player.
+     * @return the armies owned by the player
+     */
+    public ArrayList<Army> getArmies() {
+        return armies;
+    }
 }

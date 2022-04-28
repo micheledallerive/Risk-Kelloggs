@@ -21,6 +21,9 @@ public class Dice implements Comparable<Dice>{
         return dices;
     }
 
+    /**
+     * Initializes the Dice by creating 3 attack dice and 3 defence dice
+     */
     public static void init() {
         for (int i = 0; i < 3; i++) {
             dices.add(new Dice(DiceColor.RED));
@@ -32,12 +35,12 @@ public class Dice implements Comparable<Dice>{
 
     /**
      * Compare the current dice to another one (used for sorting).
-     * @param o the object to be compared.
+     * @param other the object to be compared.
      * @return the comparison between the dice numbers.
      */
     @Override
-    public int compareTo(Dice o) {
-        return Integer.compare(this.number, o.number);
+    public int compareTo(Dice other) {
+        return Integer.compare(this.number, other.number);
     }
 
     /**
@@ -91,12 +94,13 @@ public class Dice implements Comparable<Dice>{
         // The dice are divided between attack dice and defence dice.
         ArrayList<Dice> redDices = new ArrayList<>();
         ArrayList<Dice> blueDices = new ArrayList<>();
-        for(Dice dice : dices) {
-            if(dice.getLastOutcome() != -1) {
-                if(dice.getColor() == DiceColor.RED)
+        for (Dice dice : dices) {
+            if (dice.getLastOutcome() != -1) {
+                if (dice.getColor() == DiceColor.RED) {
                     redDices.add(dice);
-                else
+                } else {
                     blueDices.add(dice);
+                }
             }
         }
 
@@ -107,16 +111,17 @@ public class Dice implements Comparable<Dice>{
         Collections.sort(blueDices, Collections.<Dice>reverseOrder());
 
         for (int i = 0; i < redDices.size(); i++) {
-            if (redDices.get(i).getLastOutcome() == -1 || blueDices.get(i).getLastOutcome() == -1) break;
+            if (redDices.get(i).getLastOutcome() == -1 || blueDices.get(i).getLastOutcome() == -1) {
+                break;
+            }
             if (redDices.get(i).getLastOutcome() > blueDices.get(i).getLastOutcome()) {
-                // red wins
                 outcomes.add(DiceColor.RED);
             } else {
                 outcomes.add(DiceColor.BLUE);
             }
         }
 
-        for(Dice dice : dices) {
+        for (Dice dice : dices) {
             dice.reset();
         }
 

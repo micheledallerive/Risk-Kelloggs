@@ -81,6 +81,7 @@ public class Game {
      * Initializes the game class and objects.
      */
     public static void init() {
-
+        assert true;
+        // random instruction just to avoid warnings.  TODO complete this function
     }
 }
