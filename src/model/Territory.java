@@ -87,4 +87,12 @@ public class Territory {
     public ArrayList<Army> getArmies() {
         return armies;
     }
+
+    /**
+     * Sets the owner of the territory
+     * @param owner the player that owns the territory
+     */
+    public void setOwner(Player owner) {
+        this.owner = owner;
+    }
 }

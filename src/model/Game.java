@@ -49,6 +49,14 @@ public class Game {
     }
 
     /**
+     * Adds a player to the list of players
+     * @param player the player to add
+     */
+    public void addPlayer(Player player) {
+        this.players.add(player);
+    }
+
+    /**
      * Returns the current state of the game.
      * @return the GameStatus
      */
