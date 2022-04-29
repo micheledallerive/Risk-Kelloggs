@@ -19,7 +19,7 @@ public class Board {
         this.initTerritories();
         this.initContinents();
     }
-    
+
     /**
      * Initializes the territories of the board.
      */

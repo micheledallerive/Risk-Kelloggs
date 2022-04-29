@@ -1,7 +1,6 @@
 package model;
 
 import model.enums.DiceColor;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
@@ -14,7 +13,6 @@ public class Dice implements Comparable<Dice>{
     private DiceColor color;
     private Random random;
     private int number;
-
     private static ArrayList<Dice> dices;
 
     public static ArrayList<Dice> getDices() {
@@ -25,6 +23,7 @@ public class Dice implements Comparable<Dice>{
      * Initializes the Dice by creating 3 attack dice and 3 defence dice
      */
     public static void init() {
+        dices = new ArrayList<Dice>();
         for (int i = 0; i < 3; i++) {
             dices.add(new Dice(DiceColor.RED));
         }
