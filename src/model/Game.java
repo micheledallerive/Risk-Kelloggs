@@ -12,6 +12,9 @@ import java.util.Random;
  * Represents the game itself.
  */
 public class Game {
+    /*
+
+     */
     private Board board;
     private ArrayList<Player> players;
     private GameStatus status;
