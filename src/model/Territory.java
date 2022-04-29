@@ -34,8 +34,7 @@ public class Territory {
         if (file.exists()) {
             InputStream stream = new FileInputStream(file);
             BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
-            String line;
-            while ((line = reader.readLine()) != null) {
+            for (String line = reader.readLine(); line != null; line = reader.readLine()) {
                 String[] parts = line.split(",");
                 List<TerritoryName> adj = new ArrayList<TerritoryName>();
                 for (String part : parts) {

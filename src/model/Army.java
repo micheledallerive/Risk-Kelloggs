@@ -2,7 +2,6 @@ package model;
 
 import model.enums.ArmyColor;
 import model.enums.ArmyType;
-import model.enums.TerritoryName;
 
 /**
  * Describes a single piece of army, using its type (i.e. the shape) and the color.

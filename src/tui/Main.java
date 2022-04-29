@@ -8,11 +8,17 @@ package tui;
 public class Main {
 
     /**
-     * Procedure - main method.
+     * Procedure - static main method.
      * @param args arguments to set terminal interface
      */
     public static void main(String[] args) {
         System.out.println("tui.Main");
     }
-    
+
+    /**
+     * Procedure - main method.
+     */
+    public void main() {
+        // fill
+    }
 }

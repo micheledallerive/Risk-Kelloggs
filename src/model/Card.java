@@ -3,7 +3,6 @@ package model;
 import model.enums.CardType;
 import model.enums.TerritoryName;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
