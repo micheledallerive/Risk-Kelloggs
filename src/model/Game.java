@@ -1,8 +1,12 @@
 package model;
 
+import model.enums.CardType;
 import model.enums.GameStatus;
+import model.enums.TerritoryName;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Random;
 
 /**
  * Represents the game itself.
@@ -12,6 +16,8 @@ public class Game {
     private ArrayList<Player> players;
     private GameStatus status;
     private int turn;
+    private ArrayList<Card> cardsDeck;
+    private Random random;
 
     /**
      * Create a new empty game.
@@ -38,6 +44,36 @@ public class Game {
         this.players = players;
         this.status = GameStatus.MENU;
         this.turn = 0;
+        this.cardsDeck = new ArrayList<>();
+        this.random = new Random();
+
+        this.initCards();
+    }
+
+    /**
+     * Initializes the deck of card creating all the cards that it contains.
+     */
+    private void initCards() {
+        int territoriesCount = TerritoryName.values().length;
+        for (int i = 0; i < territoriesCount; i++) {
+            TerritoryName territoryName = TerritoryName.values()[i];
+            CardType type = CardType.values()[i/3];
+            this.cardsDeck.add(new Card(type, territoryName));
+        }
+        this.cardsDeck.add(new Card(CardType.WILD, TerritoryName.NONE));
+        this.cardsDeck.add(new Card(CardType.WILD, TerritoryName.NONE));
+        Collections.shuffle(this.cardsDeck);
+    }
+
+    /**
+     * Get a random card from the deck and remove it.
+     * @return the card that was randomly picked.
+     */
+    public Card getRandomCard() {
+        int randomIndex = random.nextInt(this.cardsDeck.size());
+        Card card = this.cardsDeck.get(randomIndex);
+        this.cardsDeck.remove(randomIndex);
+        return card;
     }
 
     /**

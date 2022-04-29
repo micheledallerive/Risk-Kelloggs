@@ -97,4 +97,13 @@ public class Player {
         }
         return validCombinations;
     }
+
+    /**
+     * Picks a random card from the game deck.
+     * @param game the game the player is playing in.
+     */
+    public void pickCard(Game game) {
+        Card card = game.getRandomCard();
+        this.cards.add(card);
+    }
 }

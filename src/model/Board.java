@@ -13,6 +13,11 @@ public class Board {
     public Board() {
         this.territories = new ArrayList<>();
         this.continents = new ArrayList<>();
+        this.init();
+    }
+
+    public void init() {
+
     }
 
     /**
@@ -30,4 +35,5 @@ public class Board {
     public ArrayList<Continent> getContinents() {
         return continents;
     }
+
 }

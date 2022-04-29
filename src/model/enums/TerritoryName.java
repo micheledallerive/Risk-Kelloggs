@@ -36,6 +36,8 @@ public enum TerritoryName {
     MONGOLIA,
     SIAM,
     YAKUTSK,
+    NORTH_AFRICA,
+    EGYPT,
     CONGO,
     EAST_AFRICA,
     SOUTH_AFRICA,
