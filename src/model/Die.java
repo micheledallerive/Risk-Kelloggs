@@ -1,6 +1,6 @@
 package model;
 
-import model.enums.DiceColor;
+import model.enums.DieColor;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
@@ -8,27 +8,27 @@ import java.util.Random;
 /**
  * Represents a single dice in the game.
  */
-public class Dice implements Comparable<Dice>{
+public class Die implements Comparable<Die>{
 
-    private DiceColor color;
-    private Random random;
+    private final DieColor color;
+    private final Random random;
     private int number;
-    private static ArrayList<Dice> dices;
+    private static ArrayList<Die> dice;
 
-    public static ArrayList<Dice> getDices() {
-        return dices;
+    public static ArrayList<Die> getDice() {
+        return dice;
     }
 
     /**
      * Initializes the Dice by creating 3 attack dice and 3 defence dice
      */
     public static void init() {
-        dices = new ArrayList<Dice>();
+        dice = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
-            dices.add(new Dice(DiceColor.RED));
+            dice.add(new Die(DieColor.RED));
         }
         for (int i = 0; i < 3; i++) {
-            dices.add(new Dice(DiceColor.BLUE));
+            dice.add(new Die(DieColor.BLUE));
         }
     }
 
@@ -38,7 +38,7 @@ public class Dice implements Comparable<Dice>{
      * @return the comparison between the dice numbers.
      */
     @Override
-    public int compareTo(Dice other) {
+    public int compareTo(Die other) {
         return Integer.compare(this.number, other.number);
     }
 
@@ -46,7 +46,7 @@ public class Dice implements Comparable<Dice>{
      * Creates a new dice with a specific color.
      * @param color the color of the dice, blue if it is a defensive dice, red if it is an attack dice
      */
-    public Dice(DiceColor color) {
+    public Die(DieColor color) {
         this.color = color;
         this.random = new Random();
         this.number = -1;
@@ -56,7 +56,7 @@ public class Dice implements Comparable<Dice>{
      * Returns the color of the dice.
      * @return the color of the dice.
      */
-    public DiceColor getColor() {
+    public DieColor getColor() {
         return this.color;
     }
 
@@ -85,43 +85,43 @@ public class Dice implements Comparable<Dice>{
 
 
     /**
-     * Checks the current state of the dices and returns an array
-     * in which each element is the winner of a pair of dices rolled.
+     * Checks the current state of the dice and returns an array
+     * in which each element is the winner of a pair of dice rolled.
      * @return an array of colors, each of which is the winner of a single roll.
      */
-    public static ArrayList<DiceColor> winner() {
+    public static ArrayList<DieColor> winner() {
         // The dice are divided between attack dice and defence dice.
-        ArrayList<Dice> redDices = new ArrayList<>();
-        ArrayList<Dice> blueDices = new ArrayList<>();
-        for (Dice dice : dices) {
-            if (dice.getLastOutcome() != -1) {
-                if (dice.getColor() == DiceColor.RED) {
-                    redDices.add(dice);
+        ArrayList<Die> redDice = new ArrayList<>();
+        ArrayList<Die> blueDice = new ArrayList<>();
+        for (Die die : dice) {
+            if (die.getLastOutcome() != -1) {
+                if (die.getColor() == DieColor.RED) {
+                    redDice.add(die);
                 } else {
-                    blueDices.add(dice);
+                    blueDice.add(die);
                 }
             }
         }
 
-        ArrayList<DiceColor> outcomes = new ArrayList<>();
+        ArrayList<DieColor> outcomes = new ArrayList<>();
 
         // The lists are sorted in order to be able to be compared.
-        Collections.sort(redDices, Collections.<Dice>reverseOrder());
-        Collections.sort(blueDices, Collections.<Dice>reverseOrder());
+        Collections.sort(redDice, Collections.<Die>reverseOrder());
+        Collections.sort(blueDice, Collections.<Die>reverseOrder());
 
-        for (int i = 0; i < redDices.size(); i++) {
-            if (redDices.get(i).getLastOutcome() == -1 || blueDices.get(i).getLastOutcome() == -1) {
+        for (int i = 0; i < redDice.size(); i++) {
+            if (redDice.get(i).getLastOutcome() == -1 || blueDice.get(i).getLastOutcome() == -1) {
                 break;
             }
-            if (redDices.get(i).getLastOutcome() > blueDices.get(i).getLastOutcome()) {
-                outcomes.add(DiceColor.RED);
+            if (redDice.get(i).getLastOutcome() > blueDice.get(i).getLastOutcome()) {
+                outcomes.add(DieColor.RED);
             } else {
-                outcomes.add(DiceColor.BLUE);
+                outcomes.add(DieColor.BLUE);
             }
         }
 
-        for (Dice dice : dices) {
-            dice.reset();
+        for (Die die : dice) {
+            die.reset();
         }
 
         return outcomes;

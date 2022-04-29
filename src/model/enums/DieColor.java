@@ -5,7 +5,7 @@ package model.enums;
  * {@link #RED}
  * {@link #BLUE}
  */
-public enum DiceColor {
+public enum DieColor {
     /**
      * The dice is red, meaning it is used to attack
      */

@@ -1,6 +1,6 @@
 package test;
 
-import model.Dice;
+import model.Die;
 import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -8,13 +8,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 /**
  * This class tests the functionality of the class Dice
  */
-public class DiceTest {
+public class DieTest {
     @Test
     public void initTest() {
-        Dice.init();
-        ArrayList<Dice> dice = Dice.getDices();
+        Die.init();
+        ArrayList<Die> dice = Die.getDice();
         int red = 0, blue = 0;
-        for (Dice die : dices) {
+        for (Die die : dice) {
             switch (die.getColor()) {
                 case RED:
                     red++;
@@ -29,5 +29,8 @@ public class DiceTest {
 
     }
 
+    @Test
+    public void rollTest() {
 
+    }
 }
