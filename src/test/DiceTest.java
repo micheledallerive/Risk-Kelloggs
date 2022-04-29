@@ -14,7 +14,7 @@ public class DiceTest {
         Dice.init();
         ArrayList<Dice> dice = Dice.getDices();
         int red = 0, blue = 0;
-        for (Dice die : dices) {
+        for (Dice die : dice) {
             switch (die.getColor()) {
                 case RED:
                     red++;
