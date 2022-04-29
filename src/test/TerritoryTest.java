@@ -4,9 +4,12 @@ import model.Player;
 import model.Territory;
 import model.enums.ArmyColor;
 import model.enums.TerritoryName;
-import org.testng.annotations.Test;
 
-import static org.testng.AssertJUnit.*;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 
 /**
  * This class tests the functionality of the class Territory
