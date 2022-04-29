@@ -2,17 +2,19 @@ package model;
 
 import model.enums.TerritoryName;
 
-import java.io.*;
-import java.nio.file.Files;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-
-import static model.enums.TerritoryName.*;
 
 /**
  * Describes a Territory in the Risk map.
+ * @author dallem@usi.ch
  */
 public class Territory {
 
@@ -23,16 +25,20 @@ public class Territory {
 
     public static List<List<TerritoryName>> adjacency = new ArrayList<>();
 
+    /**
+     * Procedure - get from file the adjacency territories and store it in adjacency list collection.
+     * @throws IOException exception
+     */
     public static void init() throws IOException {
         File file = new File("../data/adjacency.csv");
         if (file.exists()) {
             InputStream stream = new FileInputStream(file);
             BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
             String line;
-            while((line = reader.readLine()) != null) {
+            while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(",");
                 List<TerritoryName> adj = new ArrayList<TerritoryName>();
-                for(String part : parts) {
+                for (String part : parts) {
                     adj.add(TerritoryName.valueOf(part));
                 }
                 adjacency.add(adj);
@@ -112,7 +118,7 @@ public class Territory {
     }
 
     /**
-     * Sets the owner of the territory
+     * Sets the owner of the territory.
      * @param owner the player that owns the territory
      */
     public void setOwner(Player owner) {

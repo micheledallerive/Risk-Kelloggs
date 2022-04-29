@@ -1,12 +1,16 @@
 package tui;
 
 /**
- * DESCRIBE THIS CLASS
+ * TUI class.
  * 
- * @author YOUR_USI_EMAIL
+ * @author moralj@usi.ch
  */
 public class Main {
-    
+
+    /**
+     * Procedure - main method.
+     * @param args arguments to set terminal interface
+     */
     public static void main(String[] args) {
         System.out.println("tui.Main");
     }

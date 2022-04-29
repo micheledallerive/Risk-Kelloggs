@@ -10,11 +10,9 @@ import java.util.Random;
 
 /**
  * Represents the game itself.
+ * @author dallem@usi.ch
  */
 public class Game {
-    /*
-
-     */
     private Board board;
     private ArrayList<Player> players;
     private GameStatus status;
@@ -60,7 +58,7 @@ public class Game {
         int territoriesCount = TerritoryName.values().length;
         for (int i = 0; i < territoriesCount; i++) {
             TerritoryName territoryName = TerritoryName.values()[i];
-            CardType type = CardType.values()[i/3];
+            CardType type = CardType.values()[i / 3];
             this.cardsDeck.add(new Card(type, territoryName));
         }
         this.cardsDeck.add(new Card(CardType.WILD, TerritoryName.NONE));
@@ -88,7 +86,7 @@ public class Game {
     }
 
     /**
-     * Adds a player to the list of players
+     * Adds a player to the list of players.
      * @param player the player to add
      */
     public void addPlayer(Player player) {
@@ -117,7 +115,7 @@ public class Game {
      */
     public boolean isWorldConquered() {
         for (int i = 1; i < this.board.getContinents().size(); i++) {
-            if (this.board.getContinents().get(i).getOwner() != this.board.getContinents().get(i-1).getOwner()) {
+            if (this.board.getContinents().get(i).getOwner() != this.board.getContinents().get(i - 1).getOwner()) {
                 return false;
             }
         }

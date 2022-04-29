@@ -1,13 +1,16 @@
 package gui;
 
 /**
- * DESCRIBE THIS CLASS
+ * GUI class.
  * 
- * @author YOUR_USI_EMAIL
+ * @author moralj@usi.ch
  */
 public class Main {
-    
-    // add a main method here
+
+    /**
+     * Procedure - main method.
+     * @param args arguments to set graphic interface
+     */
     public static void main(String[] args) {
         System.out.println("gui.Main");
     }

@@ -9,6 +9,7 @@ import java.util.List;
 
 /**
  * Describes a card with territory and figure.
+ * @author dallem@usi.ch
  */
 public class Card {
     private CardType type;

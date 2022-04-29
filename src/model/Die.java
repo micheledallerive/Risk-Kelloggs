@@ -1,26 +1,31 @@
 package model;
 
 import model.enums.DieColor;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
 
 /**
  * Represents a single dice in the game.
+ * @author dallem@usi.ch, moralj@usi.ch
  */
-public class Die implements Comparable<Die>{
-
+public class Die implements Comparable<Die> {
     private final DieColor color;
     private final Random random;
     private int number;
     private static ArrayList<Die> dice;
 
+    /**
+     * Function - gives reference to dice collection.
+     * @return reference to ArrayList containing dice
+     */
     public static ArrayList<Die> getDice() {
         return dice;
     }
 
     /**
-     * Initializes the Dice by creating 3 attack dice and 3 defence dice
+     * Initializes the Dice by creating 3 attack dice and 3 defence dice.
      */
     public static void init() {
         dice = new ArrayList<>();
@@ -72,7 +77,7 @@ public class Die implements Comparable<Die>{
      * Rolls the dice and stores the outcome.
      */
     public void roll() {
-        this.number = random.nextInt(6)+1;
+        this.number = random.nextInt(6) + 1;
     }
 
     /**
