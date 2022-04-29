@@ -1,13 +1,12 @@
 package model;
 
 import model.enums.ArmyColor;
-import model.enums.CardType;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Describes each player of the game.
+ * @author dallem@usi.ch
  */
 public class Player {
 
@@ -100,11 +99,11 @@ public class Player {
      */
     public ArrayList<ArrayList<Card>> getCardCombinations() {
         ArrayList<ArrayList<Card>> validCombinations = new ArrayList<>();
-        for(List<CardType> combination : Card.combinations) {
-            for(CardType combination_card : combination) {
+        /* for (List<CardType> combination : Card.combinations) {
+            for (CardType combinationCard : combination) {
                 // TODO complete
             }
-        }
+        } */
         return validCombinations;
     }
 
