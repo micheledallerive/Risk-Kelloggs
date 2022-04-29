@@ -19,7 +19,7 @@ public class Territory {
     private ArrayList<Army> armies;
     private TerritoryName name;
 
-    public static List<List<TerritoryName>> adjacency = Arrays.asList(
+    public static final List<List<TerritoryName>> adjacency = Arrays.asList(
 //            ALASKA,
             Arrays.asList(NORTH_WEST_TERRITORY, ALBERTA, KAMCHATKA),
 //            NORTH_WEST_TERRITORY,
@@ -27,9 +27,10 @@ public class Territory {
 //            ALBERTA,
             Arrays.asList(ALASKA, NORTH_WEST_TERRITORY, ONTARIO, WESTERN_UNITED_STATES),
 //            ONTARIO,
-            Arrays.asList(NORTH_WEST_TERRITORY, ALBERTA, WESTERN_UNITED_STATES, EASTERN_UNITED_STATES, QUEBEC, GREENLAND),
+            Arrays.asList(NORTH_WEST_TERRITORY, ALBERTA, WESTERN_UNITED_STATES,
+                    EASTERN_UNITED_STATES, QUEBEC, GREENLAND),
 //            QUEBEC,
-            Arrays.asList(GREENLAND, ONTARIO, EASTERN_UNITED_STATES)
+            Arrays.asList(GREENLAND, ONTARIO, EASTERN_UNITED_STATES),
 //            GREENLAND,
             Arrays.asList(NORTH_WEST_TERRITORY, ONTARIO, QUEBEC, ICELAND),
 //            CENTRAL_AMERICA,
@@ -53,13 +54,16 @@ public class Territory {
 //            WESTERN_EUROPE,
             Arrays.asList(GREAT_BRITAIN, NORTHERN_EUROPE, SOUTHERN_EUROPE, NORTH_AFRICA),
 //            SOUTHERN_EUROPE,
-            Arrays.asList(WESTERN_EUROPE, NORTHERN_EUROPE, UKRAINE, NORTH_AFRICA, EGYPT, MIDDLE_EAST),
+            Arrays.asList(WESTERN_EUROPE, NORTHERN_EUROPE, UKRAINE,
+                    NORTH_AFRICA, EGYPT, MIDDLE_EAST),
 //            NORTHERN_EUROPE,
-            Arrays.asList(SCANDINAVIA, GREAT_BRITAIN, UKRAINE, WESTERN_EUROPE, SOUTHERN_EUROPE),
+            Arrays.asList(SCANDINAVIA, GREAT_BRITAIN, UKRAINE,
+                    WESTERN_EUROPE, SOUTHERN_EUROPE),
 //            SCANDINAVIA,
             Arrays.asList(ICELAND, GREAT_BRITAIN, NORTHERN_EUROPE, UKRAINE),
 //            UKRAINE,
-            Arrays.asList(SCANDINAVIA, NORTHERN_EUROPE, SOUTHERN_EUROPE, MIDDLE_EAST, AFGHANISTAN, URAL),
+            Arrays.asList(SCANDINAVIA, NORTHERN_EUROPE, SOUTHERN_EUROPE,
+                    MIDDLE_EAST, AFGHANISTAN, URAL),
 //            URAL,
             Arrays.asList(UKRAINE, SIBERIA, CHINA, AFGHANISTAN),
 //            SIBERIA,
@@ -77,7 +81,8 @@ public class Territory {
 //            KAMCHATKA,
             Arrays.asList(YAKUTSK, IRKUTSK, MONGOLIA, JAPAN),
 //            MIDDLE_EAST,
-            Arrays.asList(UKRAINE, SOUTHERN_EUROPE, EGYPT, EAST_AFRICA, AFGHANISTAN, INDIA),
+            Arrays.asList(UKRAINE, SOUTHERN_EUROPE, EGYPT,
+                    EAST_AFRICA, AFGHANISTAN, INDIA),
 //            MONGOLIA,
             Arrays.asList(CHINA, SIBERIA, IRKUTSK, KAMCHATKA, JAPAN),
 //            SIAM,
@@ -87,17 +92,17 @@ public class Territory {
 //            CONGO,
             Arrays.asList(NORTH_AFRICA, EAST_AFRICA, SOUTH_AFRICA),
 //            EAST_AFRICA,
-            Arrays.asList(),
+            Arrays.asList(EGYPT, NORTH_AFRICA, CONGO, SOUTH_AFRICA, MADAGASCAR),
 //            SOUTH_AFRICA,
-            Arrays.asList(),
+            Arrays.asList(CONGO, EAST_AFRICA, MADAGASCAR),
 //            EASTERN_AUSTRALIA,
-            Arrays.asList(),
+            Arrays.asList(WESTERN_AUSTRALIA, NEW_GUINEA),
 //            INDONESIA,
-            Arrays.asList(),
+            Arrays.asList(NEW_GUINEA, WESTERN_AUSTRALIA, SIAM),
 //            NEW_GUINEA,
-            Arrays.asList(),
+            Arrays.asList(INDONESIA, WESTERN_AUSTRALIA, EASTERN_AUSTRALIA),
 //            WESTERN_AUSTRALIA
-            Arrays.asList()
+            Arrays.asList(INDONESIA, NEW_GUINEA, EASTERN_AUSTRALIA)
     );
 
     /**
@@ -105,10 +110,7 @@ public class Territory {
      * @param name the name of the territory
      */
     public Territory(TerritoryName name) {
-        this.adjacent = new ArrayList<>();
-        this.owner = null;
-        this.armies = new ArrayList<>();
-        this.name = name;
+        this(name, new ArrayList<Territory>());
     }
 
     /**
@@ -177,5 +179,13 @@ public class Territory {
      */
     public void setOwner(Player owner) {
         this.owner = owner;
+    }
+
+    /**
+     * Sets the adjacent territories.
+     * @param adjacent the territories that are adjacent to this territory
+     */
+    public void setAdjacent(ArrayList<Territory> adjacent) {
+        this.adjacent = adjacent;
     }
 }
