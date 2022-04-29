@@ -1,9 +1,13 @@
 package test;
 
+import model.AI;
+import model.Card;
 import model.Player;
 import model.enums.ArmyColor;
 
 import static org.junit.Assert.*;
+
+import model.enums.CardType;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -17,8 +21,16 @@ public class PlayerTest {
     public void testConstructor() {
         Player player1  = new Player(ArmyColor.BLACK);
         Player player2 = new Player(ArmyColor.RED);
+        player1.attack(null, -1);
+        player1.attack(null, 2);
         assertEquals(player1.getArmies().size(), 0);
         assertEquals(player2.getTerritories().size(), 0);
+        assertEquals(0, player1.getCards().size());
+        Card c = new Card(CardType.ARTILLERY, null);
+        player1.addCard(c);
+        assertEquals(c, player1.getCards().get(0));
+        assertEquals(1, player1.getCards().size());
+        assertFalse(player1.isAI());
     }
 
 }

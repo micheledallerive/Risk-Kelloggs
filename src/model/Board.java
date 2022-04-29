@@ -29,7 +29,9 @@ public class Board {
      */
     private void initTerritories() {
         for (TerritoryName territoryName : TerritoryName.values()) {
-            this.territories.add(new Territory(territoryName));
+            if(territoryName != TerritoryName.NONE) {
+                this.territories.add(new Territory(territoryName));
+            }
         }
         for (Territory territory : this.territories) {
             TerritoryName name = territory.getName();

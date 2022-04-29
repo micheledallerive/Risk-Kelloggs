@@ -35,17 +35,10 @@ public class TerritoryTest {
         assertTrue(territory.isOccupied());
     }
 
-    /*
     @Test
-    public void testLoadFromFile() {
-        try{
-            //Territory.init();
-            assertEquals(42, Territory.adjacency.size());
-            assertEquals(TerritoryName.NORTH_WEST_TERRITORY, Territory.adjacency.get(0).get(0));
-        } catch(Exception e) {
-            assertEquals(Territory.adjacency.size(), 0);
-            e.printStackTrace();
-        }
-    } */
+    public void testInit() {
+        Territory.init();
+        assertEquals(42, Territory.adjacency.size());
+    }
 
 }

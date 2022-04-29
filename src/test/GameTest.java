@@ -17,7 +17,6 @@ import org.junit.Test;
  */
 public class GameTest {
 
-    /*
     @Test
     public void testConstructorGetterSetter() {
         ArrayList<Player> players = new ArrayList<>();
@@ -38,11 +37,10 @@ public class GameTest {
     public void testCards() {
         Game game = new Game();
         assertNotNull(game.getRandomCard());
-        for (int i = 0; i < 42; i++) {
+        for (int i = 0; i < 44; i++) { // 42 territory card + 2 wild cards
             assertNotNull(game.getRandomCard());
         }
         assertNull(game.getRandomCard());
     }
-     */
 
 }

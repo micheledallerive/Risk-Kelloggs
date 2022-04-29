@@ -34,6 +34,12 @@ public class DieTest {
 
     @Test
     public void rollTest() {
-
+        Die.init();
+        Die.getDice().get(0).roll();
+        Die.getDice().get(1).roll();
+        Die.getDice().get(3).roll();
+        Die.getDice().get(4).roll();
+        Die.getDice().get(5).roll();
+        assertEquals(2, Die.winner().size());
     }
 }
