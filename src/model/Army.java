@@ -2,21 +2,22 @@ package model;
 
 import model.enums.ArmyColor;
 import model.enums.ArmyType;
+import model.enums.TerritoryName;
 
 /**
- * Describes a single piece of army, using it's type (i.e. the shape) and the color.
+ * Describes a single piece of army, using its type (i.e. the shape) and the color.
  */
 public class Army {
 
     private ArmyType type;
     private ArmyColor color;
+    private Territory territory;
 
     /**
      * Creates a new default army piece (black infantry piece).
      */
     public Army() {
-        type = ArmyType.INFANTRY;
-        color = ArmyColor.BLACK;
+        this(ArmyType.INFANTRY, ArmyColor.BLACK, null);
     }
 
     /**
@@ -24,9 +25,10 @@ public class Army {
      * @param type the type of the army piece
      * @param color the color of the army piece
      */
-    public Army(ArmyType type, ArmyColor color) {
+    public Army(ArmyType type, ArmyColor color, Territory territory) {
         this.type = type;
         this.color = color;
+        this.territory = territory;
     }
 
     /**
@@ -43,5 +45,21 @@ public class Army {
      */
     public ArmyColor getColor() {
         return color;
+    }
+
+    /**
+     * Returns the territory the army is placed on.
+     * @return the territory of the army
+     */
+    public Territory getTerritory() {
+        return this.territory;
+    }
+
+    /**
+     * Moves the army to a new territory.
+     * @param newTerritory the new territory of the army
+     */
+    public void moveTo(Territory newTerritory) {
+        this.territory = newTerritory;
     }
 }
