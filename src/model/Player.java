@@ -11,6 +11,7 @@ import java.util.List;
  */
 public class Player {
 
+    protected boolean ai;
     private ArrayList<Card> cards;
     private ArrayList<Army> armies;
     private ArmyColor color;
@@ -32,6 +33,7 @@ public class Player {
         this.armies = new ArrayList<>();
         this.color = color;
         this.territories = new ArrayList<>();
+        this.ai = false;
     }
 
     /**
@@ -75,13 +77,21 @@ public class Player {
     }
 
     /**
+     * Checks if the Player is an AI.
+     * @return if the player is an AI
+     */
+    public boolean isAI() {
+        return this.ai;
+    }
+
+    /**
      * Attack a territory.
      * @param territory the territory to attack
      * @param armies the number of armies to use for the attack
      */
     public void attack(Territory territory, int armies) {
         assert this.armies.size() > armies;
-
+        // TODO complete
     }
 
     /**
