@@ -1,9 +1,12 @@
 package test;
+
 import model.Player;
 import model.enums.ArmyColor;
-import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.Assert.*;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * This class tests the functionality of the class Player
