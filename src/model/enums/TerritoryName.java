@@ -2,6 +2,7 @@ package model.enums;
 
 /**
  * Describes the name of the territory in the map.
+ * @author dallem@usi.ch
  */
 public enum TerritoryName {
     ALASKA,

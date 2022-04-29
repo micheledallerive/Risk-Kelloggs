@@ -2,12 +2,12 @@ package model.enums;
 
 /**
  * The GameStatus describes the current state of the game.
+ * @author dallem@usi.ch
  * {@link #MENU}
  * {@link #SETUP}
  * {@link #PLAYING}
  * {@link #END}
  */
-
 public enum GameStatus {
     /**
      * the game is currently on the menu, waiting for the player to start the game.

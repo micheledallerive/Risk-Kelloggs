@@ -2,11 +2,9 @@ package model;
 
 import model.enums.ContinentName;
 import model.enums.TerritoryName;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
 import static model.enums.TerritoryName.*;
 
 /**

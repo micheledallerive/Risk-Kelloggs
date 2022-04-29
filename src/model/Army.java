@@ -6,6 +6,7 @@ import model.enums.TerritoryName;
 
 /**
  * Describes a single piece of army, using its type (i.e. the shape) and the color.
+ * @author Michele Dalle Rive
  */
 public class Army {
 
@@ -24,6 +25,7 @@ public class Army {
      * Creates a new army piece.
      * @param type the type of the army piece
      * @param color the color of the army piece
+     * @param territory the territory of the army
      */
     public Army(ArmyType type, ArmyColor color, Territory territory) {
         this.type = type;

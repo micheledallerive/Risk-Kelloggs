@@ -26,7 +26,6 @@ public class DieTest {
         }
         assertEquals(3, red);
         assertEquals(3, blue);
-
     }
 
     @Test
