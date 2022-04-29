@@ -73,6 +73,9 @@ public class Game {
      * @return the card that was randomly picked.
      */
     public Card getRandomCard() {
+        if (this.cardsDeck.size() < 1) {
+            return null;
+        }
         int randomIndex = random.nextInt(this.cardsDeck.size());
         Card card = this.cardsDeck.get(randomIndex);
         this.cardsDeck.remove(randomIndex);
@@ -122,13 +125,5 @@ public class Game {
             }
         }
         return true;
-    }
-
-    /**
-     * Initializes the game class and objects.
-     */
-    public static void init() {
-        assert true;
-        // random instruction just to avoid warnings.  TODO complete this function
     }
 }

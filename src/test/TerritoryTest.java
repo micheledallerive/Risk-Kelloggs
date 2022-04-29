@@ -4,9 +4,9 @@ import model.Player;
 import model.Territory;
 import model.enums.ArmyColor;
 import model.enums.TerritoryName;
-import org.junit.jupiter.api.Test;
+import org.testng.annotations.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.testng.AssertJUnit.*;
 
 /**
  * This class tests the functionality of the class Territory
@@ -35,7 +35,7 @@ public class TerritoryTest {
     @Test
     public void testLoadFromFile() {
         try{
-            Territory.init();
+            //Territory.init();
             assertEquals(42, Territory.adjacency.size());
             assertEquals(TerritoryName.NORTH_WEST_TERRITORY, Territory.adjacency.get(0).get(0));
         } catch(Exception e) {
