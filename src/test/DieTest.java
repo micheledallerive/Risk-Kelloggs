@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * This class tests the functionality of the class Dice
+ * @author moralj@usi.ch
  */
 public class DieTest {
     @Test
