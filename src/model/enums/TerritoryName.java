@@ -41,6 +41,7 @@ public enum TerritoryName {
     CONGO,
     EAST_AFRICA,
     SOUTH_AFRICA,
+    MADAGASCAR,
     EASTERN_AUSTRALIA,
     INDONESIA,
     NEW_GUINEA,

@@ -1,8 +1,13 @@
 package model;
 
 import model.enums.ContinentName;
+import model.enums.TerritoryName;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import static model.enums.TerritoryName.*;
 
 /**
  * Represents a continent in the Risk map.
@@ -12,6 +17,25 @@ public class Continent {
     private ContinentName name;
     private ArrayList<Territory> countries;
     private int value;
+
+    public static final List<List<TerritoryName>> TERRITORIES = Arrays.asList(
+            Arrays.asList(ALASKA, NORTH_WEST_TERRITORY, GREENLAND,
+                    ALBERTA, ONTARIO, QUEBEC, WESTERN_UNITED_STATES,
+                    EASTERN_UNITED_STATES, CENTRAL_AMERICA),
+            Arrays.asList(VENEZUELA, BRAZIL, PERU, ARGENTINA),
+            Arrays.asList(ICELAND, SCANDINAVIA, GREAT_BRITAIN,
+                    NORTHERN_EUROPE, UKRAINE, WESTERN_EUROPE,
+                    SOUTHERN_EUROPE),
+            Arrays.asList(NORTH_AFRICA, EGYPT, CONGO,
+                    EAST_AFRICA, SOUTH_AFRICA, MADAGASCAR),
+            Arrays.asList(URAL, SIBERIA, YAKUTSK, IRKUTSK,
+                    KAMCHATKA, AFGHANISTAN, CHINA, MONGOLIA,
+                    JAPAN, MIDDLE_EAST, INDIA, SIAM),
+            Arrays.asList(INDONESIA, NEW_GUINEA,
+                    WESTERN_AUSTRALIA, EASTERN_AUSTRALIA)
+    );
+
+    public static final int[] VALUES = new int[]{5,2,5,3,7,2};
 
     /**
      * Creates a new continent in the map.

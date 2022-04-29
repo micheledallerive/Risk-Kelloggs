@@ -1,5 +1,8 @@
 package model;
 
+import model.enums.ContinentName;
+import model.enums.TerritoryName;
+
 import java.util.ArrayList;
 
 /**
@@ -7,17 +10,54 @@ import java.util.ArrayList;
  */
 public class Board {
 
-    private ArrayList<Territory> territories;
-    private ArrayList<Continent> continents;
+    private final ArrayList<Territory> territories;
+    private final ArrayList<Continent> continents;
 
     public Board() {
         this.territories = new ArrayList<>();
         this.continents = new ArrayList<>();
-        this.init();
+        this.initTerritories();
+        this.initContinents();
     }
 
-    public void init() {
+    /**
+     * Initializes the territories of the board.
+     */
+    private void initTerritories() {
+        for(TerritoryName territoryName : TerritoryName.values()) {
+            this.territories.add(new Territory(territoryName));
+        }
+        for(Territory territory : this.territories) {
+            TerritoryName name = territory.getName();
+            int territoryIndex = name.ordinal();
+            ArrayList<Territory> adjacent = new ArrayList<>();
+            // Territory.adjacency contains all the TerritoryName adjacent to the given territory
+            for(TerritoryName adjacentName : Territory.adjacency.get(territoryIndex)) {
+                int adjacentIndex = adjacentName.ordinal();
+                adjacent.add(this.territories.get(adjacentIndex));
+            }
+            territory.setAdjacent(adjacent);
+        }
+    }
 
+    /**
+     * Initializes the continents of the board
+     */
+    private void initContinents() {
+        for(ContinentName continentName : ContinentName.values()) {
+            int continentIndex = continentName.ordinal();
+            int continentValue = Continent.VALUES[continentIndex];
+            ArrayList<Territory> continentTerritories = new ArrayList<>();
+            for (TerritoryName territoryName : Continent.TERRITORIES.get(continentIndex)) {
+                Territory territory = this.territories.get(territoryName.ordinal());
+                continentTerritories.add(territory);
+            }
+            this.continents.add(new Continent(
+                    continentName,
+                    continentTerritories,
+                    continentValue
+            ));
+        }
     }
 
     /**
