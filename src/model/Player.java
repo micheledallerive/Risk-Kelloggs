@@ -87,9 +87,11 @@ public class Player {
      * Attack a territory.
      * @param territory the territory to attack
      * @param armies the number of armies to use for the attack
+     * @return the functions returns true if the player can
+     *          actually attack that territory, false otherwise.
      */
-    public void attack(Territory territory, int armies) {
-        assert this.armies.size() > armies;
+    public boolean attack(Territory territory, int armies) {
+        return this.armies.size() > armies;
         // TODO complete
     }
 

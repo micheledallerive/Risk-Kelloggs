@@ -24,7 +24,7 @@ public class Game {
      * Create a new empty game.
      */
     public Game() {
-        this(new Board(), new ArrayList<Player>());
+        this(null, new ArrayList<Player>());
     }
 
     /**
@@ -32,7 +32,7 @@ public class Game {
      * @param players the players in the game.
      */
     public Game(ArrayList<Player> players) {
-        this(new Board(), players);
+        this(null, players);
     }
 
     /**
@@ -41,19 +41,17 @@ public class Game {
      * @param players the players of the game.
      */
     public Game(Board board, ArrayList<Player> players) {
-        this.board = board;
+        Territory.init();
+        Continent.init();
+
+        this.board = board==null ? new Board() : board;
         this.players = players;
         this.status = GameStatus.MENU;
         this.turn = 0;
         this.cardsDeck = new ArrayList<>();
         this.random = new Random();
 
-        Territory.init();
         this.initCards();
-    }
-
-    public ArrayList<Card> getCards() {
-        return this.cardsDeck;
     }
 
     /**
@@ -83,6 +81,14 @@ public class Game {
         Card card = this.cardsDeck.get(randomIndex);
         this.cardsDeck.remove(randomIndex);
         return card;
+    }
+
+    /**
+     * Returns the board of the current game.
+     * @return the board of the game.
+     */
+    public Board getBoard() {
+        return this.board;
     }
 
     /**

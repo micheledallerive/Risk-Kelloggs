@@ -1,47 +1,6 @@
 package model;
 
-import static model.enums.TerritoryName.AFGHANISTAN;
-import static model.enums.TerritoryName.ALASKA;
-import static model.enums.TerritoryName.ALBERTA;
-import static model.enums.TerritoryName.ARGENTINA;
-import static model.enums.TerritoryName.BRAZIL;
-import static model.enums.TerritoryName.CENTRAL_AMERICA;
-import static model.enums.TerritoryName.CHINA;
-import static model.enums.TerritoryName.CONGO;
-import static model.enums.TerritoryName.EASTERN_AUSTRALIA;
-import static model.enums.TerritoryName.EASTERN_UNITED_STATES;
-import static model.enums.TerritoryName.EAST_AFRICA;
-import static model.enums.TerritoryName.EGYPT;
-import static model.enums.TerritoryName.GREAT_BRITAIN;
-import static model.enums.TerritoryName.GREENLAND;
-import static model.enums.TerritoryName.ICELAND;
-import static model.enums.TerritoryName.INDIA;
-import static model.enums.TerritoryName.INDONESIA;
-import static model.enums.TerritoryName.IRKUTSK;
-import static model.enums.TerritoryName.JAPAN;
-import static model.enums.TerritoryName.KAMCHATKA;
-import static model.enums.TerritoryName.MADAGASCAR;
-import static model.enums.TerritoryName.MIDDLE_EAST;
-import static model.enums.TerritoryName.MONGOLIA;
-import static model.enums.TerritoryName.NEW_GUINEA;
-import static model.enums.TerritoryName.NORTHERN_EUROPE;
-import static model.enums.TerritoryName.NORTH_AFRICA;
-import static model.enums.TerritoryName.NORTH_WEST_TERRITORY;
-import static model.enums.TerritoryName.ONTARIO;
-import static model.enums.TerritoryName.PERU;
-import static model.enums.TerritoryName.QUEBEC;
-import static model.enums.TerritoryName.SCANDINAVIA;
-import static model.enums.TerritoryName.SIAM;
-import static model.enums.TerritoryName.SIBERIA;
-import static model.enums.TerritoryName.SOUTHERN_EUROPE;
-import static model.enums.TerritoryName.SOUTH_AFRICA;
-import static model.enums.TerritoryName.UKRAINE;
-import static model.enums.TerritoryName.URAL;
-import static model.enums.TerritoryName.VENEZUELA;
-import static model.enums.TerritoryName.WESTERN_AUSTRALIA;
-import static model.enums.TerritoryName.WESTERN_EUROPE;
-import static model.enums.TerritoryName.WESTERN_UNITED_STATES;
-import static model.enums.TerritoryName.YAKUTSK;
+import static model.enums.TerritoryName.*;
 
 import model.enums.ContinentName;
 import model.enums.TerritoryName;
@@ -61,24 +20,9 @@ public class Continent {
     private ArrayList<Territory> countries;
     private int value;
 
-    public static final List<List<TerritoryName>> TERRITORIES = Arrays.asList(
-            Arrays.asList(ALASKA, NORTH_WEST_TERRITORY, GREENLAND,
-                    ALBERTA, ONTARIO, QUEBEC, WESTERN_UNITED_STATES,
-                    EASTERN_UNITED_STATES, CENTRAL_AMERICA),
-            Arrays.asList(VENEZUELA, BRAZIL, PERU, ARGENTINA),
-            Arrays.asList(ICELAND, SCANDINAVIA, GREAT_BRITAIN,
-                    NORTHERN_EUROPE, UKRAINE, WESTERN_EUROPE,
-                    SOUTHERN_EUROPE),
-            Arrays.asList(NORTH_AFRICA, EGYPT, CONGO,
-                    EAST_AFRICA, SOUTH_AFRICA, MADAGASCAR),
-            Arrays.asList(URAL, SIBERIA, YAKUTSK, IRKUTSK,
-                    KAMCHATKA, AFGHANISTAN, CHINA, MONGOLIA,
-                    JAPAN, MIDDLE_EAST, INDIA, SIAM),
-            Arrays.asList(INDONESIA, NEW_GUINEA,
-                    WESTERN_AUSTRALIA, EASTERN_AUSTRALIA)
-    );
+    public static List<List<TerritoryName>> TERRITORIES;
 
-    public static final int[] VALUES = new int[]{5,2,5,3,7,2};
+    public static int[] VALUES;
 
     /**
      * Creates a new continent in the map.
@@ -90,6 +34,29 @@ public class Continent {
         this.name = name;
         this.countries = countries;
         this.value = value;
+    }
+
+    /**
+     * Initialize the Continent static values
+     */
+    public static void init() {
+        TERRITORIES = Arrays.asList(
+                Arrays.asList(ALASKA, NORTH_WEST_TERRITORY, GREENLAND,
+                        ALBERTA, ONTARIO, QUEBEC, WESTERN_UNITED_STATES,
+                        EASTERN_UNITED_STATES, CENTRAL_AMERICA),
+                Arrays.asList(VENEZUELA, BRAZIL, PERU, ARGENTINA),
+                Arrays.asList(ICELAND, SCANDINAVIA, GREAT_BRITAIN,
+                        NORTHERN_EUROPE, UKRAINE, WESTERN_EUROPE,
+                        SOUTHERN_EUROPE),
+                Arrays.asList(NORTH_AFRICA, EGYPT, CONGO,
+                        EAST_AFRICA, SOUTH_AFRICA, MADAGASCAR),
+                Arrays.asList(URAL, SIBERIA, YAKUTSK, IRKUTSK,
+                        KAMCHATKA, AFGHANISTAN, CHINA, MONGOLIA,
+                        JAPAN, MIDDLE_EAST, INDIA, SIAM),
+                Arrays.asList(INDONESIA, NEW_GUINEA,
+                        WESTERN_AUSTRALIA, EASTERN_AUSTRALIA)
+        );
+        VALUES = new int[]{5,2,5,3,7,2};
     }
 
     /**
@@ -117,12 +84,22 @@ public class Continent {
     }
 
     /**
+     * Returns the territories in the continent.
+     * @return the territories in the continent.
+     */
+    public ArrayList<Territory> getTerritories() {
+        return this.countries;
+    }
+
+    /**
      * Checks if the whole continent is occupied by a single person.
      * @return true if a player owns all the continent
      */
     public boolean isOccupied() {
+        if (countries.size() == 0) return false;
         for (int i = 1; i < countries.size(); i++) {
-            if (countries.get(i).getOwner() != countries.get(i - 1).getOwner()) {
+            if (countries.get(i).getOwner() == null
+                || countries.get(i).getOwner() != countries.get(i - 1).getOwner()) {
                 return false;
             }
         }
