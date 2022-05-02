@@ -2,6 +2,7 @@ package model;
 
 import model.enums.CardType;
 import model.enums.GameStatus;
+import model.enums.StaticRandom;
 import model.enums.TerritoryName;
 
 import java.util.ArrayList;
@@ -18,7 +19,6 @@ public class Game {
     private GameStatus status;
     private int turn;
     private ArrayList<Card> cardsDeck;
-    private Random random;
 
     /**
      * Create a new empty game.
@@ -49,7 +49,6 @@ public class Game {
         this.status = GameStatus.MENU;
         this.turn = 0;
         this.cardsDeck = new ArrayList<>();
-        this.random = new Random();
 
         this.initCards();
     }
@@ -77,7 +76,7 @@ public class Game {
         if (this.cardsDeck.size() < 1) {
             return null;
         }
-        int randomIndex = random.nextInt(this.cardsDeck.size());
+        int randomIndex = StaticRandom.random.nextInt(this.cardsDeck.size());
         Card card = this.cardsDeck.get(randomIndex);
         this.cardsDeck.remove(randomIndex);
         return card;

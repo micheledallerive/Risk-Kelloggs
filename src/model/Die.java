@@ -1,6 +1,7 @@
 package model;
 
 import model.enums.DieColor;
+import model.enums.StaticRandom;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -12,7 +13,6 @@ import java.util.Random;
  */
 public class Die implements Comparable<Die> {
     private final DieColor color;
-    private final Random random;
     private int number;
     private static ArrayList<Die> dice;
 
@@ -53,7 +53,6 @@ public class Die implements Comparable<Die> {
      */
     public Die(DieColor color) {
         this.color = color;
-        this.random = new Random();
         this.number = -1;
     }
 
@@ -77,7 +76,7 @@ public class Die implements Comparable<Die> {
      * Rolls the dice and stores the outcome.
      */
     public void roll() {
-        this.number = random.nextInt(6) + 1;
+        this.number = StaticRandom.random.nextInt(6) + 1;
     }
 
     /**

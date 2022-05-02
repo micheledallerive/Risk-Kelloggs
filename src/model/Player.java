@@ -3,6 +3,9 @@ package model;
 import model.enums.ArmyColor;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Describes each player of the game.
@@ -15,6 +18,34 @@ public class Player {
     private ArrayList<Army> armies;
     private ArmyColor color;
     private ArrayList<Territory> territories;
+
+    /**
+     * Creates a random list of players: one actual players and num-1 AIs.
+     * @param num the number of players to create: 1 player, num-1 AIs.
+     * @return returns the list of players
+     */
+    public static ArrayList<Player> generatePlayersRandomly(int num) {
+        ArrayList<Player> players = new ArrayList<>(num);
+
+        List<ArmyColor> colors = Arrays.asList(ArmyColor.values());
+        Collections.shuffle(colors);
+        int playersToRemove = colors.size() - num;
+        while (playersToRemove > 0) {
+            colors.remove(colors.size()-1);
+            playersToRemove--;
+        }
+
+        // I use the first color to create the real player
+        Player realPlayer = new Player(colors.get(0));
+        players.add(realPlayer);
+
+        // I use all the other colors to create the AIs.
+        for (int i = 1; i < colors.size(); i++) {
+            players.add(new AI(colors.get(i)));
+        }
+
+        return players;
+    }
 
     /**
      * Creates a new player.

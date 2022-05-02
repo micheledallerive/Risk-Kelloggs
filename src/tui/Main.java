@@ -1,8 +1,10 @@
 package tui;
 
 import model.Game;
+import model.Player;
 import model.enums.GameStatus;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import static tui.Utils.*;
@@ -36,13 +38,19 @@ public class Main {
         print("Welcome to Risk Kellogg's");
         printOptions(
                 "Play a new game of Risk Kellogg's",
+                "Get information about Risk",
                 "Exit the game"
         );
         int choice = input.nextInt();
-        if (choice == 1) {
-            this.game.setStatus(GameStatus.SETUP);
-        } else {
-            this.game.setStatus(GameStatus.EXIT);
+        switch(choice) {
+            case 1:
+                this.game.setStatus(GameStatus.SETUP);
+                break;
+            case 2:
+                printInfo();
+                break;
+            case 3:
+                this.game.setStatus(GameStatus.EXIT);
         }
     }
 
@@ -50,6 +58,18 @@ public class Main {
      * Handles the behaviour of the game while setting up the game.
      */
     private void setupGame() {
+        /*
+        The setup of the game consists of:
+            - Create the players
+            - Give the cards to the players
+            - Give the armies to the players
+            - Make the players move the armies in the territories he wants
+         */
+        ArrayList<Player> players = Player.generatePlayersRandomly(6);
+        for (Player player : players) {
+            game.addPlayer(player);
+        }
+
 
     }
 
