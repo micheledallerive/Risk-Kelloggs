@@ -14,26 +14,49 @@ public class Die implements Comparable<Die> {
     private final DieColor color;
     private final Random random;
     private int number;
-    private static ArrayList<Die> dice;
+
+    private static ArrayList<Die> redDice;
+    private static ArrayList<Die> blueDice;
 
     /**
-     * Function - gives reference to dice collection.
-     * @return reference to ArrayList containing dice
+     * Function - gives reference to red dice collection.
+     * @return reference to ArrayList containing red dice
      */
-    public static ArrayList<Die> getDice() {
-        return dice;
+    public static ArrayList<Die> getRedDice() {
+        return redDice;
+    }
+
+    /**
+     * Function - gives reference to blue dice collection.
+     * @return reference to ArrayList containing blue dice
+     */
+    public static ArrayList<Die> getBlueDice() {
+        return blueDice;
+    }
+
+    /**
+     * Reset all the dice to the default value -1.
+     */
+    public static void resetAll() {
+        for (Die die : redDice) {
+            die.reset();
+        }
+        for (Die die : blueDice) {
+            die.reset();
+        }
     }
 
     /**
      * Initializes the Dice by creating 3 attack dice and 3 defence dice.
      */
     public static void init() {
-        dice = new ArrayList<>();
+        redDice = new ArrayList<>();
+        blueDice = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
-            dice.add(new Die(DieColor.RED));
+            redDice.add(new Die(DieColor.RED));
         }
         for (int i = 0; i < 3; i++) {
-            dice.add(new Die(DieColor.BLUE));
+            blueDice.add(new Die(DieColor.BLUE));
         }
     }
 
@@ -95,39 +118,24 @@ public class Die implements Comparable<Die> {
      * @return an array of colors, each of which is the winner of a single roll.
      */
     public static ArrayList<DieColor> winner() {
-        // The dice are divided between attack dice and defence dice.
-        ArrayList<Die> redDice = new ArrayList<>();
-        ArrayList<Die> blueDice = new ArrayList<>();
-        for (Die die : dice) {
-            if (die.getLastOutcome() != -1) {
-                if (die.getColor() == DieColor.RED) {
-                    redDice.add(die);
-                } else {
-                    blueDice.add(die);
-                }
-            }
-        }
-
         ArrayList<DieColor> outcomes = new ArrayList<>();
 
         // The lists are sorted in order to be able to be compared.
         Collections.sort(redDice, Collections.<Die>reverseOrder());
         Collections.sort(blueDice, Collections.<Die>reverseOrder());
 
-        for (int i = 0; i < redDice.size(); i++) {
-            if (redDice.get(i).getLastOutcome() == -1 || blueDice.get(i).getLastOutcome() == -1) {
-                break;
-            }
-            if (redDice.get(i).getLastOutcome() > blueDice.get(i).getLastOutcome()) {
-                outcomes.add(DieColor.RED);
-            } else {
-                outcomes.add(DieColor.BLUE);
+        for (int i = 0; i < 3; i++) {
+            // If I reach a die that was not used in this roll (value = -1), I want to stop checking them
+            if (redDice.get(i).getLastOutcome() != -1 && blueDice.get(i).getLastOutcome() != -1) {
+                if (redDice.get(i).getLastOutcome() > blueDice.get(i).getLastOutcome()) {
+                    outcomes.add(DieColor.RED);
+                } else {
+                    outcomes.add(DieColor.BLUE);
+                }
             }
         }
 
-        for (Die die : dice) {
-            die.reset();
-        }
+        Die.resetAll();
 
         return outcomes;
     }

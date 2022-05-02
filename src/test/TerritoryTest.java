@@ -41,4 +41,12 @@ public class TerritoryTest {
         assertEquals(42, Territory.adjacency.size());
     }
 
+    @Test
+    public void testGetters() {
+        Territory territory = new Territory(TerritoryName.ALASKA);
+        assertEquals(0, territory.getArmies().size());
+        assertEquals(territory.getArmies().size(), territory.getArmiesCount());
+        assertEquals(0, territory.getAdjacent().size());
+    }
+
 }

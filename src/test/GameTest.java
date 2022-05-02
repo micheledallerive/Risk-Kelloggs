@@ -1,7 +1,6 @@
 package test;
 
-import model.Game;
-import model.Player;
+import model.*;
 import model.enums.ArmyColor;
 import model.enums.GameStatus;
 
@@ -41,6 +40,23 @@ public class GameTest {
             assertNotNull(game.getRandomCard());
         }
         assertNull(game.getRandomCard());
+    }
+
+    @Test
+    public void testWorldConquered() {
+        Game game = new Game(new Board(), new ArrayList<Player>());
+        ArrayList<Continent> continents = game.getBoard().getContinents();
+        Player p1 = new Player(ArmyColor.RED);
+        Player p2 = new Player(ArmyColor.BLUE);
+        for (Continent continent : continents) {
+            for (Territory territory : continent.getTerritories()) {
+                territory.setOwner(p1);
+            }
+        }
+        continents.get(0).getTerritories().get(0).setOwner(p2);
+        assertFalse(game.isWorldConquered());
+        continents.get(0).getTerritories().get(0).setOwner(p1);
+        assertTrue(game.isWorldConquered());
     }
 
 }
