@@ -24,5 +24,9 @@ public enum GameStatus {
     /**
      * the game has ended and the player can either exit the game or go back to the menu.
      */
-    END
+    END,
+    /**
+     * the game has ended and the players wants to exit the game
+     */
+    EXIT
 }

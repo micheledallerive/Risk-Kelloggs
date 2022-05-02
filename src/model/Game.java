@@ -116,11 +116,26 @@ public class Game {
     }
 
     /**
+     * Sets the current state of the game.
+     * @param status the new status of the game
+     */
+    public void setStatus(GameStatus status) {
+        this.status = status;
+    }
+
+    /**
      * Returns the current turn.
      * @return the current turn
      */
     public int getTurn() {
         return this.turn;
+    }
+
+    /**
+     * Updates the current turn to the next player.
+     */
+    public void nextTurn() {
+        this.turn = (this.turn + 1) % this.players.size();
     }
 
     /**
