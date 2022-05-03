@@ -1,11 +1,9 @@
 package model;
 
 import model.enums.DieColor;
-import model.enums.StaticRandom;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Random;
 
 /**
  * Represents a single dice in the game.

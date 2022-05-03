@@ -1,4 +1,4 @@
-package model.enums;
+package model;
 
 import java.util.Random;
 

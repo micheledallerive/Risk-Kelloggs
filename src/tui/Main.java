@@ -61,7 +61,6 @@ public class Main {
         /*
         The setup of the game consists of:
             - Create the players
-            - Give the cards to the players
             - Give the armies to the players
             - Make the players move the armies in the territories he wants
          */

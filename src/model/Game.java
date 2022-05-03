@@ -2,12 +2,10 @@ package model;
 
 import model.enums.CardType;
 import model.enums.GameStatus;
-import model.enums.StaticRandom;
 import model.enums.TerritoryName;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Random;
 
 /**
  * Represents the game itself.
@@ -43,6 +41,7 @@ public class Game {
     public Game(Board board, ArrayList<Player> players) {
         Territory.init();
         Continent.init();
+        StaticRandom.init();
 
         this.board = board==null ? new Board() : board;
         this.players = players;
