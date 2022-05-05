@@ -76,7 +76,7 @@ public class Utils {
                 game.getBoard().getContinents().subList(3, 6)
         );
 
-        final String formatStr = "%-40s %-40s %-40s\n";
+        final String formatStr = "%-50s %-50s %-50s\n";
 
         for (List<Continent> continents : grid) {
             System.out.println();
@@ -112,9 +112,18 @@ public class Utils {
         }
     }
 
+    public static void printFormat(String format, String... messages) {
+        System.out.printf(format, messages);
+    }
+
     public static void clearConsole() {
         System.out.print("\033\143");
         System.out.flush();
+    }
+
+    public static void consolePause(Scanner scanner) {
+        print("(Click any key to continue...)");
+        scanner.nextLine();
     }
     /*
      ___   ___   ___

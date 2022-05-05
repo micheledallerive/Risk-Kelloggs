@@ -19,6 +19,7 @@ public class Main {
 
     private Game game;
     private Scanner input;
+    private Scanner numInput;
 
     /**
      * Creates a new TUI game.
@@ -26,6 +27,7 @@ public class Main {
     public Main() {
         init();
         this.input = new Scanner(System.in);
+        this.numInput = new Scanner(System.in);
     }
 
     private void init() {
@@ -42,7 +44,7 @@ public class Main {
                 "Get information about Risk",
                 "Exit the game"
         );
-        int choice = input.nextInt();
+        int choice = numInput.nextInt();
         switch(choice) {
             case 1:
                 this.game.setStatus(GameStatus.SETUP);
@@ -80,20 +82,22 @@ public class Main {
             if (rolls.get(i) > rolls.get(maxIndex)) {
                 maxIndex = i;
             }
-            if(game.getPlayers().get(i).isAI()){
-                print("Player " + (i+1) + ": " + rolls.get(i));
-            } else {
-                print("You: " + rolls.get(i));
-            }
+            String who = game.getPlayers().get(i).isAI() ? "Player " + (i + 1) : "You";
+            printFormat("%-10s %-5s\n", who+":", rolls.get(i).toString());
         }
-        print("Player " + (maxIndex + 1) + " starts");
+        if(game.getPlayers().get(maxIndex).isAI())
+            print("Player " + (maxIndex + 1) + " starts");
+        else
+            print("You start");
         game.setTurn(maxIndex);
+
+        consolePause(input);
 
         while (!game.getPlayers().stream().allMatch(player -> player.getFreeArmies().size()==0)) {
             clearConsole();
             printMap(game);
             Player currentPlayer = game.getPlayers().get(game.getTurn());
-            if (currentPlayer.getFreeArmies().size() != 0) {
+            if (currentPlayer.getFreeArmies().size() > 0) {
                 if (currentPlayer.isAI()) {
                     ((AI)currentPlayer).placeArmy(game);
                 } else {
@@ -105,7 +109,7 @@ public class Main {
                         territoryStr = input.nextLine().toUpperCase();
                         print("Enter the number of armies you want to place there (you have "+
                                 currentPlayer.getFreeArmies().size() + " free armies): ");
-                        amount = input.nextInt();
+                        amount = numInput.nextInt();
                         final String finalTerritoryStr = territoryStr;
                         validName = Arrays.stream(TerritoryName.values()).anyMatch((n)->n.name().equals(finalTerritoryStr));
                     }while(amount < -1
@@ -134,7 +138,7 @@ public class Main {
     private void end() {
         print("The game is over.");
         printOptions("Player another game.", "Exit the game");
-        int choice = input.nextInt();
+        int choice = numInput.nextInt();
         if (choice == 1) {
             // Wants to play again.
             init();

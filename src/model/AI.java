@@ -43,7 +43,8 @@ public class AI extends Player {
             }
         }
         Territory chosen = freeTerritories.get(StaticRandom.random.nextInt(freeTerritories.size()));
-        int amount = StaticRandom.random.nextInt(Math.min(10, this.getFreeArmies().size()-1))+1;
+        int freeArmies = this.getFreeArmies().size();
+        int amount = StaticRandom.random.nextInt(Math.min(10, freeArmies))+1;
         this.placeArmies(chosen, amount);
     }
 }

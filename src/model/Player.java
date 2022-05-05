@@ -109,6 +109,7 @@ public class Player {
         while (amount > 0 && iterator.hasNext()) {
             Army next = iterator.next();
             territory.addArmy(next);
+            this.armies.remove(next);
             iterator.remove();
             amount--;
         }
