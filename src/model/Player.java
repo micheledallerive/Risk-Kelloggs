@@ -2,10 +2,8 @@ package model;
 
 import model.enums.ArmyColor;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Describes each player of the game.
@@ -88,6 +86,41 @@ public class Player {
      */
     public ArrayList<Army> getArmies() {
         return armies;
+    }
+
+    /**
+     * Returns the list of the free armies of the player.
+     * @return the player's free armies.
+     */
+    public List<Army> getFreeArmies() {
+        return this.armies.stream().filter((a)->a.getTerritory()==null).collect(Collectors.toList());
+    }
+
+    /**
+     * Place an amount of armies in a specific territory.
+     * This function is used during the setup of the game and
+     * when the player gets new armies every turn.
+     * @param territory the territory where to place the armies
+     * @param amount the amount of armies to place.
+     */
+    public void placeArmies(Territory territory, int amount) {
+        territory.setOwner(this);
+        Iterator<Army> iterator = this.getFreeArmies().iterator();
+        while (amount > 0 && iterator.hasNext()) {
+            Army next = iterator.next();
+            territory.addArmy(next);
+            iterator.remove();
+            amount--;
+        }
+    }
+
+    /**
+     * Sets the armies owned by the player.
+     * @param armies the armies owned by the player.
+     */
+
+    public void setArmies(ArrayList<Army> armies) {
+        this.armies = armies;
     }
 
     /**

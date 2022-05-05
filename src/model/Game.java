@@ -1,11 +1,10 @@
 package model;
 
-import model.enums.CardType;
-import model.enums.GameStatus;
-import model.enums.TerritoryName;
+import model.enums.*;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 
 /**
  * Represents the game itself.
@@ -17,6 +16,7 @@ public class Game {
     private GameStatus status;
     private int turn;
     private ArrayList<Card> cardsDeck;
+    private HashMap<ArmyColor, ArrayList<Army>> allArmies;
 
     /**
      * Create a new empty game.
@@ -48,6 +48,7 @@ public class Game {
         this.status = GameStatus.MENU;
         this.turn = 0;
         this.cardsDeck = new ArrayList<>();
+        this.allArmies = new HashMap<>();
 
         this.initCards();
     }
@@ -65,6 +66,39 @@ public class Game {
         this.cardsDeck.add(new Card(CardType.WILD, TerritoryName.NONE));
         this.cardsDeck.add(new Card(CardType.WILD, TerritoryName.NONE));
         Collections.shuffle(this.cardsDeck);
+    }
+
+    /**
+     * Initializes the armies for each player at the start of the game
+     */
+    public void initArmies() {
+        int numPlayers = this.players.size();
+        if (numPlayers >= 3 && numPlayers <= 6) {
+            int numInfantry = 35 - (numPlayers - 3) * 5;
+            for (Player player : this.players) {
+                ArmyColor color = player.getColor();
+                ArrayList<Army> colorArmies = new ArrayList<>();
+
+                for (int i = 0; i < numInfantry; i++) {
+                    player.getArmies().add(new Army(ArmyType.INFANTRY, color, null));
+                }
+
+                for (int i = 0; i < 40 - numInfantry; i++) {
+                    colorArmies.add(new Army(ArmyType.INFANTRY, color, null));
+                }
+
+                for (int i = 0; i < 12; i++) {
+                    colorArmies.add(new Army(ArmyType.INFANTRY, color, null));
+                }
+
+                for (int i = 0; i < 8; i++) {
+                    colorArmies.add(new Army(ArmyType.ARTILLERY, color, null));
+                }
+
+                this.allArmies.put(color, colorArmies);
+
+            }
+        }
     }
 
     /**
@@ -127,6 +161,14 @@ public class Game {
      */
     public int getTurn() {
         return this.turn;
+    }
+
+    /**
+     * Sets the current turn.
+     * @param turn the turn to set as the current one.
+     */
+    public void setTurn(int turn) {
+        this.turn = turn;
     }
 
     /**

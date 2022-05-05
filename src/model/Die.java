@@ -58,6 +58,10 @@ public class Die implements Comparable<Die> {
         }
     }
 
+    public static int rollNormalDie() {
+        return StaticRandom.random.nextInt(6) + 1;
+    }
+
     /**
      * Compare the current dice to another one (used for sorting).
      * @param other the object to be compared.

@@ -200,6 +200,14 @@ public class Territory {
     }
 
     /**
+     * Adds an army to the current territory.
+     * @param army the army to add to the territory.
+     */
+    public void addArmy(Army army) {
+        this.armies.add(army);
+    }
+
+    /**
      * Sets the owner of the territory.
      * @param owner the player that owns the territory
      */

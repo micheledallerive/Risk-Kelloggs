@@ -44,19 +44,19 @@ public class Continent {
                 Arrays.asList(ALASKA, NORTH_WEST_TERRITORY, GREENLAND,
                         ALBERTA, ONTARIO, QUEBEC, WESTERN_UNITED_STATES,
                         EASTERN_UNITED_STATES, CENTRAL_AMERICA),
-                Arrays.asList(VENEZUELA, BRAZIL, PERU, ARGENTINA),
                 Arrays.asList(ICELAND, SCANDINAVIA, GREAT_BRITAIN,
                         NORTHERN_EUROPE, UKRAINE, WESTERN_EUROPE,
                         SOUTHERN_EUROPE),
-                Arrays.asList(NORTH_AFRICA, EGYPT, CONGO,
-                        EAST_AFRICA, SOUTH_AFRICA, MADAGASCAR),
                 Arrays.asList(URAL, SIBERIA, YAKUTSK, IRKUTSK,
                         KAMCHATKA, AFGHANISTAN, CHINA, MONGOLIA,
                         JAPAN, MIDDLE_EAST, INDIA, SIAM),
+                Arrays.asList(VENEZUELA, BRAZIL, PERU, ARGENTINA),
+                Arrays.asList(NORTH_AFRICA, EGYPT, CONGO,
+                        EAST_AFRICA, SOUTH_AFRICA, MADAGASCAR),
                 Arrays.asList(INDONESIA, NEW_GUINEA,
                         WESTERN_AUSTRALIA, EASTERN_AUSTRALIA)
         );
-        VALUES = new int[]{5,2,5,3,7,2};
+        VALUES = new int[]{5,5,7,2,3,2};
     }
 
     /**

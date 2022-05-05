@@ -1,10 +1,11 @@
 package tui;
 
-import model.Game;
-import model.Player;
+import model.*;
 import model.enums.GameStatus;
+import model.enums.TerritoryName;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 
 import static tui.Utils.*;
@@ -69,6 +70,54 @@ public class Main {
             game.addPlayer(player);
         }
 
+        game.initArmies();
+
+        print("Every player rolls a die, the player with the highest value starts first");
+        ArrayList<Integer> rolls = new ArrayList<>();
+        int maxIndex = 0;
+        for (int i = 0; i < game.getPlayers().size(); i++) {
+            rolls.add(Die.rollNormalDie());
+            if (rolls.get(i) > rolls.get(maxIndex)) {
+                maxIndex = i;
+            }
+            if(game.getPlayers().get(i).isAI()){
+                print("Player " + (i+1) + ": " + rolls.get(i));
+            } else {
+                print("You: " + rolls.get(i));
+            }
+        }
+        print("Player " + (maxIndex + 1) + " starts");
+        game.setTurn(maxIndex);
+
+        while (!game.getPlayers().stream().allMatch(player -> player.getFreeArmies().size()==0)) {
+            clearConsole();
+            printMap(game);
+            Player currentPlayer = game.getPlayers().get(game.getTurn());
+            if (currentPlayer.getFreeArmies().size() != 0) {
+                if (currentPlayer.isAI()) {
+                    ((AI)currentPlayer).placeArmy(game);
+                } else {
+                    String territoryStr;
+                    int amount;
+                    boolean validName = true;
+                    do{
+                        print("Enter the territory where you want to place your armies: ");
+                        territoryStr = input.nextLine().toUpperCase();
+                        print("Enter the number of armies you want to place there (you have "+
+                                currentPlayer.getFreeArmies().size() + " free armies): ");
+                        amount = input.nextInt();
+                        final String finalTerritoryStr = territoryStr;
+                        validName = Arrays.stream(TerritoryName.values()).anyMatch((n)->n.name().equals(finalTerritoryStr));
+                    }while(amount < -1
+                            || amount > currentPlayer.getFreeArmies().size()
+                            || !validName);
+                    TerritoryName territoryName = TerritoryName.valueOf(territoryStr);
+                    Territory territory = game.getBoard().getTerritories().get(territoryName.ordinal());
+                    currentPlayer.placeArmies(territory, amount);
+                }
+            }
+            game.nextTurn();
+        }
 
     }
 

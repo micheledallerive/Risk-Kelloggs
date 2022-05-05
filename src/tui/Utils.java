@@ -1,7 +1,10 @@
 package tui;
 
 import model.Board;
+import model.Continent;
 import model.Game;
+
+import java.util.*;
 
 /**
  * Defines some static utility methods for printing on the console.
@@ -68,7 +71,50 @@ public class Utils {
      * @param game the game to print the map of.
      */
     public static void printMap(Game game) {
+        List<List<Continent>> grid = Arrays.asList(
+                game.getBoard().getContinents().subList(0, 3),
+                game.getBoard().getContinents().subList(3, 6)
+        );
 
+        final String formatStr = "%-40s %-40s %-40s\n";
+
+        for (List<Continent> continents : grid) {
+            System.out.println();
+            int rows = continents.stream().map(value -> value.getTerritories().size()).max(Comparator.comparing(v -> v)).orElse(-1);
+            System.out.printf("\033[1;33m" + formatStr + "\033[0m",
+                    continents.get(0).getName().toString(),
+                    continents.get(1).getName().toString(),
+                    continents.get(2).getName().toString()
+                    );
+            for (int i = 0; i < rows; i++) {
+                String[] colsStrs = new String[3];
+                for (int j = 0; j < 3; j++) {
+                    Continent continent = continents.get(j);
+                    if (continent.getTerritories().size() > i) {
+                        colsStrs[j] = continent.getTerritories().get(i).getName().toString()
+                                + ": ";
+                        if (continent.getTerritories().get(i).getOwner() != null) {
+                            colsStrs[j] = colsStrs[j]
+                                    + "Player "
+                                    + continent.getTerritories().get(i).getOwner().getColor().toString()
+                                    + " ("
+                                    + continent.getTerritories().get(i).getArmiesCount()
+                                    + " armies)";
+                        } else {
+                            colsStrs[j] = colsStrs[j] + "EMPTY";
+                        }
+                    } else {
+                        colsStrs[j] = "";
+                    }
+                }
+                System.out.printf(formatStr, colsStrs[0], colsStrs[1], colsStrs[2]);
+            }
+        }
+    }
+
+    public static void clearConsole() {
+        System.out.print("\033\143");
+        System.out.flush();
     }
     /*
      ___   ___   ___
