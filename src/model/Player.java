@@ -71,27 +71,31 @@ public class Player {
     //endregion
 
     //region GETTERS AND SETTERS
+
+    /**
+     * Return the name of the player
+     * @return player name as String object
+     */
+    public String getName() { return this.name; }
     /**
      * Return the color of the player.
      * @return The color of the player.
      */
-    public ArmyColor getColor() {
-        return color;
-    }
+    public ArmyColor getColor() { return this.color; }
 
     /**
      * Return the cards owned by the players.
      * @return the player's cards.
      */
     public ArrayList<Card> getCards() {
-        return cards;
+        return this.cards;
     }
 
     /**
      * Return the list of the armies owned by the player.
      * @return The player's armies.
      */
-    public ArrayList<Army> getArmies() { return armies; }
+    public ArrayList<Army> getArmies() { return this.armies; }
 
     /**
      * Return the list of territories owned by the player.
