@@ -186,7 +186,8 @@ public class Player {
         defender.removeArmies(defenderLost, territory);
 
         if (territory.getArmiesCount() == 0) {
-            moveArmies(defArmies[0] - defenderLost, fromTerritory, territory);
+            moveArmies(armies - attackerLost, fromTerritory, territory);
+            territory.setOwner(fromTerritory.getOwner());
         }
 
         return new Integer[]{attackerLost, defenderLost};

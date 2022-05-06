@@ -156,35 +156,44 @@ public class Main {
             if (player.isAI()) {
                 playingAttack();
             } else {
-                printOptions(
-                        "Attack a territory",
-                        "Move armies between territories"
-                );
-                int choice = numInput.nextInt();
-                switch(choice) {
-                    case 1:
-                        playingAttack();
-                        break;
-                    case 2:
-                        playingMove();
-                        break;
+                boolean endTurn = false;
+                while (!endTurn) {
+                    printOptions(
+                            "Attack a territory",
+                            "Move armies between territories",
+                            "End turn"
+                    );
+                    int choice = numInput.nextInt();
+                    switch(choice) {
+                        case 1:
+                            playingAttack();
+                            break;
+                        case 2:
+                            playingMove();
+                            break;
+                        case 3:
+                            endTurn = true;
+                            break;
+                    }
                 }
             }
+            game.nextTurn();
         }
     }
 
     private void playingAttack() {
         Player player = game.getPlayers().get(game.getTurn());
         if (player.isAI()) {
-            print("AI");
+            //print("AI");
             for(int attacks = 0; attacks < 1; attacks++) {
                 ((AI)player).attack(new Callback(){
                     @Override
                     public void onPlayerAttacked(Player attacker, Player attacked,
                                                  Territory fromTerritory, Territory attackedTerritory) {
-                        print(player.getColor().toString() + " is attacking you!");
+                        print(player.getColor().toString() + " is attacking you in " +
+                                        attackedTerritory.getName().toString() + "!");
                         print("How many armies do you want to defend with (max. "
-                                + attackedTerritory.getArmiesCount()
+                                + Math.min(attackedTerritory.getArmiesCount(), 3)
                                 + ")?");
                         int defend = numInput.nextInt();
                         Integer[] losses = attacker.attack(fromTerritory, attackedTerritory,
@@ -199,8 +208,12 @@ public class Main {
                     @Override
                     public void onAIAttacked(Player attacker, Player attacked,
                                              Territory fromTerritory, Territory attackedTerritory) {
+                        if (fromTerritory.getArmiesCount() < 2) return;
+                        print(attacker.getColor() + " attacked " + attacked.getColor()
+                            + " in " + attackedTerritory.getName().toString()
+                            + " from " + fromTerritory.getName().toString());
                         attacker.attack(fromTerritory, attackedTerritory,
-                                Math.min(fromTerritory.getArmiesCount(), 3),
+                                Math.min(fromTerritory.getArmiesCount()-1, 3),
                                 Math.min(attackedTerritory.getArmiesCount(), 3));
                     }
                 });
@@ -208,15 +221,16 @@ public class Main {
         } else {
             print("Player");
             printMap(game);
-            print("What territory do you want to attack? (Enter NONE to end your turn)");
-            String toAttack = input.nextLine();
+            print("What territory do you want to attack?");
+            String toAttack = input.nextLine().toUpperCase();
             if (!toAttack.equalsIgnoreCase("none")) {
                 Territory attackedTerritory = game.getBoard().getTerritories().get(
                         TerritoryName.valueOf(toAttack).ordinal()
                 );
                 print("What territory do you want to attack from?");
+                String fromStr = input.nextLine().toUpperCase();
                 Territory fromTerritory = game.getBoard().getTerritories().get(
-                        TerritoryName.valueOf(input.nextLine()).ordinal()
+                        TerritoryName.valueOf(fromStr).ordinal()
                 );
                 boolean canAttack = false;
                 if (fromTerritory != null) {
