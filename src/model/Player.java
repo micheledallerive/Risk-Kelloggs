@@ -212,7 +212,7 @@ public class Player {
         ArrayList<ArrayList<Card>> validCombinations = new ArrayList<>();
         cards.sort(Comparator.comparing(Card::getType));
         Card c1, c2, c3;
-        for (byte i = 0; i < cards.size() - 3; i++) {
+        for (byte i = 0; i < cards.size() - 2; i++) {
             c1 = cards.get(i);
             c2 = cards.get(i + 1);
             c3 = cards.get(i + 2);
