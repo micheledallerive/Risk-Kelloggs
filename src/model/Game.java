@@ -1,6 +1,10 @@
 package model;
 
-import model.enums.*;
+import model.enums.ArmyColor;
+import model.enums.ArmyType;
+import model.enums.CardType;
+import model.enums.GameStatus;
+import model.enums.TerritoryName;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -24,7 +28,9 @@ public class Game {
     /**
      * Create a new empty game.
      */
-    public Game() { this(null, new ArrayList<Player>()); }
+    public Game() {
+        this(null, new ArrayList<Player>());
+    }
 
     /**
      * Create a new game.
@@ -45,7 +51,7 @@ public class Game {
         StaticRandom.init();
         Die.init();
 
-        this.board = board==null ? new Board() : board;
+        this.board = board == null ? new Board() : board;
         this.players = players;
         this.turn = 0;
         this.status = GameStatus.MENU;
@@ -63,7 +69,7 @@ public class Game {
         int territoriesCount = TerritoryName.values().length;
         for (int i = 0; i < territoriesCount; i++) {
             TerritoryName territoryName = TerritoryName.values()[i];
-            CardType type = CardType.values()[i%3];
+            CardType type = CardType.values()[i % 3];
             this.cardsDeck.add(new Card(type, territoryName));
         }
         this.cardsDeck.add(new Card(CardType.WILD, TerritoryName.NONE));
@@ -72,7 +78,7 @@ public class Game {
     }
 
     /**
-     * Initializes the armies for each player at the start of the game
+     * Procedure - Initializes the armies for each player at the start of the game.
      */
     public void initArmies() {
         int numPlayers = this.players.size();
@@ -126,11 +132,12 @@ public class Game {
     public void giveBonus(Game game, Player player) {
         int bonus = 0;
 
-        // bonus = 1 every 3 territories
-        //          + continent bonus
-        //          + card (soon)
+        /* bonus = 1 every 3 territories
+         *       + continent bonus
+         *       + card (soon) */
 
-        bonus += player.getTerritories().size()/3;
+        bonus += player.getTerritories().size() / 3;
+
         for (Continent continent : game.getBoard().getContinents()) {
             if (continent.getOwner().getColor() == player.getColor()) {
                 bonus += continent.getValue();
@@ -211,7 +218,7 @@ public class Game {
     public boolean isWorldConquered() {
         for (int i = 1; i < this.board.getContinents().size(); i++) {
             if (this.board.getContinents().get(i).getOwner() == null
-            || this.board.getContinents().get(i).getOwner() != this.board.getContinents().get(i - 1).getOwner()) {
+                || this.board.getContinents().get(i).getOwner() != this.board.getContinents().get(i - 1).getOwner()) {
                 return false;
             }
         }
