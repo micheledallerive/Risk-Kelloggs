@@ -73,7 +73,8 @@ public class Main {
             print("Insert your in-game name (0-15 characters):");
             name = input.nextLine();
         }while(name.length() < 1 || name.length() > 15);
-        ArrayList<Player> players = Player.generatePlayersRandomly((byte)6, name);
+        ArrayList<Player> players =
+                Player.generatePlayersRandomly((byte) 6, (byte) 1, new String[]{ name });
         for (Player player : players) {
             game.addPlayer(player);
         }
