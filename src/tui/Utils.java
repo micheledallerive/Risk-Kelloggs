@@ -3,6 +3,7 @@ package tui;
 import model.Board;
 import model.Continent;
 import model.Game;
+import model.enums.ArmyColor;
 
 import java.util.*;
 
@@ -94,14 +95,20 @@ public class Utils {
                         colsStrs[j] = continent.getTerritories().get(i).getName().toString()
                                 + ": ";
                         if (continent.getTerritories().get(i).getOwner() != null) {
+                            ArmyColor color = continent.getTerritories().get(i).getOwner().getColor();
                             colsStrs[j] = colsStrs[j]
+                                   // + color.getColorCode()
                                     + "Player "
-                                    + continent.getTerritories().get(i).getOwner().getColor().toString()
+                                    + color.toString()
+                                    //+ color.getReset()
                                     + " ("
                                     + continent.getTerritories().get(i).getArmiesCount()
                                     + " armies)";
                         } else {
-                            colsStrs[j] = colsStrs[j] + "EMPTY";
+                            colsStrs[j] = colsStrs[j]
+                                    //+ "\033[1;33m"
+                                    + "EMPTY";
+                                    //+ "\033[0m";
                         }
                     } else {
                         colsStrs[j] = "";

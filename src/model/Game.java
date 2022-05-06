@@ -42,6 +42,8 @@ public class Game {
     public Game(Board board, ArrayList<Player> players) {
         Territory.init();
         Continent.init();
+        StaticRandom.init();
+        Die.init();
 
         this.board = board==null ? new Board() : board;
         this.players = players;
@@ -114,6 +116,29 @@ public class Game {
         Card card = this.cardsDeck.get(randomIndex);
         this.cardsDeck.remove(randomIndex);
         return card;
+    }
+
+    /**
+     * Gives the turn bonus to the player.
+     * @param game the game the player is playing in
+     * @param player the player to give the bonus to
+     */
+    public void giveBonus(Game game, Player player) {
+        int bonus = 0;
+
+        // bonus = 1 every 3 territories
+        //          + continent bonus
+        //          + card (soon)
+
+        bonus += player.getTerritories().size()/3;
+        for (Continent continent : game.getBoard().getContinents()) {
+            if (continent.getOwner().getColor() == player.getColor()) {
+                bonus += continent.getValue();
+            }
+        }
+
+        
+
     }
 
     /**

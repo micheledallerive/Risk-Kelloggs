@@ -61,11 +61,11 @@ public class Army {
     }
 
     /**
-     * Moves the army to a new territory.
-     * @param newTerritory The new territory of the army
+     * Sets the territory of the army.
+     * @param territory The territory of the army
      */
-    public void setTerritory(Territory newTerritory) {
-        this.territory = newTerritory;
+    public void setTerritory(Territory territory) {
+        this.territory = territory;
     }
     //endregion
 }

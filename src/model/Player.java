@@ -1,12 +1,10 @@
 package model;
 
 import model.enums.ArmyColor;
-
-import static java.util.Comparator.comparing;
+import model.enums.DieColor;
 
 import java.util.*;
 import java.util.stream.Collectors;
-
 
 /**
  * Describes each player of the game.
@@ -23,7 +21,6 @@ public class Player {
     private final ArmyColor color;
     private final ArrayList<Card> cards;
     private final ArrayList<Army> armies;
-    private final ArrayList<Territory> territories;
     //endregion
 
     //region CONSTRUCTORS
@@ -37,7 +34,39 @@ public class Player {
         this.color = color;
         this.cards = new ArrayList<>();
         this.armies = new ArrayList<>();
-        this.territories = new ArrayList<>();
+    }
+    //endregion
+
+    //region GETTERS AND SETTERS
+    //endregion
+
+    //region METHODS
+    /**
+     * Creates a random list of players: one actual players and num-1 AIs.
+     * @param num the number of players to create: 1 player, num-1 AIs.
+     * @return returns the list of players
+     */
+    public static ArrayList<Player> generatePlayersRandomly(final int num, final String name) {
+        ArrayList<Player> players = new ArrayList<>(num);
+
+        List<ArmyColor> colors = Arrays.asList(ArmyColor.values());
+        Collections.shuffle(colors);
+        int playersToRemove = colors.size() - num;
+        while (playersToRemove > 0) {
+            colors.remove(colors.size()-1);
+            playersToRemove--;
+        }
+
+        // I use the first color to create the real player
+        Player realPlayer = new Player(colors.get(0), name);
+        players.add(realPlayer);
+
+        // I use all the other colors to create the AIs.
+        for (int i = 1; i < colors.size(); i++) {
+            players.add(new AI(colors.get(i)));
+        }
+
+        return players;
     }
     //endregion
 
@@ -69,7 +98,13 @@ public class Player {
      * @return The territories of the player.
      */
     public ArrayList<Territory> getTerritories() {
-        return territories;
+        HashSet<Territory> set = new HashSet<>();
+        for (final Army army : armies) {
+            if (army.getTerritory() != null) {
+                set.add(army.getTerritory());
+            }
+        }
+        return new ArrayList<>(set);
     }
     //endregion
 
@@ -129,13 +164,40 @@ public class Player {
 
     /**
      * Attack a territory.
-     * @param territory The territory to attack
-     * @param armies The number of armies to use for the attack
-     * @return Return true if the player can actually attack that territory, false otherwise.
+     * @param fromTerritory the territory the player is attacking from
+     * @param territory the territory to attack
+     * @param armies the number of armies to use for the attack
+     * @return an array containing how many armies the attacker has lost
+     *          and how many armies the defender has lost.
      */
-    public boolean attack(final Territory territory, final int armies) {
-        return this.armies.size() > armies;
-        // TODO complete
+    public Integer[] attack(final Territory fromTerritory, final Territory territory,
+                          int armies, int ...defArmies) {
+        for (int i = 0; i < armies; i++) {
+            Die.getRedDice().get(i).roll();
+        }
+
+        Player defender = territory.getOwner();
+        int defenderMaxArmies = Math.min(territory.getArmiesCount(), 3);
+        int defenderArmies = defArmies.length == 1 ? defArmies[0] : defenderMaxArmies;
+        for (int i = 0; i < defenderArmies; i++) {
+            Die.getBlueDice().get(i).roll();
+        }
+
+        ArrayList<DieColor> rollResult = Die.winner();
+
+        int defenderLost = (int) rollResult.stream()
+                .filter(dieColor -> dieColor==DieColor.RED).count();
+        int attackerLost = rollResult.size() - defenderLost;
+
+        this.removeArmies(attackerLost, fromTerritory);
+        defender.removeArmies(defenderLost, territory);
+
+        if (territory.getArmiesCount() == 0) {
+            moveArmies(armies - attackerLost, fromTerritory, territory);
+            territory.setOwner(fromTerritory.getOwner());
+        }
+
+        return new Integer[]{attackerLost, defenderLost};
     }
 
     /**
@@ -183,8 +245,29 @@ public class Player {
         for (byte i = 0; i < amount && it.hasNext(); i++) {
             Army next = it.next();
             territory.addArmy(next);
-            this.armies.remove(next);
+            next.setTerritory(territory);
             it.remove();
+        }
+    }
+
+     /**
+      *  Removes the given amount of armies from the given territory.
+      * @param armies the number of armies to remove
+      * @param territory the territory to remove the armies from
+      */
+    public void removeArmies(int armies, Territory territory) {
+        ArrayList<Army> toRemove = new ArrayList<>();
+        Iterator<Army> iterator = this.armies.iterator();
+        while(armies > 0 && iterator.hasNext()) {
+            Army army = iterator.next();
+            if (army.getTerritory().getName() == territory.getName()) {
+                toRemove.add(army);
+                iterator.remove();
+                armies--;
+            }
+        }
+        for (Army army : toRemove) {
+            territory.getArmies().remove(army);
         }
     }
 
@@ -210,6 +293,25 @@ public class Player {
      */
     public void addCard(final Card card) {
         this.cards.add(card);
+    }
+
+    /**
+     * Moves the given amount of armies from a territory to another
+     * @param num the number of armies to move.
+     * @param from the territory where to remove the armies.
+     * @param to the territory where to move the armies.
+     */
+    public void moveArmies(int num, Territory from, Territory to) {
+        ArrayList<Army> armies = from.getArmies();
+        if (armies.size() <= num) return;
+        Iterator<Army> iterator = armies.iterator();
+        while(num > 0) {
+            Army next = iterator.next();
+            next.setTerritory(to);
+            to.addArmy(next);
+            iterator.remove();
+            num--;
+        }
     }
     //endregion
 }
