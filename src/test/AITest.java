@@ -1,6 +1,7 @@
 package test;
 
 import model.AI;
+import model.Game;
 import model.enums.ArmyColor;
 import org.junit.Test;
 
