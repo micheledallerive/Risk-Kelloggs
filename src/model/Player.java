@@ -3,7 +3,13 @@ package model;
 import model.enums.ArmyColor;
 import model.enums.DieColor;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -12,8 +18,8 @@ import java.util.stream.Collectors;
  */
 public class Player {
     //region CONSTANTS
-    final static byte MIN_PLAYERS = 3;
-    final static byte MAX_PLAYERS = 6;
+    static final byte MIN_PLAYERS = 3;
+    static final byte MAX_PLAYERS = 6;
     //endregion
 
     //region FIELDS
@@ -40,48 +46,22 @@ public class Player {
     //region GETTERS AND SETTERS
     //endregion
 
-    //region METHODS
-    /**
-     * Creates a random list of players: one actual players and num-1 AIs.
-     * @param num the number of players to create: 1 player, num-1 AIs.
-     * @return returns the list of players
-     */
-    public static ArrayList<Player> generatePlayersRandomly(final int num, final String name) {
-        ArrayList<Player> players = new ArrayList<>(num);
-
-        List<ArmyColor> colors = Arrays.asList(ArmyColor.values());
-        Collections.shuffle(colors);
-        int playersToRemove = colors.size() - num;
-        while (playersToRemove > 0) {
-            colors.remove(colors.size()-1);
-            playersToRemove--;
-        }
-
-        // I use the first color to create the real player
-        Player realPlayer = new Player(colors.get(0), name);
-        players.add(realPlayer);
-
-        // I use all the other colors to create the AIs.
-        for (int i = 1; i < colors.size(); i++) {
-            players.add(new AI(colors.get(i)));
-        }
-
-        return players;
-    }
-    //endregion
-
     //region GETTERS AND SETTERS
-
     /**
-     * Return the name of the player
-     * @return player name as String object
+     * Return the name of the player.
+     * @return Player name as String object
      */
-    public String getName() { return this.name; }
+    public String getName() {
+        return this.name;
+    }
+
     /**
      * Return the color of the player.
      * @return The color of the player.
      */
-    public ArmyColor getColor() { return this.color; }
+    public ArmyColor getColor() {
+        return this.color;
+    }
 
     /**
      * Return the cards owned by the players.
@@ -95,7 +75,9 @@ public class Player {
      * Return the list of the armies owned by the player.
      * @return The player's armies.
      */
-    public ArrayList<Army> getArmies() { return this.armies; }
+    public ArrayList<Army> getArmies() {
+        return this.armies;
+    }
 
     /**
      * Return the list of territories owned by the player.
@@ -119,7 +101,36 @@ public class Player {
      * @return returns the list of players
      */
     public static ArrayList<Player> generatePlayersRandomly(final byte num) {
-        return Player.generatePlayers(MAX_PLAYERS, (byte) 1, new String[] { "player" });
+        return Player.generatePlayersRandomly(MAX_PLAYERS, (byte) 1, new String[] { "player" });
+    }
+
+    /**
+     * Creates a random list of players: one actual players and num-1 AIs.
+     * @param num the number of players to create: 1 player, num-1 AIs.
+     * @param name The name of the real player
+     * @return returns the list of players
+     */
+    public static ArrayList<Player> generatePlayersRandomly(final int num, final String name) {
+        ArrayList<Player> players = new ArrayList<>(num);
+
+        List<ArmyColor> colors = Arrays.asList(ArmyColor.values());
+        Collections.shuffle(colors);
+        int playersToRemove = colors.size() - num;
+        while (playersToRemove > 0) {
+            colors.remove(colors.size() - 1);
+            playersToRemove--;
+        }
+
+        // I use the first color to create the real player
+        Player realPlayer = new Player(colors.get(0), name);
+        players.add(realPlayer);
+
+        // I use all the other colors to create the AIs.
+        for (int i = 1; i < colors.size(); i++) {
+            players.add(new AI(colors.get(i)));
+        }
+
+        return players;
     }
 
     /**
@@ -129,7 +140,7 @@ public class Player {
      * @param names The name of the users to be created.
      * @return Return the list of players
      */
-    public static ArrayList<Player> generatePlayers(final byte tot, final byte users, final String[] names) {
+    public static ArrayList<Player> generatePlayersRandomly(final byte tot, final byte users, final String[] names) {
         ArrayList<Player> players = new ArrayList<>(tot);
         List<ArmyColor> colors = Arrays.asList(ArmyColor.values());
         Collections.shuffle(colors);
@@ -155,7 +166,7 @@ public class Player {
      * @return The player's free armies.
      */
     public List<Army> getFreeArmies() {
-        return this.armies.stream().filter((a)->a.getTerritory()==null).collect(Collectors.toList());
+        return this.armies.stream().filter((a) -> a.getTerritory() == null).collect(Collectors.toList());
     }
 
     /**
@@ -171,6 +182,7 @@ public class Player {
      * @param fromTerritory the territory the player is attacking from
      * @param territory the territory to attack
      * @param armies the number of armies to use for the attack
+     * @param defArmies The optional parameter array states number of defender armies.
      * @return an array containing how many armies the attacker has lost
      *          and how many armies the defender has lost.
      */
@@ -190,7 +202,7 @@ public class Player {
         ArrayList<DieColor> rollResult = Die.winner();
 
         int defenderLost = (int) rollResult.stream()
-                .filter(dieColor -> dieColor==DieColor.RED).count();
+                .filter(dieColor -> dieColor == DieColor.RED).count();
         int attackerLost = rollResult.size() - defenderLost;
 
         this.removeArmies(attackerLost, fromTerritory);
@@ -211,11 +223,10 @@ public class Player {
     public ArrayList<ArrayList<Card>> getCardCombinations() {
         ArrayList<ArrayList<Card>> validCombinations = new ArrayList<>();
         cards.sort(Comparator.comparing(Card::getType));
-        Card c1, c2, c3;
         for (byte i = 0; i < cards.size() - 2; i++) {
-            c1 = cards.get(i);
-            c2 = cards.get(i + 1);
-            c3 = cards.get(i + 2);
+            Card c1 = cards.get(i);
+            Card c2 = cards.get(i + 1);
+            Card c3 = cards.get(i + 2);
             if (Card.validTrio(c1, c2, c3)) {
                 ArrayList<Card> combination = new ArrayList<>();
                 combination.add(c1);
@@ -254,15 +265,15 @@ public class Player {
         }
     }
 
-     /**
-      *  Removes the given amount of armies from the given territory.
-      * @param armies the number of armies to remove
-      * @param territory the territory to remove the armies from
-      */
-    public void removeArmies(int armies, Territory territory) {
+    /**
+     * Removes the given amount of armies from the given territory.
+     * @param armies The number of armies to remove
+     * @param territory The territory to remove the armies from
+     */
+    public void removeArmies(int armies, final Territory territory) {
         ArrayList<Army> toRemove = new ArrayList<>();
         Iterator<Army> iterator = this.armies.iterator();
-        while(armies > 0 && iterator.hasNext()) {
+        while (armies > 0 && iterator.hasNext()) {
             Army army = iterator.next();
             if (army.getTerritory().getName() == territory.getName()) {
                 toRemove.add(army);
@@ -270,7 +281,7 @@ public class Player {
                 armies--;
             }
         }
-        for (Army army : toRemove) {
+        for (final Army army : toRemove) {
             territory.getArmies().remove(army);
         }
     }
@@ -300,16 +311,16 @@ public class Player {
     }
 
     /**
-     * Moves the given amount of armies from a territory to another
+     * Moves the given amount of armies from a territory to another.
      * @param num the number of armies to move.
      * @param from the territory where to remove the armies.
      * @param to the territory where to move the armies.
      */
     public void moveArmies(int num, Territory from, Territory to) {
         ArrayList<Army> armies = from.getArmies();
-        if (armies.size() <= num) return;
+        if (armies.size() <= num) { return; }
         Iterator<Army> iterator = armies.iterator();
-        while(num > 0) {
+        while (num > 0) {
             Army next = iterator.next();
             next.setTerritory(to);
             to.addArmy(next);

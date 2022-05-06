@@ -1,8 +1,9 @@
 package model;
 
+import static java.util.Comparator.comparingInt;
+
 import model.enums.DieColor;
 
-import static java.util.Comparator.comparingInt;
 import java.util.ArrayList;
 
 /**
@@ -53,7 +54,7 @@ public class Die {
     }
 
     /**
-     * Returns the color of the dice.
+     * Return the color of the dice.
      * @return The color of the dice.
      */
     public DieColor getColor() {
@@ -74,8 +75,13 @@ public class Die {
      * Reset all the dice to the default value -1.
      */
     public static void resetAll() {
-        for (Die die : redDice) { die.reset(); }
-        for (Die die : blueDice) { die.reset(); }
+        for (final Die die : redDice) {
+            die.reset();
+        }
+
+        for (final Die die : blueDice) {
+            die.reset();
+        }
     }
 
     /**
@@ -106,8 +112,11 @@ public class Die {
         byte blue = blueDice.get(0).getNumber();
         for (byte i = 1; i < 3 && (red > INVALID && blue > INVALID); i++) {
             // If I reach a die that was not used in this roll (value = -1), I want to stop checking them
-            if (red > blue) { outcomes.add(DieColor.RED); }
-            else { outcomes.add(DieColor.BLUE); }
+            if (red > blue) {
+                outcomes.add(DieColor.RED);
+            } else {
+                outcomes.add(DieColor.BLUE);
+            }
 
             red = redDice.get(i).getNumber();
             blue = blueDice.get(i).getNumber();
