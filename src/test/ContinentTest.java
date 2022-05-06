@@ -43,7 +43,7 @@ public class ContinentTest {
         assertFalse(asia.isOccupied());
         assertEquals(5, asia.getValue());
 
-        Player p1 = new Player(ArmyColor.BLUE);
+        Player p1 = new Player(ArmyColor.BLUE, "bob");
         for(Territory t : asiaTerritories) t.setOwner(p1);
         asiaTerritories.get(0).setOwner(null);
         assertFalse(asia.isOccupied());
