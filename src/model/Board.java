@@ -52,7 +52,7 @@ public class Board {
     private void initTerritories() {
         // get all territories but "NONE" enum value
         for (final TerritoryName territoryName : TerritoryName.values()) {
-            if(territoryName != TerritoryName.NONE) {
+            if (territoryName != TerritoryName.NONE) {
                 this.territories.add(new Territory(territoryName));
             }
         }
