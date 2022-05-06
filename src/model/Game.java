@@ -117,6 +117,29 @@ public class Game {
     }
 
     /**
+     * Gives the turn bonus to the player.
+     * @param game the game the player is playing in
+     * @param player the player to give the bonus to
+     */
+    public void giveBonus(Game game, Player player) {
+        int bonus = 0;
+
+        // bonus = 1 every 3 territories
+        //          + continent bonus
+        //          + card (soon)
+
+        bonus += player.getTerritories().size()/3;
+        for (Continent continent : game.getBoard().getContinents()) {
+            if (continent.getOwner().getColor() == player.getColor()) {
+                bonus += continent.getValue();
+            }
+        }
+
+        
+
+    }
+
+    /**
      * Returns the board of the current game.
      * @return the board of the game.
      */
