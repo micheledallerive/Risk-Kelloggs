@@ -1,15 +1,14 @@
 package tui;
 
+import static tui.Utils.*;
+
 import model.*;
-import model.enums.DieColor;
 import model.enums.GameStatus;
 import model.enums.TerritoryName;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
-
-import static tui.Utils.*;
 
 /**
  * TUI class.
@@ -46,7 +45,7 @@ public class Main {
                 "Exit the game"
         );
         int choice = numInput.nextInt();
-        switch(choice) {
+        switch (choice) {
             case 1:
                 this.game.setStatus(GameStatus.SETUP);
                 break;
@@ -55,6 +54,9 @@ public class Main {
                 break;
             case 3:
                 this.game.setStatus(GameStatus.EXIT);
+                break;
+            default:
+                break;
         }
     }
 
@@ -69,12 +71,14 @@ public class Main {
             - Make the players move the armies in the territories he wants
          */
         String name;
-        do {
+        do
+        {
             print("Insert your in-game name (0-15 characters):");
             name = input.nextLine();
-        }while(name.length() < 1 || name.length() > 15);
-        ArrayList<Player> players = Player.generatePlayersRandomly((byte)6, name);
-        for (Player player : players) {
+        }
+        while (name.length() < 1 || name.length() > 15);
+        final ArrayList<Player> players = Player.generatePlayersRandomly((byte)6, name);
+        for (final Player player : players) {
             game.addPlayer(player);
         }
 
@@ -95,18 +99,19 @@ public class Main {
             } else {
                 who = game.getPlayers().get(i).getName() + " (" + colorString + ")";
             }
-            printFormat("%-30s %-5s\n", who+":", rolls.get(i).toString());
+            printFormat("%-30s %-5s\n", who + ":", rolls.get(i).toString());
         }
-        if(game.getPlayers().get(maxIndex).isAI())
-            print(game.getPlayers().get(maxIndex).getColor().toString()  + " starts");
-        else
+        if (game.getPlayers().get(maxIndex).isAI()) {
+            print(game.getPlayers().get(maxIndex).getColor().toString() + " starts");
+        } else {
             print("You start");
+        }
         game.setTurn(maxIndex);
 
         consolePause(input);
 
         boolean finishedTerritories = false;
-        while (!game.getPlayers().stream().allMatch(player -> player.getFreeArmies().size()==0)) {
+        while (!game.getPlayers().stream().allMatch(player -> player.getFreeArmies().size() == 0)) {
             Player currentPlayer = game.getPlayers().get(game.getTurn());
             if (currentPlayer.getFreeArmies().size() > 0) {
                 clearConsole();
@@ -118,7 +123,8 @@ public class Main {
                     String territoryStr;
                     int amount = -10;
                     boolean validName = true;
-                    do{
+
+                    do {
                         print("Enter the territory where you want to place your armies: ");
                         territoryStr = input.nextLine().toUpperCase();
                         if (finishedTerritories) {
@@ -129,14 +135,16 @@ public class Main {
                             amount = 1;
                         }
                         final String finalTerritoryStr = territoryStr;
-                        validName = Arrays.stream(TerritoryName.values()).anyMatch((n)->n.name().equals(finalTerritoryStr));
-                    }while(amount < 1
+                        validName = Arrays.stream(TerritoryName.values()).anyMatch((n) -> n.name().equals(finalTerritoryStr));
+                    }
+                    while (amount < 1
                             || amount > currentPlayer.getFreeArmies().size()
                             || !validName);
+
                     TerritoryName territoryName = TerritoryName.valueOf(territoryStr);
                     Territory territory = game.getBoard().getTerritories().get(territoryName.ordinal());
                     if ((territory.getOwner() == currentPlayer && finishedTerritories)
-                            || (territory.getOwner() == null)){
+                            || territory.getOwner() == null) {
                         currentPlayer.placeArmies(territory, amount);
                     }
                 }
@@ -149,7 +157,6 @@ public class Main {
 
         game.setTurn(maxIndex);
         game.setStatus(GameStatus.PLAYING);
-
     }
 
     /**
@@ -169,7 +176,7 @@ public class Main {
                             "End turn"
                     );
                     int choice = numInput.nextInt();
-                    switch(choice) {
+                    switch (choice) {
                         case 1:
                             playingAttack();
                             break;
@@ -178,6 +185,8 @@ public class Main {
                             break;
                         case 3:
                             endTurn = true;
+                            break;
+                        default:
                             break;
                     }
                 }
@@ -190,13 +199,13 @@ public class Main {
         Player player = game.getPlayers().get(game.getTurn());
         if (player.isAI()) {
             //print("AI");
-            for(int attacks = 0; attacks < 1; attacks++) {
-                ((AI)player).attack(new Callback(){
+            for (int attacks = 0; attacks < 1; attacks++) {
+                ((AI)player).attack(new Callback() {
                     @Override
                     public void onPlayerAttacked(Player attacker, Player attacked,
                                                  Territory fromTerritory, Territory attackedTerritory) {
-                        print(player.getColor().toString() + " is attacking you in " +
-                                        attackedTerritory.getName().toString() + "!");
+                        print(player.getColor().toString() + " is attacking you in "
+                                + attackedTerritory.getName().toString() + "!");
                         print("How many armies do you want to defend with (max. "
                                 + Math.min(attackedTerritory.getArmiesCount(), 3)
                                 + ")?");
@@ -213,12 +222,12 @@ public class Main {
                     @Override
                     public void onAIAttacked(Player attacker, Player attacked,
                                              Territory fromTerritory, Territory attackedTerritory) {
-                        if (fromTerritory.getArmiesCount() < 2) return;
+                        if (fromTerritory.getArmiesCount() < 2) { return; }
                         print(attacker.getColor() + " attacked " + attacked.getColor()
                             + " in " + attackedTerritory.getName().toString()
                             + " from " + fromTerritory.getName().toString());
                         attacker.attack(fromTerritory, attackedTerritory,
-                                Math.min(fromTerritory.getArmiesCount()-1, 3),
+                                Math.min(fromTerritory.getArmiesCount() - 1, 3),
                                 Math.min(attackedTerritory.getArmiesCount(), 3));
                     }
                 });
@@ -259,7 +268,6 @@ public class Main {
     }
 
     private void playingMove() {
-        Player player = game.getPlayers().get(game.getTurn());
         print("Where do you want to move the armies from?");
         String fromStr = input.nextLine();
         print("Where do you want to move the armies to?");
@@ -272,6 +280,7 @@ public class Main {
         Territory toTerritory = game.getBoard().getTerritories().get(
                 TerritoryName.valueOf(toStr.toUpperCase()).ordinal()
         );
+        Player player = game.getPlayers().get(game.getTurn());
         player.moveArmies(amount, fromTerritory, toTerritory);
     }
 
@@ -291,19 +300,26 @@ public class Main {
         }
     }
 
-
+    /**
+     * Procedure - handles game flow.
+     */
     public void play() {
-        while(game.getStatus() != GameStatus.EXIT) {
-            switch(game.getStatus()) {
+        while (game.getStatus() != GameStatus.EXIT) {
+            switch (game.getStatus()) {
                 case MENU:
                     mainMenu();
                     break;
                 case SETUP:
                     setupGame();
+                    break;
                 case PLAYING:
                     playing();
+                    break;
                 case END:
                     end();
+                    break;
+                default:
+                    break;
             }
         }
     }
