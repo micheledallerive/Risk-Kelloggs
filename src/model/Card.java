@@ -56,18 +56,47 @@ public class Card {
     //endregion
 
     //region METHODS
+
+    /**
+     * Checks if the trio of cards is a valid trio to get a bonus.
+     * @param c1 the first card
+     * @param c2 the second card
+     * @param c3 the third card
+     * @return true if the cards are a valid trio.
+     */
     public static boolean validTrio(final Card c1, final Card c2, final Card c3) {
         return sameTypes(c1, c2, c3) || differentTypes(c1, c2, c3) || wildTrio(c1, c2, c3);
     }
 
+    /**
+     * Checks if the three cards have the same type.
+     * @param c1 the first card
+     * @param c2 the second card
+     * @param c3 the third card
+     * @return true if the cards have the same type
+     */
     private static boolean sameTypes(final Card c1, final Card c2, final Card c3) {
         return c1.type == c2.type && c2.type == c3.type;
     }
 
+    /**
+     * Checks if the three cards have different type.
+     * @param c1 the first card
+     * @param c2 the second card
+     * @param c3 the third card
+     * @return true if the cards have a different type
+     */
     private static boolean differentTypes(final Card c1, final Card c2, final Card c3) {
         return c1.type != c2.type && c1.type != c3.type && c2.type != c3.type;
     }
 
+    /**
+     * Checks if the trio of cards is a valid trio containing a wild card.
+     * @param c1 the first card
+     * @param c2 the second card
+     * @param c3 the third card
+     * @return true if the trio is valid combination with a wild card.
+     */
     private static boolean wildTrio(final Card c1, final Card c2, final Card c3) {
         return (c1.type == c2.type && c3.type == CardType.WILD)
                 || (c1.type == c3.type && c2.type == CardType.WILD)
@@ -80,7 +109,11 @@ public class Card {
      */
     @Override
     public String toString() {
-        return "Card: (" + this.getType().name() + "-" + this.getTerritory().name() +")";
+        return "Card: ("
+                + this.getType().name()
+                + "-"
+                + this.getTerritory().name()
+                + ")";
     }
     //endregion
 }

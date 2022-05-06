@@ -3,9 +3,6 @@ package model.enums;
 /**
  * Describes the type of the army piece.
  * @author dallem@usi.ch
- * {@link #INFANTRY}
- * {@link #CAVALRY}
- * {@link #ARTILLERY}
  */
 public enum ArmyType {
     /**

@@ -10,6 +10,7 @@ import java.util.Arrays;
 import java.util.List;
 
 
+
 /**
  * Represents a continent in the Risk map.
  * @author dallem@usi.ch
@@ -37,7 +38,7 @@ public class Continent {
     }
 
     /**
-     * Initialize the Continent static values
+     * Initialize the Continent static values.
      */
     public static void init() {
         TERRITORIES = Arrays.asList(
@@ -96,7 +97,9 @@ public class Continent {
      * @return true if a player owns all the continent
      */
     public boolean isOccupied() {
-        if (countries.size() == 0) return false;
+        if (countries.size() == 0) {
+            return false;
+        }
         for (int i = 1; i < countries.size(); i++) {
             if (countries.get(i).getOwner() == null
                 || countries.get(i).getOwner() != countries.get(i - 1).getOwner()) {

@@ -36,12 +36,18 @@ public class AI extends Player {
     //region METHODS
     /**
      * Attacks a player.
+     * @param callback the callback to be colled in the Main function
+     *                 (either TUI or GUI) in order to let the player do
+     *                 something when they are attacked by an AI.
      */
     public void attack(Callback callback) {
         List<Territory> available = this.getTerritories()
-                .stream().filter(territory -> territory.getArmiesCount() > 1)
+                .stream()
+                .filter((territory) -> territory.getArmiesCount() > 1)
                 .collect(Collectors.toList());
-        if (available.size() == 0) return;
+        if (available.size() == 0) {
+            return;
+        }
         Territory from = available.get(StaticRandom.random.nextInt(available.size()));
         Territory attackedTerritory = from.getAdjacent().get(
                 StaticRandom.random.nextInt(from.getAdjacent().size())
@@ -78,8 +84,12 @@ public class AI extends Player {
             chosen = territories.get(StaticRandom.random.nextInt(territories.size()));
         }
         int freeArmies = this.getFreeArmies().size();
-        if (freeArmies < 1) return null;
-        int amount = onlyOne ? 1 : StaticRandom.random.nextInt(Math.min(10, freeArmies))+1;
+        if (freeArmies < 1) {
+            return null;
+        }
+        int amount = onlyOne
+                ? 1
+                : StaticRandom.random.nextInt(Math.min(10, freeArmies)) + 1;
         this.placeArmies(chosen, amount);
         return chosen;
     }
