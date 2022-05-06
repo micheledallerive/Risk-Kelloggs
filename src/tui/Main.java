@@ -77,8 +77,9 @@ public class Main {
             name = input.nextLine();
         }
         while (name.length() < 1 || name.length() > 15);
-        final ArrayList<Player> players = Player.generatePlayersRandomly((byte)6, name);
-        for (final Player player : players) {
+        ArrayList<Player> players =
+                Player.generatePlayersRandomly((byte) 6, (byte) 1, new String[]{ name });
+        for (Player player : players) {
             game.addPlayer(player);
         }
 
