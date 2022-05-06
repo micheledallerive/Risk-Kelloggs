@@ -1,9 +1,12 @@
 package model;
 
 import model.enums.ArmyColor;
+import model.enums.DieColor;
 
 import java.util.*;
 import java.util.stream.Collectors;
+
+import static tui.Utils.print;
 
 /**
  * Describes each player of the game.
@@ -15,7 +18,6 @@ public class Player {
     private ArrayList<Card> cards;
     private ArrayList<Army> armies;
     private ArmyColor color;
-    private ArrayList<Territory> territories;
 
     /**
      * Creates a random list of players: one actual players and num-1 AIs.
@@ -60,7 +62,6 @@ public class Player {
         this.cards = new ArrayList<>();
         this.armies = new ArrayList<>();
         this.color = color;
-        this.territories = new ArrayList<>();
         this.ai = false;
     }
 
@@ -108,8 +109,8 @@ public class Player {
         Iterator<Army> iterator = this.getFreeArmies().iterator();
         while (amount > 0 && iterator.hasNext()) {
             Army next = iterator.next();
+            next.setTerritory(territory);
             territory.addArmy(next);
-            this.armies.remove(next);
             iterator.remove();
             amount--;
         }
@@ -137,7 +138,13 @@ public class Player {
      * @return the territories of the player.
      */
     public ArrayList<Territory> getTerritories() {
-        return territories;
+        HashSet<Territory> set = new HashSet<>();
+        for (Army army : armies) {
+            if (army.getTerritory() != null) {
+                set.add(army.getTerritory());
+            }
+        }
+        return new ArrayList<>(set);
     }
 
     /**
@@ -150,14 +157,39 @@ public class Player {
 
     /**
      * Attack a territory.
+     * @param fromTerritory the territory the player is attacking from
      * @param territory the territory to attack
      * @param armies the number of armies to use for the attack
-     * @return the functions returns true if the player can
-     *          actually attack that territory, false otherwise.
+     * @return an array containing how many armies the attacker has lost
+     *          and how many armies the defender has lost.
      */
-    public boolean attack(Territory territory, int armies) {
-        return this.armies.size() > armies;
-        // TODO complete
+    public Integer[] attack(Territory fromTerritory, Territory territory,
+                          int armies, int ...defArmies) {
+        for (int i = 0; i < armies; i++) {
+            Die.getRedDice().get(i).roll();
+        }
+
+        Player defender = territory.getOwner();
+        int defenderMaxArmies = Math.min(territory.getArmiesCount(), 3);
+        int defenderArmies = defArmies.length == 1 ? defArmies[0] : defenderMaxArmies;
+        for (int i = 0; i < defenderArmies; i++) {
+            Die.getBlueDice().get(i).roll();
+        }
+
+        ArrayList<DieColor> rollResult = Die.winner();
+
+        int defenderLost = (int) rollResult.stream()
+                .filter(dieColor -> dieColor==DieColor.RED).count();
+        int attackerLost = rollResult.size() - defenderLost;
+
+        this.removeArmies(attackerLost, fromTerritory);
+        defender.removeArmies(defenderLost, territory);
+
+        if (territory.getArmiesCount() == 0) {
+            moveArmies(defArmies[0] - defenderLost, fromTerritory, territory);
+        }
+
+        return new Integer[]{attackerLost, defenderLost};
     }
 
     /**
@@ -181,5 +213,45 @@ public class Player {
     public void pickCard(Game game) {
         Card card = game.getRandomCard();
         this.cards.add(card);
+    }
+
+    /**
+     * Removes the given amount of armies from the given territory.
+     * @param armies the number of armies to remove
+     * @param territory the territory to remove the armies from
+     */
+    public void removeArmies(int armies, Territory territory) {
+        ArrayList<Army> toRemove = new ArrayList<>();
+        Iterator<Army> iterator = this.armies.iterator();
+        while(armies > 0 && iterator.hasNext()) {
+            Army army = iterator.next();
+            if (army.getTerritory().getName() == territory.getName()) {
+                toRemove.add(army);
+                iterator.remove();
+                armies--;
+            }
+        }
+        for (Army army : toRemove) {
+            territory.getArmies().remove(army);
+        }
+    }
+
+    /**
+     * Moves the given amount of armies from a territory to another
+     * @param num the number of armies to move.
+     * @param from the territory where to remove the armies.
+     * @param to the territory where to move the armies.
+     */
+    public void moveArmies(int num, Territory from, Territory to) {
+        ArrayList<Army> armies = from.getArmies();
+        if (armies.size() <= num) return;
+        Iterator<Army> iterator = armies.iterator();
+        while(num > 0) {
+            Army next = iterator.next();
+            next.setTerritory(to);
+            to.addArmy(next);
+            iterator.remove();
+            num--;
+        }
     }
 }

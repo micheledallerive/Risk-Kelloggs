@@ -42,6 +42,7 @@ public class Game {
         Territory.init();
         Continent.init();
         StaticRandom.init();
+        Die.init();
 
         this.board = board==null ? new Board() : board;
         this.players = players;

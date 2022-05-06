@@ -17,7 +17,7 @@ public class AITest {
         AI ai2 = new AI(ArmyColor.RED);
         assertEquals(ArmyColor.RED, ai2.getColor());
         assertTrue(ai2.isAI());
-        ai2.calculateNextMove();
+        //ai2.calculateNextMove();
     }
 
 }
