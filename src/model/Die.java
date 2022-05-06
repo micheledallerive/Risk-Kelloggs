@@ -84,11 +84,11 @@ public class Die {
     public static void init() {
         redDice = new ArrayList<>();
         blueDice = new ArrayList<>();
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < 3; i++) {
             redDice.add(new Die(DieColor.RED));
             blueDice.add(new Die(DieColor.BLUE));
         }
-        redDice.add(new Die(DieColor.RED));
+        //redDice.add(new Die(DieColor.RED));
     }
 
     /**
@@ -102,14 +102,16 @@ public class Die {
         blueDice.sort(comparingInt(Die::getNumber).reversed());
 
         ArrayList<DieColor> outcomes = new ArrayList<>();
-        byte red = 0;
-        byte blue = 0;
-        for (byte i = 0; i < 2 && (red > INVALID && blue > INVALID); i++) {
+        byte red = redDice.get(0).getNumber();
+        byte blue = blueDice.get(0).getNumber();
+        for (byte i = 1; i < 3 && (red > INVALID && blue > INVALID); i++) {
             // If I reach a die that was not used in this roll (value = -1), I want to stop checking them
-            red = redDice.get(i).getNumber();
-            blue = blueDice.get(i).getNumber();
             if (red > blue) { outcomes.add(DieColor.RED); }
             else { outcomes.add(DieColor.BLUE); }
+
+            red = redDice.get(i).getNumber();
+            blue = blueDice.get(i).getNumber();
+
         }
 
         Die.resetAll();

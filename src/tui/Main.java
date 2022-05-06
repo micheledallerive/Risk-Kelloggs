@@ -68,8 +68,11 @@ public class Main {
             - Give the armies to the players
             - Make the players move the armies in the territories he wants
          */
-        print("Insert your in-game name:");
-        String name = input.nextLine();
+        String name;
+        do {
+            print("Insert your in-game name (0-15 characters):");
+            name = input.nextLine();
+        }while(name.length() < 1 || name.length() > 15);
         ArrayList<Player> players = Player.generatePlayersRandomly((byte)6, name);
         for (Player player : players) {
             game.addPlayer(player);
@@ -92,7 +95,7 @@ public class Main {
             } else {
                 who = game.getPlayers().get(i).getName() + " (" + colorString + ")";
             }
-            printFormat("%-20s %-5s\n", who+":", rolls.get(i).toString());
+            printFormat("%-30s %-5s\n", who+":", rolls.get(i).toString());
         }
         if(game.getPlayers().get(maxIndex).isAI())
             print(game.getPlayers().get(maxIndex).getColor().toString()  + " starts");
