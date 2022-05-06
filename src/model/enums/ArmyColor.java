@@ -14,14 +14,26 @@ public enum ArmyColor {
 
     private String colorCode;
 
+    /**
+     * Creates an ArmyColor with the given color code.
+     * @param code the UNIX shell color code.
+     */
     ArmyColor(String code) {
         this.colorCode = code;
     }
 
+    /**
+     * Returns the UNIX shell color code for the armycolor.
+     * @return the UNIX color code
+     */
     public String getColorCode() {
         return this.colorCode;
     }
 
+    /**
+     * Returns the UNIX shell reset color code.
+     * @return returns the reset color code.
+     */
     public String getReset() {
         return "\033[0m";
     }

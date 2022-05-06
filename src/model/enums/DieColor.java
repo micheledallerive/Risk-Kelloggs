@@ -3,8 +3,6 @@ package model.enums;
 /**
  * The color of the dice.
  * @author moralj@usi.ch
- * {@link #RED}
- * {@link #BLUE}
  */
 public enum DieColor {
     /**

@@ -91,7 +91,7 @@ public class Game {
                 }
 
                 for (int i = 0; i < 12; i++) {
-                    colorArmies.add(new Army(ArmyType.INFANTRY, color, null));
+                    colorArmies.add(new Army(ArmyType.CAVALRY, color, null));
                 }
 
                 for (int i = 0; i < 8; i++) {
