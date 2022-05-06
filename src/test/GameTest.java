@@ -19,13 +19,13 @@ public class GameTest {
     @Test
     public void testConstructorGetterSetter() {
         ArrayList<Player> players = new ArrayList<>();
-        Player p1 = new Player(ArmyColor.BLACK);
-        Player p2 = new Player(ArmyColor.RED);
+        Player p1 = new Player(ArmyColor.BLACK, "bob");
+        Player p2 = new Player(ArmyColor.RED, "bob");
         players.add(p1);
         players.add(p2);
         Game game = new Game(players);
         assertEquals(game.getPlayers(), players);
-        game.addPlayer(new Player(ArmyColor.GREEN));
+        game.addPlayer(new Player(ArmyColor.GREEN, "bob"));
         assertEquals(3, game.getPlayers().size());
         assertEquals(0, game.getTurn());
         assertFalse(game.isWorldConquered());
@@ -46,8 +46,8 @@ public class GameTest {
     public void testWorldConquered() {
         Game game = new Game(new Board(), new ArrayList<Player>());
         ArrayList<Continent> continents = game.getBoard().getContinents();
-        Player p1 = new Player(ArmyColor.RED);
-        Player p2 = new Player(ArmyColor.BLUE);
+        Player p1 = new Player(ArmyColor.RED, "bob");
+        Player p2 = new Player(ArmyColor.BLUE, "chiara");
         for (Continent continent : continents) {
             for (Territory territory : continent.getTerritories()) {
                 territory.setOwner(p1);

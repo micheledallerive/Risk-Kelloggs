@@ -18,7 +18,7 @@ public class TerritoryTest {
 
     @Test
     public void testOccupied() {
-        Player player = new Player(ArmyColor.RED);
+        Player player = new Player(ArmyColor.RED, "bob");
         Territory territory = new Territory(TerritoryName.ALASKA);
         assertFalse(territory.isOccupied());
         territory.setOwner(player);
@@ -27,7 +27,7 @@ public class TerritoryTest {
 
     @Test
     public void testOwner() {
-        Player player = new Player(ArmyColor.RED);
+        Player player = new Player(ArmyColor.RED, "bob");
         Territory territory = new Territory(TerritoryName.ALASKA);
         assertFalse(territory.isOccupied());
         territory.setOwner(player);

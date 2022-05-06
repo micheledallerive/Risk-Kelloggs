@@ -22,8 +22,8 @@ public class PlayerTest {
 
     @Test
     public void testConstructor() {
-        Player player1  = new Player(ArmyColor.BLACK);
-        Player player2 = new Player(ArmyColor.RED);
+        Player player1  = new Player(ArmyColor.BLACK, "bob");
+        Player player2 = new Player(ArmyColor.RED, "john");
         assertEquals(player1.getArmies().size(), 0);
         //assertEquals(player2.getTerritories().size(), 0);
         assertEquals(0, player1.getCards().size());
@@ -37,7 +37,7 @@ public class PlayerTest {
     @Test
     public void testPlayerCards() {
         Game game = new Game();
-        Player player = new Player();
+        Player player = new Player(ArmyColor.RED, "eskere");
         int prePickSize = player.getCards().size();
         player.pickCard(game);
         assertNotEquals(prePickSize, player.getCards().size());

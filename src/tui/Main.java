@@ -68,7 +68,9 @@ public class Main {
             - Give the armies to the players
             - Make the players move the armies in the territories he wants
          */
-        ArrayList<Player> players = Player.generatePlayersRandomly((byte)6);
+        print("Insert your in-game name:");
+        String name = input.nextLine();
+        ArrayList<Player> players = Player.generatePlayersRandomly((byte)6, name);
         for (Player player : players) {
             game.addPlayer(player);
         }
@@ -88,7 +90,7 @@ public class Main {
             if (game.getPlayers().get(i).isAI()) {
                 who = colorString;
             } else {
-                who = "You (" + colorString + ")";
+                who = game.getPlayers().get(i).getName() + " (" + colorString + ")";
             }
             printFormat("%-20s %-5s\n", who+":", rolls.get(i).toString());
         }
@@ -200,7 +202,7 @@ public class Main {
                                 Math.min(fromTerritory.getArmiesCount(), 3), defend);
                         print(
                                 attacker.getColor().toString() + " lost " + losses[0] + " armies",
-                                "You lost " + losses[1] + " armies"
+                                attacked.getName() + " lost " + losses[1] + " armies"
                         );
                         consolePause(input);
                     }
@@ -219,7 +221,6 @@ public class Main {
                 });
             }
         } else {
-            print("Player");
             printMap(game);
             print("What territory do you want to attack?");
             String toAttack = input.nextLine().toUpperCase();
@@ -242,8 +243,9 @@ public class Main {
                             + attackerMaxArmies + ")");
                     int attackerArmies = numInput.nextInt();
                     Integer[] losses = player.attack(fromTerritory, attackedTerritory, attackerArmies);
-                    print("You lost " + losses[0] + " armies");
+                    print(" lost " + losses[0] + " armies");
                     print(attackedTerritory.getOwner().getColor().toString()
+                            + player.getName()
                             + " lost " + losses[1] + " armies");
                 } else {
                     print("You can't attack that territory...");
