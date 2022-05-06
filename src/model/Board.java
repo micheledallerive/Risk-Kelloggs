@@ -10,10 +10,12 @@ import java.util.ArrayList;
  * @author dallem@usi.ch
  */
 public class Board {
-
+    //region FIELDS
     private final ArrayList<Territory> territories;
     private final ArrayList<Continent> continents;
+    //endregion
 
+    //region CONSTRUCTOR
     /**
      * Constructor.
      */
@@ -23,23 +25,46 @@ public class Board {
         this.initTerritories();
         this.initContinents();
     }
+    //endregion
 
+    //region GETTERS AND SETTERS
+    /**
+     * Return the territories of the board.
+     * @return The territories of the board.
+     */
+    public ArrayList<Territory> getTerritories() {
+        return territories;
+    }
+
+    /**
+     * Return the continents of the board.
+     * @return The continents of the board.
+     */
+    public ArrayList<Continent> getContinents() {
+        return continents;
+    }
+    //endregion
+
+    //region METHODS
     /**
      * Initializes the territories of the board.
      */
     private void initTerritories() {
-        for (TerritoryName territoryName : TerritoryName.values()) {
+        // get all territories but "NONE" enum value
+        for (final TerritoryName territoryName : TerritoryName.values()) {
             if(territoryName != TerritoryName.NONE) {
                 this.territories.add(new Territory(territoryName));
             }
         }
-        for (Territory territory : this.territories) {
-            TerritoryName name = territory.getName();
-            int territoryIndex = name.ordinal();
-            ArrayList<Territory> adjacent = new ArrayList<>();
+
+        // foreach territory get the name, indexed it and make its adjacent list
+        for (final Territory territory : this.territories) {
+            final TerritoryName name = territory.getName();
+            final byte territoryIndex = (byte) name.ordinal();
+            final ArrayList<Territory> adjacent = new ArrayList<>();
             // Territory.adjacency contains all the TerritoryName adjacent to the given territory
-            for (TerritoryName adjacentName : Territory.adjacency.get(territoryIndex)) {
-                int adjacentIndex = adjacentName.ordinal();
+            for (final TerritoryName adjacentName : Territory.adjacency.get(territoryIndex)) {
+                final int adjacentIndex = adjacentName.ordinal();
                 adjacent.add(this.territories.get(adjacentIndex));
             }
             territory.setAdjacent(adjacent);
@@ -50,36 +75,25 @@ public class Board {
      * Initializes the continents of the board.
      */
     private void initContinents() {
-        for (ContinentName continentName : ContinentName.values()) {
-            int continentIndex = continentName.ordinal();
-            int continentValue = Continent.VALUES[continentIndex];
-            ArrayList<Territory> continentTerritories = new ArrayList<>();
-            for (TerritoryName territoryName : Continent.TERRITORIES.get(continentIndex)) {
-                Territory territory = this.territories.get(territoryName.ordinal());
+        // foreach continent
+        for (final ContinentName continentName : ContinentName.values()) {
+            final int continentIndex = continentName.ordinal();
+            final int continentValue = Continent.VALUES[continentIndex]; // get number of territories in continent
+            final ArrayList<Territory> continentTerritories = new ArrayList<>();
+
+            // foreach territory in a continent, add it to this current continent object
+            for (final TerritoryName territoryName : Continent.TERRITORIES.get(continentIndex)) {
+                final Territory territory = this.territories.get(territoryName.ordinal());
                 continentTerritories.add(territory);
             }
+
+            // compose the continent
             this.continents.add(new Continent(
-                    continentName,
-                    continentTerritories,
-                    continentValue
+                continentName,
+                continentTerritories,
+                continentValue
             ));
         }
     }
-
-    /**
-     * Returns the territories of the board.
-     * @return the territories of the board.
-     */
-    public ArrayList<Territory> getTerritories() {
-        return territories;
-    }
-
-    /**
-     * Returns the continents of the board.
-     * @return the continents of the board.
-     */
-    public ArrayList<Continent> getContinents() {
-        return continents;
-    }
-
+    //endregion
 }

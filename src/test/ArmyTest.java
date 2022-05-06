@@ -35,7 +35,7 @@ public class ArmyTest {
         Territory t2 = new Territory(TerritoryName.ALBERTA);
         Army army1 = new Army(ArmyType.ARTILLERY, ArmyColor.RED, t1);
         assertEquals(t1, army1.getTerritory());
-        army1.moveTo(t2);
+        army1.setTerritory(t2);
         assertEquals(t2, army1.getTerritory());
     }
 }

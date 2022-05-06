@@ -1,13 +1,10 @@
 package test;
 
 import model.Die;
-import java.util.ArrayList;
 
 import static org.junit.Assert.*;
 
 import model.enums.DieColor;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -35,7 +32,7 @@ public class DieTest {
         Die.getRedDice().get(2).roll();
         assertEquals(2, Die.winner().size());
         for (Die die : Die.getRedDice()) {
-            assertEquals(-1, die.getLastOutcome());
+            assertEquals(-1, die.getNumber());
         }
 
         Die.getBlueDice().get(0).roll();

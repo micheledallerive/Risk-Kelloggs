@@ -3,10 +3,6 @@ package model.enums;
 /**
  * Describes the figure represented by a card.
  * @author dallem@usi.ch
- * {@link #INFANTRY}
- * {@link #CAVALRY}
- * {@link #ARTILLERY}
- * {@link #WILD}
  */
 public enum CardType {
     /**

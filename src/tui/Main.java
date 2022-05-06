@@ -13,7 +13,7 @@ import static tui.Utils.*;
 /**
  * TUI class.
  * 
- * @author moralj@usi.ch
+ * @author dallem@usi.ch, moralj@usi.ch
  */
 public class Main {
 
@@ -75,10 +75,10 @@ public class Main {
         game.initArmies();
 
         print("Every player rolls a die, the player with the highest value starts first");
-        ArrayList<Integer> rolls = new ArrayList<>();
+        ArrayList<Byte> rolls = new ArrayList<>();
         int maxIndex = 0;
         for (int i = 0; i < game.getPlayers().size(); i++) {
-            rolls.add(Die.rollNormalDie());
+            rolls.add(Die.casualRoll());
             if (rolls.get(i) > rolls.get(maxIndex)) {
                 maxIndex = i;
             }

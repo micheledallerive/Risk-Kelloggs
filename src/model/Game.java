@@ -11,47 +11,48 @@ import java.util.HashMap;
  * @author dallem@usi.ch
  */
 public class Game {
-    private Board board;
-    private ArrayList<Player> players;
-    private GameStatus status;
+    //region FIELDS
+    private final Board board;
+    private final ArrayList<Player> players;
     private int turn;
+    private GameStatus status;
     private ArrayList<Card> cardsDeck;
     private HashMap<ArmyColor, ArrayList<Army>> allArmies;
+    //endregion
 
+    //region CONSTRUCTORS
     /**
      * Create a new empty game.
      */
-    public Game() {
-        this(null, new ArrayList<Player>());
-    }
+    public Game() { this(null, new ArrayList<Player>()); }
 
     /**
-     * Creates a new game.
-     * @param players the players in the game.
+     * Create a new game.
+     * @param players The players in the game.
      */
     public Game(ArrayList<Player> players) {
         this(null, players);
     }
 
     /**
-     * Creates a new game.
-     * @param board the board of the game.
-     * @param players the players of the game.
+     * Create a new game.
+     * @param board The board of the game.
+     * @param players The players of the game.
      */
     public Game(Board board, ArrayList<Player> players) {
         Territory.init();
         Continent.init();
-        StaticRandom.init();
 
         this.board = board==null ? new Board() : board;
         this.players = players;
-        this.status = GameStatus.MENU;
         this.turn = 0;
+        this.status = GameStatus.MENU;
         this.cardsDeck = new ArrayList<>();
         this.allArmies = new HashMap<>();
 
         this.initCards();
     }
+    //endregion
 
     /**
      * Initializes the deck of card creating all the cards that it contains.

@@ -21,13 +21,14 @@ import static model.enums.TerritoryName.EASTERN_AUSTRALIA;
  * @author dallem@usi.ch
  */
 public class Territory {
-
+    //region FIELDS
     private ArrayList<Territory> adjacent;
     private Player owner;
     private ArrayList<Army> armies;
     private TerritoryName name;
 
     public static List<List<TerritoryName>> adjacency = new ArrayList<>();
+    //endregion
 
     /**
      * Creates all the territories adjacent territories in the map.

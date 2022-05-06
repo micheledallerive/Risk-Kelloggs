@@ -15,14 +15,14 @@ import java.util.List;
  * @author dallem@usi.ch
  */
 public class Continent {
-
-    private ContinentName name;
-    private ArrayList<Territory> countries;
-    private int value;
-
+    //region FIELDS
     public static List<List<TerritoryName>> TERRITORIES;
-
     public static int[] VALUES;
+
+    private final ContinentName name;
+    private final ArrayList<Territory> countries;
+    private final int value;  // index of the continent in TERRITORIES
+    //endregion
 
     /**
      * Creates a new continent in the map.
@@ -56,7 +56,7 @@ public class Continent {
                 Arrays.asList(INDONESIA, NEW_GUINEA,
                         WESTERN_AUSTRALIA, EASTERN_AUSTRALIA)
         );
-        VALUES = new int[]{5,5,7,2,3,2};
+        VALUES = new int[] {5, 5, 7, 2, 3, 2};
     }
 
     /**
