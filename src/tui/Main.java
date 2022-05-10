@@ -3,6 +3,8 @@ package tui;
 import static tui.Utils.*;
 
 import model.*;
+import model.callback.Callback;
+import model.callback.GameCallback;
 import model.enums.GameStatus;
 import model.enums.TerritoryName;
 
@@ -37,7 +39,7 @@ public class Main {
     /**
      * Handles the behaviour of the game in the main menu.
      */
-    private void mainMenu() {
+    private boolean mainMenu() {
         print("Welcome to Risk Kellogg's");
         printOptions(
                 "Play a new game of Risk Kellogg's",
@@ -47,23 +49,23 @@ public class Main {
         int choice = numInput.nextInt();
         switch (choice) {
             case 1:
-                this.game.setStatus(GameStatus.SETUP);
-                break;
+                return true;
             case 2:
                 printInfo();
-                break;
+                return false;
             case 3:
                 this.game.setStatus(GameStatus.EXIT);
                 break;
             default:
-                break;
+                return false;
         }
+        return false;
     }
 
     /**
      * Handles the behaviour of the game while setting up the game.
      */
-    private void setupGame() {
+    private boolean setupGame() {
         /*
         The setup of the game consists of:
             - Create the players
@@ -157,43 +159,43 @@ public class Main {
         }
 
         game.setTurn(maxIndex);
-        game.setStatus(GameStatus.PLAYING);
+        return true;
     }
 
     /**
      * Handles the behaviour of the game while it is being played.
      */
-    private void playing() {
-        while (!game.isWorldConquered()) {
-            Player player = game.getPlayers().get(game.getTurn());
-            if (player.isAI()) {
-                playingAttack();
-            } else {
-                boolean endTurn = false;
-                while (!endTurn) {
-                    printOptions(
-                            "Attack a territory",
-                            "Move armies between territories",
-                            "End turn"
-                    );
-                    int choice = numInput.nextInt();
-                    switch (choice) {
-                        case 1:
-                            playingAttack();
-                            break;
-                        case 2:
-                            playingMove();
-                            break;
-                        case 3:
-                            endTurn = true;
-                            break;
-                        default:
-                            break;
-                    }
+    private boolean playing() {
+        Player player = game.getPlayers().get(game.getTurn());
+        if (player.isAI()) {
+            playingAttack();
+        } else {
+            boolean endTurn = false;
+            while (!endTurn) {
+                printOptions(
+                        "Attack a territory",
+                        "Move armies between territories",
+                        "End turn"
+                );
+                int choice = numInput.nextInt();
+                switch (choice) {
+                    case 1:
+                        playingAttack();
+                        break;
+                    case 2:
+                        playingMove();
+                        break;
+                    case 3:
+                        endTurn = true;
+                        break;
+                    default:
+                        break;
                 }
             }
-            game.nextTurn();
         }
+        game.nextTurn();
+        // if the worls is conquered it needs to go on, otherwise keep playing
+        return this.game.isWorldConquered();
     }
 
     private void playingAttack() {
@@ -288,41 +290,54 @@ public class Main {
     /**
      * Handles the behaviour of the game after the game is over.
      */
-    private void end() {
+    private boolean end() {
         print("The game is over.");
         printOptions("Player another game.", "Exit the game");
         int choice = numInput.nextInt();
-        if (choice == 1) {
-            // Wants to play again.
-            init();
-            this.play();
-        } else {
-            this.game.setStatus(GameStatus.EXIT);
-        }
+        // Wants to play again.
+        return choice != 1;
     }
 
     /**
      * Procedure - handles game flow.
      */
-    public void play() {
-        while (game.getStatus() != GameStatus.EXIT) {
-            switch (game.getStatus()) {
-                case MENU:
-                    mainMenu();
-                    break;
-                case SETUP:
-                    setupGame();
-                    break;
-                case PLAYING:
-                    playing();
-                    break;
-                case END:
-                    end();
-                    break;
-                default:
-                    break;
+    public void run() {
+        this.game.play(new GameCallback() {
+            @Override
+            public boolean onMainMenu() {
+                return mainMenu();
             }
-        }
+
+            @Override
+            public boolean onGameSetup() {
+                return setupGame();
+            }
+
+            @Override
+            public boolean onGamePlay() {
+                return playing();
+            }
+
+            @Override
+            public boolean onGamePause() {
+                return true;
+            }
+
+            @Override
+            public boolean onGameEnd() {
+                boolean playAgain = end();
+                if (playAgain) {
+                    game = new Game();
+                    game.play(this);
+                }
+                return true;
+            }
+
+            @Override
+            public void onGameExit() {
+
+            }
+        });
     }
 
     /**
@@ -331,6 +346,6 @@ public class Main {
      */
     public static void main(String[] args) {
         Main main = new Main();
-        main.play();
+        main.run();
     }
 }

@@ -18,6 +18,10 @@ public enum GameStatus {
      */
     PLAYING,
     /**
+     * the player is in pause mode, waiting for the player to resume the game.
+     */
+    PAUSE,
+    /**
      * the game has ended and the player can either exit the game or go back to the menu.
      */
     END,

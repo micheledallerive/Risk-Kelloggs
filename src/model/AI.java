@@ -1,9 +1,9 @@
 package model;
 
+import model.callback.Callback;
 import model.enums.ArmyColor;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
