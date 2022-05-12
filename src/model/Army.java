@@ -3,6 +3,8 @@ package model;
 import model.enums.ArmyColor;
 import model.enums.ArmyType;
 
+import java.util.ArrayList;
+
 /**
  * Describes a single piece of army, using its type (i.e. the shape) and the color.
  * @author dallem@usi.ch, moralj@usi.ch
@@ -42,6 +44,39 @@ public class Army {
      */
     public ArmyType getType() {
         return type;
+    }
+
+    /**
+     * Returns the value of the army in "Infantry units"
+     * Type Infantry -> Value 1
+     * Type Cavalry -> Value 5
+     * Type Artillery -> Value 10
+     * @return the value of the type of army
+     */
+    public int getValue() {
+        int k = ArmyType.values().length - 1;
+        int value = 1;
+        int ordinal = type.ordinal();
+        while (ordinal > 0) {
+            value = value << k;
+            value += k - 1;
+            ordinal--;
+            k--;
+        }
+        return value;
+    }
+
+    /**
+     * Returns the cumulative value of an array of armies.
+     * @param armies the array of armies
+     * @return the cumulative value
+     */
+    public static int getValue(ArrayList<Army> armies) {
+        int totalValue = 0;
+        for (Army army : armies) {
+            totalValue += army.getValue();
+        }
+        return totalValue;
     }
 
     /**

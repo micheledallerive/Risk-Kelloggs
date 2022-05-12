@@ -112,6 +112,22 @@ public class Game {
     }
 
     /**
+     * Moves the chosen amount of armies from the total armies to the armies owned by the player.
+     * @param player the player to give armies to
+     * @param num the amount of armies
+     */
+    public void giveArmiesToPlayer(Player player, int num) {
+        int[] availableByType = new int[3];
+        ArrayList<Army> availableArmies = this.allArmies.get(player.getColor());
+        for (Army availableArmy : availableArmies){
+            availableByType[availableArmy.getType().ordinal()]++;
+        }
+        int[] givenByType = new int[3];
+        int[] armyValues = new int[] {1,5,10};
+        // todo finish: find a way to give as many infantry as possible it's not an hard algorithm
+    }
+
+    /**
      * Get a random card from the deck and remove it.
      * @return the card that was randomly picked.
      */
