@@ -1,6 +1,7 @@
 package test;
 
 import model.*;
+import model.callback.GameCallback;
 import model.enums.ArmyColor;
 import model.enums.GameStatus;
 
@@ -33,6 +34,38 @@ public class GameTest {
     }
 
     @Test
+    public void testInitArmies() {
+        Game game = new Game();
+        Player p1 = new Player(ArmyColor.RED, "bob");
+        Player p2 = new Player(ArmyColor.BLUE, "chiara");
+        game.addPlayer(p1);
+        game.addPlayer(p2);
+        game.initArmies();
+        assertTrue(p1.getArmies().isEmpty());
+    }
+
+    @Test
+    public void testGiveBonus() {
+        Territory.init();
+        Continent.init();
+        Game game = new Game();
+        Player p1 = new Player(ArmyColor.RED, "bob");
+        Player p2 = new Player(ArmyColor.BLUE, "chiara");
+        Player p3 = new Player(ArmyColor.GREEN, "joe");
+        Player p4 = new Player(ArmyColor.YELLOW, "sara");
+        game.addPlayer(p1);
+        game.addPlayer(p2);
+        game.addPlayer(p3);
+        game.addPlayer(p4);
+
+        game.initArmies();
+
+        for (Territory territory : game.getBoard().getContinents().get(0).getTerritories()) {
+            
+        }
+    }
+
+    @Test
     public void testCards() {
         Game game = new Game();
         assertNotNull(game.getRandomCard());
@@ -58,5 +91,83 @@ public class GameTest {
         continents.get(0).getTerritories().get(0).setOwner(p1);
         assertTrue(game.isWorldConquered());
     }
+
+    @Test
+    public void testPlay() {
+        Territory.init();
+        Game game = new Game();
+        int[] time = new int[]{0};
+        game.play(new GameCallback() {
+            @Override
+            public boolean onMainMenu() {
+                assertEquals(game.getStatus(), GameStatus.MENU);
+                time[0]++;
+                return time[0] == 2;
+            }
+
+            @Override
+            public boolean onGameSetup() {
+                assertEquals(game.getStatus(), GameStatus.SETUP);
+                return true;
+            }
+
+            @Override
+            public boolean onGamePlay() {
+                assertEquals(game.getStatus(), GameStatus.PLAYING);
+                return true;
+            }
+
+            @Override
+            public boolean onGamePause() {
+                assertEquals(game.getStatus(), GameStatus.PAUSE);
+                return true;
+            }
+
+            @Override
+            public boolean onGameEnd() {
+                assertEquals(game.getStatus(), GameStatus.END);
+                return true;
+            }
+
+            @Override
+            public void onGameExit() {
+                assertEquals(game.getStatus(), GameStatus.EXIT);
+            }
+        });
+    }
+
+    @Test
+    public void testNextSetTurn() {
+        Game game = new Game();
+        Player p1 = new Player(ArmyColor.RED, "bob");
+        Player p2 = new Player(ArmyColor.BLUE, "chiara");
+        Player p3 = new Player(ArmyColor.GREEN, "pippo");
+        Player p4 = new Player(ArmyColor.YELLOW, "paperino");
+        game.addPlayer(p1);
+        game.addPlayer(p2);
+        game.addPlayer(p3);
+        game.addPlayer(p4);
+
+        assertEquals(0, game.getTurn());
+        game.nextTurn();
+        assertEquals(1, game.getTurn());
+        game.nextTurn();
+        assertEquals(2, game.getTurn());
+
+        game.setTurn(3);
+        assertEquals(3, game.getTurn());
+    }
+
+    @Test
+    public void testSetStatus() {
+        Game game = new Game();
+        assertEquals(game.getStatus(), GameStatus.MENU);
+        game.setStatus(GameStatus.SETUP);
+        assertEquals(game.getStatus(), GameStatus.SETUP);
+        game.nextStatus();
+        assertEquals(game.getStatus(), GameStatus.PLAYING);
+    }
+
+
 
 }
