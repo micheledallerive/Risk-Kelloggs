@@ -218,7 +218,7 @@ public class Territory {
     public int getArmiesCount() {
         int totalArmies = 0;
         for (Army army : this.armies) {
-            totalArmies += army.getValue();
+            totalArmies += army.calculateValue();
         }
         return totalArmies;
     }
