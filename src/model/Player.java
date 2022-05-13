@@ -211,14 +211,16 @@ public class Player {
     /**
      * Plays the wanted trio of cards in order to get armies.
      * @param cards the trio of cards to play
+     * @return the number of armies gained
      */
-    public void playCardsCombination(Card[] cards) {
-        ArrayList<Army> newArmies = new ArrayList<>();
+    public int playCardsCombination(Card[] cards) {
         ArrayList<Territory> playerTerritories = getTerritories();
         int armiesCount = 0;
+
         for (Card card : cards) {
             this.cards.remove(card);
         }
+
         for (Territory territory : playerTerritories) {
             for (Card card : cards) {
                 if (card.getTerritory() == territory.getName() // if the player owns the territory
@@ -228,6 +230,19 @@ public class Player {
             }
         }
 
+        switch (Card.trioType(cards)) {
+            case 1: // same trio,
+                    // 3 artillery (ordinal 2) = 4, 3 infantry (ordinal 0) = 6, 3 cavalry (ordinal 1) = 8
+                armiesCount += 4 + (2 * ((cards[0].getType().ordinal() + 1) % 3));
+                break;
+            case 2: // three different cards
+                armiesCount += 10;
+                break;
+            case 3:
+                armiesCount += 12;
+                break;
+        }
+        return armiesCount;
     }
 
     /**

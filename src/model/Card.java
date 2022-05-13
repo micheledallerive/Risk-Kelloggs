@@ -69,6 +69,21 @@ public class Card {
     }
 
     /**
+     * Returns what type of trio it is.
+     * @param cards the trio of cards
+     * @return the type of the trio: 1 if same type, 2 if different, 3 if wild
+     */
+    public static int trioType(final Card[] cards) {
+        if (sameTypes(cards[0], cards[1], cards[2])) {
+            return 1;
+        } else if (differentTypes(cards[0], cards[1], cards[2])) {
+            return 2;
+        } else {
+            return 3;
+        }
+    }
+
+    /**
      * Checks if the three cards have the same type.
      * @param c1 the first card
      * @param c2 the second card
