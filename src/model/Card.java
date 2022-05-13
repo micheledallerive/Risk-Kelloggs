@@ -125,6 +125,23 @@ public class Card {
     }
 
     /**
+     * Returns the value of the card combination
+     * @param cards the trio of cards
+     * @return the value of the card combination
+     */
+    public static int getCombinationValue(final Card[] cards) {
+        switch (Card.trioType(cards)) {
+            case 1: // same trio,
+                // 3 artillery (ordinal 2) = 4, 3 infantry (ordinal 0) = 6, 3 cavalry (ordinal 1) = 8
+                return 4 + (2 * ((cards[0].getType().ordinal() + 1) % 3));
+            case 2: // three different cards
+                return 10;
+            default:
+                return 12;
+        }
+    }
+
+    /**
      * Function - gives representation of the card as String.
      * @return The String with card data info.
      */
@@ -132,7 +149,7 @@ public class Card {
     public String toString() {
         return "Card: ("
                 + this.getType().name()
-                + "-"
+                + " - "
                 + this.getTerritory().name()
                 + ")";
     }

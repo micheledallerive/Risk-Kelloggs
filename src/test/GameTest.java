@@ -3,6 +3,7 @@ package test;
 import model.*;
 import model.callback.GameCallback;
 import model.enums.ArmyColor;
+import model.enums.CardType;
 import model.enums.GameStatus;
 
 import java.util.ArrayList;
@@ -75,6 +76,13 @@ public class GameTest {
         assertEquals(game.getBoard().getContinents().get(1).getValue(), p1Bonus[1]);
 
         assertEquals(0, p1Bonus[2]);
+
+        p1.addCard(new Card(CardType.WILD, null));
+        p1.addCard(new Card(CardType.ARTILLERY, null));
+        p1.addCard(new Card(CardType.INFANTRY, null));
+
+        p1Bonus = game.giveBonus(p1, 0);
+        assertEquals(12, p1Bonus[2]);
 
     }
 

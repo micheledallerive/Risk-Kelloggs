@@ -7,6 +7,8 @@ import model.enums.ArmyType;
 import model.Territory.TerritoryName;
 import org.junit.Test;
 
+import java.util.ArrayList;
+
 import static org.junit.Assert.*;
 
 /**
@@ -37,5 +39,29 @@ public class ArmyTest {
         assertEquals(t1, army1.getTerritory());
         army1.setTerritory(t2);
         assertEquals(t2, army1.getTerritory());
+    }
+
+    @Test
+    public void testToString() {
+        Army army = new Army(ArmyType.INFANTRY, ArmyColor.BLACK, null);
+        Army army2 = new Army(ArmyType.INFANTRY, ArmyColor.BLACK, new Territory(TerritoryName.ALASKA));
+        assertTrue(army.toString().contains("no territory"));
+        assertTrue(army2.toString().toLowerCase().contains("alaska"));
+    }
+
+    @Test
+    public void testGetValue() {
+        Army army = new Army(ArmyType.INFANTRY, ArmyColor.BLACK, null);
+        assertEquals(1, army.calculateValue());
+    }
+
+    @Test
+    public void testArrayValue() {
+        Army army = new Army(ArmyType.INFANTRY, ArmyColor.BLACK, null);
+        Army army2 = new Army(ArmyType.CAVALRY, ArmyColor.BLACK, null);
+        ArrayList<Army> armies = new ArrayList<>();
+        armies.add(army);
+        armies.add(army2);
+        assertEquals(6, Army.getValue(armies));
     }
 }
