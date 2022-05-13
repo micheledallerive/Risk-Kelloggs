@@ -39,11 +39,16 @@ public class Army {
 
     //region GETTERS AND SETTERS
     /**
-     * Returns the type of the army.
-     * @return The type of the army.
+     * Returns the cumulative value of an array of armies.
+     * @param armies the array of armies
+     * @return the cumulative value
      */
-    public ArmyType getType() {
-        return type;
+    public static int getValue(ArrayList<Army> armies) {
+        int totalValue = 0;
+        for (Army army : armies) {
+            totalValue += army.getValue();
+        }
+        return totalValue;
     }
 
     /**
@@ -58,7 +63,7 @@ public class Army {
         int value = 1;
         int ordinal = type.ordinal();
         while (ordinal > 0) {
-            value = value << factor;
+            value <<= factor;
             value += factor - 1;
             ordinal--;
             factor--;
@@ -67,16 +72,11 @@ public class Army {
     }
 
     /**
-     * Returns the cumulative value of an array of armies.
-     * @param armies the array of armies
-     * @return the cumulative value
+     * Returns the type of the army.
+     * @return The type of the army.
      */
-    public static int getValue(ArrayList<Army> armies) {
-        int totalValue = 0;
-        for (Army army : armies) {
-            totalValue += army.getValue();
-        }
-        return totalValue;
+    public ArmyType getType() {
+        return type;
     }
 
     /**
