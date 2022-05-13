@@ -232,7 +232,7 @@ public class Player {
 
         switch (Card.trioType(cards)) {
             case 1: // same trio,
-                    // 3 artillery (ordinal 2) = 4, 3 infantry (ordinal 0) = 6, 3 cavalry (ordinal 1) = 8
+                // 3 artillery (ordinal 2) = 4, 3 infantry (ordinal 0) = 6, 3 cavalry (ordinal 1) = 8
                 armiesCount += 4 + (2 * ((cards[0].getType().ordinal() + 1) % 3));
                 break;
             case 2: // three different cards
