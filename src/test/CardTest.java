@@ -14,8 +14,8 @@ public class CardTest {
 
     @Test
     public void testConstructorGetters() {
-        Card card = new Card(CardType.ARTILLERY, TerritoryName.AFGHANISTAN);
-        assertEquals(CardType.ARTILLERY, card.getType());
+        Card card = new Card(CardType.INFANTRY, TerritoryName.AFGHANISTAN);
+        assertEquals(CardType.INFANTRY, card.getType());
         assertEquals(TerritoryName.AFGHANISTAN, card.getTerritory());
     }
 }

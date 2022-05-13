@@ -136,7 +136,7 @@ public class PlayerTest {
                 bob.getFreeArmies().size());
         int oldArmiesSize = bob.getArmies().size();
         int oldFreeArmiesSize = bob.getFreeArmies().size();
-        bob.addArmy(new Army(ArmyType.ARTILLERY, bob.getColor(),null));
+        bob.addArmy(new Army(ArmyType.INFANTRY, bob.getColor(),null));
         assertEquals(bob.getFreeArmies().size(), oldFreeArmiesSize + 1);
         assertEquals(bob.getArmies().size(), oldArmiesSize + 1);
     }
@@ -155,6 +155,7 @@ public class PlayerTest {
         game.addPlayer(john);
 
         game.initArmies();
+
         Territory territory = game.getBoard().getTerritories().get(0);
         Territory other = game.getBoard().getTerritories().get(1);
 
@@ -167,7 +168,7 @@ public class PlayerTest {
 
         // test territories
         assertEquals(2, bob.getTerritories().size());
-        assertEquals(other, bob.getTerritories().get(0)); // redo this test, ISN'T CONSISTENT.
+        assertEquals(territory, bob.getTerritories().get(0)); // redo this test, ISN'T CONSISTENT.
     }
 
     @Test

@@ -93,16 +93,11 @@ public class Game {
                     player.getArmies().add(new Army(ArmyType.INFANTRY, color, null));
                 }
 
-                for (int i = 0; i < 40 - numInfantry; i++) {
+                // Since we are only using INFANTRY instead of using also CAVALRY and ARTILLERY,
+                // the total amount of INFANTRY is 40 (the normal value) + 12 (CAVALRY) * 5 (the value)
+                // + 8 (ARTILLERY) * 10 (the value) = 40 + 140.
+                for (int i = 0; i < 140 + 40 - numInfantry; i++) {
                     colorArmies.add(new Army(ArmyType.INFANTRY, color, null));
-                }
-
-                for (int i = 0; i < 12; i++) {
-                    colorArmies.add(new Army(ArmyType.CAVALRY, color, null));
-                }
-
-                for (int i = 0; i < 8; i++) {
-                    colorArmies.add(new Army(ArmyType.ARTILLERY, color, null));
                 }
 
                 this.allArmies.put(color, colorArmies);

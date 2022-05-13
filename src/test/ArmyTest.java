@@ -22,8 +22,8 @@ public class ArmyTest {
         assertNull(army1.getTerritory());
 
         Territory territory = new Territory(TerritoryName.ALASKA);
-        Army army2 = new Army(ArmyType.ARTILLERY, ArmyColor.BLUE, territory);
-        assertEquals(ArmyType.ARTILLERY, army2.getType());
+        Army army2 = new Army(ArmyType.INFANTRY, ArmyColor.BLUE, territory);
+        assertEquals(ArmyType.INFANTRY, army2.getType());
         assertEquals(ArmyColor.BLUE, army2.getColor());
         assertEquals(territory, army2.getTerritory());
         assertEquals(TerritoryName.ALASKA, army2.getTerritory().getName());
@@ -33,7 +33,7 @@ public class ArmyTest {
     public void testMoveTo() {
         Territory t1 = new Territory(TerritoryName.ALASKA);
         Territory t2 = new Territory(TerritoryName.ALBERTA);
-        Army army1 = new Army(ArmyType.ARTILLERY, ArmyColor.RED, t1);
+        Army army1 = new Army(ArmyType.INFANTRY, ArmyColor.RED, t1);
         assertEquals(t1, army1.getTerritory());
         army1.setTerritory(t2);
         assertEquals(t2, army1.getTerritory());
