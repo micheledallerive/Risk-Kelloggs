@@ -1,6 +1,7 @@
 package model;
 
 import model.Territory.TerritoryName;
+import model.callback.GameCallback;
 import model.enums.ArmyColor;
 import model.enums.ArmyType;
 import model.enums.CardType;
@@ -111,6 +112,22 @@ public class Game {
     }
 
     /**
+     * Moves the chosen amount of armies from the total armies to the armies owned by the player.
+     * @param player the player to give armies to
+     * @param num the amount of armies
+     */
+    public void giveArmiesToPlayer(Player player, int num) {
+        int[] availableByType = new int[3];
+        ArrayList<Army> availableArmies = this.allArmies.get(player.getColor());
+        for (Army availableArmy : availableArmies){
+            availableByType[availableArmy.getType().ordinal()]++;
+        }
+        int[] givenByType = new int[3];
+        int[] armyValues = new int[] {1,5,10};
+        // todo finish: find a way to give as many infantry as possible it's not an hard algorithm
+    }
+
+    /**
      * Get a random card from the deck and remove it.
      * @return the card that was randomly picked.
      */
@@ -212,6 +229,13 @@ public class Game {
     }
 
     /**
+     * Goes to the next status of the game.
+     */
+    public void nextStatus() {
+        this.status = GameStatus.values()[this.status.ordinal() + 1];
+    }
+
+    /**
      * Checks if the whole world has been conquered by only one person.
      * @return true if the whole world is owned by a single person.
      */
@@ -223,5 +247,37 @@ public class Game {
             }
         }
         return true;
+    }
+
+    /**
+     * Starts the game handling the different states.
+     */
+    public void play(GameCallback callback) {
+        while(this.status != GameStatus.EXIT) {
+            boolean result = false;
+            switch(this.status) {
+                case MENU:
+                    result = callback.onMainMenu();
+                    break;
+                case SETUP:
+                    result = callback.onGameSetup();
+                    break;
+                case PLAYING:
+                    result = callback.onGamePlay();
+                    break;
+                case PAUSE:
+                    result = callback.onGamePause();
+                    break;
+                case END:
+                    result = callback.onGameEnd();
+                    break;
+                default:
+                    break;
+            }
+            if (result) {
+                this.nextStatus();
+            }
+        }
+        callback.onGameExit();
     }
 }

@@ -214,7 +214,11 @@ public class Territory {
      * @return the number of armies in this territory
      */
     public int getArmiesCount() {
-        return this.armies.size();
+        int totalArmies = 0;
+        for (Army army : this.armies) {
+            totalArmies += army.getValue();
+        }
+        return totalArmies;
     }
 
     /**

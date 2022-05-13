@@ -189,24 +189,44 @@ public class Player {
 
     /**
      * Return all the card combinations that the player could play.
-     * @return A list of all the card combinations.
+     * @return A list of all the valid trio card combinations.
      */
-    public ArrayList<ArrayList<Card>> getCardCombinations() {
-        ArrayList<ArrayList<Card>> validCombinations = new ArrayList<>();
-        cards.sort(Comparator.comparing(Card::getType));
-        for (byte i = 0; i < cards.size() - 2; i++) {
-            Card c1 = cards.get(i);
-            Card c2 = cards.get(i + 1);
-            Card c3 = cards.get(i + 2);
-            if (Card.validTrio(c1, c2, c3)) {
-                ArrayList<Card> combination = new ArrayList<>();
-                combination.add(c1);
-                combination.add(c2);
-                combination.add(c3);
-                validCombinations.add(combination);
+    public ArrayList<Card[]> getCardCombinations() {
+        ArrayList<Card[]> validCombinations = new ArrayList<>();
+        for (int i = 0; i < this.cards.size() - 2; i++) {
+            for (int j = i + 1; j < this.cards.size() - 1; j++) {
+                for (int k = j + 1; k < this.cards.size(); k++) {
+                    Card c1 = this.cards.get(i);
+                    Card c2 = this.cards.get(j);
+                    Card c3 = this.cards.get(k);
+                    if (Card.validTrio(c1,c2,c3)) {
+                        validCombinations.add(new Card[] {c1, c2, c3});
+                    }
+                }
             }
         }
         return validCombinations;
+    }
+
+    /**
+     * Plays the wanted trio of cards in order to get armies.
+     * @param cards the trio of cards to play
+     */
+    public void playCardsCombination(Card[] cards) {
+        ArrayList<Army> newArmies = new ArrayList<>();
+        ArrayList<Territory> playerTerritories = getTerritories();
+        for (Card card : cards) {
+            this.cards.remove(card);
+        }
+        for (Territory territory : playerTerritories) {
+            for (Card card : cards) {
+                if (card.getTerritory() == territory.getName() // if the player owns the territory
+                    && armiesCount == 0) { // but you can only get the bonus once
+                    armiesCount += 2;
+                }
+            }
+        }
+
     }
 
     /**

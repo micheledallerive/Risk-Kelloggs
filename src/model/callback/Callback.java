@@ -1,4 +1,7 @@
-package model;
+package model.callback;
+
+import model.Player;
+import model.Territory;
 
 /**
  * Interface to create event when a Player gets attacked (including AI).

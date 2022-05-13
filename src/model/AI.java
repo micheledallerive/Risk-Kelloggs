@@ -1,5 +1,6 @@
 package model;
 
+import model.callback.Callback;
 import model.enums.ArmyColor;
 
 import java.util.ArrayList;
