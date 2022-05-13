@@ -215,6 +215,7 @@ public class Player {
     public void playCardsCombination(Card[] cards) {
         ArrayList<Army> newArmies = new ArrayList<>();
         ArrayList<Territory> playerTerritories = getTerritories();
+        int armiesCount = 0;
         for (Card card : cards) {
             this.cards.remove(card);
         }
