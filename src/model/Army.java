@@ -111,9 +111,13 @@ public class Army {
      */
     @Override
     public String toString() {
+        String territoryString =
+                this.territory != null
+                        ? this.territory.getName().toString()
+                        : "no territory";
         return "Army: Type= " + this.type.toString()
                 + "\tColor= " + this.color.toString()
-                + "\tTerritory= " + this.territory.toString();
+                + "\tTerritory= " + territoryString;
     }
     //endregion
 }
