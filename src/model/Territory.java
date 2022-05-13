@@ -46,84 +46,84 @@ public class Territory {
         NONE;
 
         // North America
-        private static final TerritoryName[] adjAlaska = new TerritoryName[] {NORTHWEST_TERRITORY, ALBERTA, KAMCHATKA};
-        private static final TerritoryName[] adjNorthwestTerritory = new TerritoryName[] {ALASKA, ALBERTA, ONTARIO, GREENLAND};
-        private static final TerritoryName[] adjAlberta = new TerritoryName[] {ALASKA, NORTHWEST_TERRITORY, ONTARIO, WESTERN_UNITED_STATES};
-        private static final TerritoryName[] adjOntario = new TerritoryName[] {NORTHWEST_TERRITORY, ALBERTA, WESTERN_UNITED_STATES,
+        private static final TerritoryName[] ADJ_ALASKA = new TerritoryName[] {NORTHWEST_TERRITORY, ALBERTA, KAMCHATKA};
+        private static final TerritoryName[] ADJ_NORTHWEST_TERRITORY = new TerritoryName[] {ALASKA, ALBERTA, ONTARIO, GREENLAND};
+        private static final TerritoryName[] ADJ_ALBERTA = new TerritoryName[] {ALASKA, NORTHWEST_TERRITORY, ONTARIO, WESTERN_UNITED_STATES};
+        private static final TerritoryName[] ADJ_ONTARIO = new TerritoryName[] {NORTHWEST_TERRITORY, ALBERTA, WESTERN_UNITED_STATES,
             EASTERN_UNITED_STATES, QUEBEC, GREENLAND};
-        private static final TerritoryName[] adjQuebec = new TerritoryName[] {GREENLAND, ONTARIO, EASTERN_UNITED_STATES};
-        private static final TerritoryName[] adjGreenland = new TerritoryName[] {NORTHWEST_TERRITORY, ONTARIO, QUEBEC, ICELAND};
-        private static final TerritoryName[] adjCentralAmerica = new TerritoryName[] {WESTERN_UNITED_STATES, EASTERN_UNITED_STATES, VENEZUELA};
-        private static final TerritoryName[] adjWesternUnitedStates = new TerritoryName[] {ALBERTA, ONTARIO, EASTERN_UNITED_STATES, CENTRAL_AMERICA};
-        private static final TerritoryName[] adjEASTERN_UNITED_STATES = new TerritoryName[] {CENTRAL_AMERICA, WESTERN_UNITED_STATES, ONTARIO, QUEBEC};
+        private static final TerritoryName[] ADJ_QUEBEC = new TerritoryName[] {GREENLAND, ONTARIO, EASTERN_UNITED_STATES};
+        private static final TerritoryName[] ADJ_GREENLAND = new TerritoryName[] {NORTHWEST_TERRITORY, ONTARIO, QUEBEC, ICELAND};
+        private static final TerritoryName[] ADJ_CENTRAL_AMERICA = new TerritoryName[] {WESTERN_UNITED_STATES, EASTERN_UNITED_STATES, VENEZUELA};
+        private static final TerritoryName[] ADJ_WESTERN_UNITED_STATES = new TerritoryName[] {ALBERTA, ONTARIO, EASTERN_UNITED_STATES, CENTRAL_AMERICA};
+        private static final TerritoryName[] ADJ_EASTERN_UNITED_STATES = new TerritoryName[] {CENTRAL_AMERICA, WESTERN_UNITED_STATES, ONTARIO, QUEBEC};
 
         // South America
-        private static final TerritoryName[] adjVENEZUELA = new TerritoryName[] {CENTRAL_AMERICA, BRAZIL, PERU};
-        private static final TerritoryName[] adjBRAZIL = new TerritoryName[] {VENEZUELA, PERU, ARGENTINA, NORTH_AFRICA};
-        private static final TerritoryName[] adjPERU = new TerritoryName[] {VENEZUELA, BRAZIL, ARGENTINA};
-        private static final TerritoryName[] adjARGENTINA = new TerritoryName[] {BRAZIL, PERU};
+        private static final TerritoryName[] ADJ_VENEZUELA = new TerritoryName[] {CENTRAL_AMERICA, BRAZIL, PERU};
+        private static final TerritoryName[] ADJ_BRAZIL = new TerritoryName[] {VENEZUELA, PERU, ARGENTINA, NORTH_AFRICA};
+        private static final TerritoryName[] ADJ_PERU = new TerritoryName[] {VENEZUELA, BRAZIL, ARGENTINA};
+        private static final TerritoryName[] ADJ_ARGENTINA = new TerritoryName[] {BRAZIL, PERU};
 
         // Europe
-        private static final TerritoryName[] adjICELAND = new TerritoryName[] {GREENLAND, SCANDINAVIA, GREAT_BRITAIN};
-        private static final TerritoryName[] adjGREAT_BRITAIN = new TerritoryName[] {ICELAND, SCANDINAVIA, NORTHERN_EUROPE, WESTERN_EUROPE};
-        private static final TerritoryName[] adjWESTERN_EUROPE = new TerritoryName[] {GREAT_BRITAIN, NORTHERN_EUROPE, SOUTHERN_EUROPE, NORTH_AFRICA};
-        private static final TerritoryName[] adjSOUTHERN_EUROPE = new TerritoryName[] {WESTERN_EUROPE, NORTHERN_EUROPE, UKRAINE,
+        private static final TerritoryName[] ADJ_ICELAND = new TerritoryName[] {GREENLAND, SCANDINAVIA, GREAT_BRITAIN};
+        private static final TerritoryName[] ADJ_GREAT_BRITAIN = new TerritoryName[] {ICELAND, SCANDINAVIA, NORTHERN_EUROPE, WESTERN_EUROPE};
+        private static final TerritoryName[] ADJ_WESTERN_EUROPE = new TerritoryName[] {GREAT_BRITAIN, NORTHERN_EUROPE, SOUTHERN_EUROPE, NORTH_AFRICA};
+        private static final TerritoryName[] ADJ_SOUTHERN_EUROPE = new TerritoryName[] {WESTERN_EUROPE, NORTHERN_EUROPE, UKRAINE,
             NORTH_AFRICA, EGYPT, MIDDLE_EAST};
-        private static final TerritoryName[] adjNORTHERN_EUROPE = new TerritoryName[] {SCANDINAVIA, GREAT_BRITAIN, UKRAINE,
+        private static final TerritoryName[] ADJ_NORTHERN_EUROPE = new TerritoryName[] {SCANDINAVIA, GREAT_BRITAIN, UKRAINE,
             WESTERN_EUROPE, SOUTHERN_EUROPE};
-        private static final TerritoryName[] adjSCANDINAVIA = new TerritoryName[] {ICELAND, GREAT_BRITAIN, NORTHERN_EUROPE, UKRAINE};
-        private static final TerritoryName[] adjUKRAINE = new TerritoryName[] {SCANDINAVIA, NORTHERN_EUROPE, SOUTHERN_EUROPE,
+        private static final TerritoryName[] ADJ_SCANDINAVIA = new TerritoryName[] {ICELAND, GREAT_BRITAIN, NORTHERN_EUROPE, UKRAINE};
+        private static final TerritoryName[] ADJ_UKRAINE = new TerritoryName[] {SCANDINAVIA, NORTHERN_EUROPE, SOUTHERN_EUROPE,
             MIDDLE_EAST, AFGHANISTAN, URAL};
 
         // Asia
-        private static final TerritoryName[] adjURAL = new TerritoryName[] {UKRAINE, SIBERIA, CHINA, AFGHANISTAN};
-        private static final TerritoryName[] adjSIBERIA = new TerritoryName[] {URAL, YAKUTSK, IRKUTSK, MONGOLIA, CHINA};
-        private static final TerritoryName[] adjAFGHANISTAN = new TerritoryName[] {URAL, CHINA, INDIA, MIDDLE_EAST, UKRAINE};
-        private static final TerritoryName[] adjCHINA = new TerritoryName[] {URAL, SIBERIA, MONGOLIA, SIAM, INDIA, AFGHANISTAN};
-        private static final TerritoryName[] adjINDIA = new TerritoryName[] {CHINA, SIAM, AFGHANISTAN, MIDDLE_EAST};
-        private static final TerritoryName[] adjIRKUTSK = new TerritoryName[] {YAKUTSK, KAMCHATKA, MONGOLIA, SIBERIA};
-        private static final TerritoryName[] adjJAPAN = new TerritoryName[] {KAMCHATKA, MONGOLIA};
-        private static final TerritoryName[] adjKAMCHATKA = new TerritoryName[] {YAKUTSK, IRKUTSK, MONGOLIA, JAPAN};
-        private static final TerritoryName[] adjMIDDLE_EAST = new TerritoryName[] {UKRAINE, SOUTHERN_EUROPE, EGYPT,
+        private static final TerritoryName[] ADJ_URAL = new TerritoryName[] {UKRAINE, SIBERIA, CHINA, AFGHANISTAN};
+        private static final TerritoryName[] ADJ_SIBERIA = new TerritoryName[] {URAL, YAKUTSK, IRKUTSK, MONGOLIA, CHINA};
+        private static final TerritoryName[] ADJ_AFGHANISTAN = new TerritoryName[] {URAL, CHINA, INDIA, MIDDLE_EAST, UKRAINE};
+        private static final TerritoryName[] ADJ_CHINA = new TerritoryName[] {URAL, SIBERIA, MONGOLIA, SIAM, INDIA, AFGHANISTAN};
+        private static final TerritoryName[] ADJ_INDIA = new TerritoryName[] {CHINA, SIAM, AFGHANISTAN, MIDDLE_EAST};
+        private static final TerritoryName[] ADJ_IRKUTSK = new TerritoryName[] {YAKUTSK, KAMCHATKA, MONGOLIA, SIBERIA};
+        private static final TerritoryName[] ADJ_JAPAN = new TerritoryName[] {KAMCHATKA, MONGOLIA};
+        private static final TerritoryName[] ADJ_KAMCHATKA = new TerritoryName[] {YAKUTSK, IRKUTSK, MONGOLIA, JAPAN};
+        private static final TerritoryName[] ADJ_MIDDLE_EAST = new TerritoryName[] {UKRAINE, SOUTHERN_EUROPE, EGYPT,
             EAST_AFRICA, AFGHANISTAN, INDIA};
-        private static final TerritoryName[] adjMONGOLIA = new TerritoryName[] {CHINA, SIBERIA, IRKUTSK, KAMCHATKA, JAPAN};
-        private static final TerritoryName[] adjSIAM = new TerritoryName[] {CHINA, INDIA, INDONESIA};
-        private static final TerritoryName[] adjYAKUTSK = new TerritoryName[] {SIBERIA, IRKUTSK, KAMCHATKA};
+        private static final TerritoryName[] ADJ_MONGOLIA = new TerritoryName[] {CHINA, SIBERIA, IRKUTSK, KAMCHATKA, JAPAN};
+        private static final TerritoryName[] ADJ_SIAM = new TerritoryName[] {CHINA, INDIA, INDONESIA};
+        private static final TerritoryName[] ADJ_YAKUTSK = new TerritoryName[] {SIBERIA, IRKUTSK, KAMCHATKA};
 
         // Africa
-        private static final TerritoryName[] adjNORTH_AFRICA = new TerritoryName[] {WESTERN_EUROPE, SOUTHERN_EUROPE, EGYPT, CONGO, EAST_AFRICA, BRAZIL};
-        private static final TerritoryName[] adjEGYPT = new TerritoryName[] {SOUTHERN_EUROPE, NORTH_AFRICA, MIDDLE_EAST, EAST_AFRICA};
-        private static final TerritoryName[] adjCONGO = new TerritoryName[] {NORTH_AFRICA, EAST_AFRICA, SOUTH_AFRICA};
-        private static final TerritoryName[] adjEAST_AFRICA = new TerritoryName[] {EGYPT, NORTH_AFRICA, CONGO, SOUTH_AFRICA, MADAGASCAR};
-        private static final TerritoryName[] adjSOUTH_AFRICA = new TerritoryName[] {CONGO, EAST_AFRICA, MADAGASCAR};
-        private static final TerritoryName[] adjMADAGASCAR = new TerritoryName[] {EAST_AFRICA, SOUTH_AFRICA};
+        private static final TerritoryName[] ADJ_NORTH_AFRICA = new TerritoryName[] {WESTERN_EUROPE, SOUTHERN_EUROPE, EGYPT, CONGO, EAST_AFRICA, BRAZIL};
+        private static final TerritoryName[] ADJ_EGYPT = new TerritoryName[] {SOUTHERN_EUROPE, NORTH_AFRICA, MIDDLE_EAST, EAST_AFRICA};
+        private static final TerritoryName[] ADJ_CONGO = new TerritoryName[] {NORTH_AFRICA, EAST_AFRICA, SOUTH_AFRICA};
+        private static final TerritoryName[] ADJ_EAST_AFRICA = new TerritoryName[] {EGYPT, NORTH_AFRICA, CONGO, SOUTH_AFRICA, MADAGASCAR};
+        private static final TerritoryName[] ADJ_SOUTH_AFRICA = new TerritoryName[] {CONGO, EAST_AFRICA, MADAGASCAR};
+        private static final TerritoryName[] ADJ_MADAGASCAR = new TerritoryName[] {EAST_AFRICA, SOUTH_AFRICA};
 
         // Australia
-        private static final TerritoryName[] adjEASTERN_AUSTRALIA = new TerritoryName[] {WESTERN_AUSTRALIA, NEW_GUINEA};
-        private static final TerritoryName[] adjINDONESIA = new TerritoryName[] {NEW_GUINEA, WESTERN_AUSTRALIA, SIAM};
-        private static final TerritoryName[] adjNEW_GUINEA = new TerritoryName[] {INDONESIA, WESTERN_AUSTRALIA, EASTERN_AUSTRALIA};
-        private static final TerritoryName[] adjWESTERN_AUSTRALIA = new TerritoryName[] {INDONESIA, NEW_GUINEA, EASTERN_AUSTRALIA};
+        private static final TerritoryName[] ADJ_EASTERN_AUSTRALIA = new TerritoryName[] {WESTERN_AUSTRALIA, NEW_GUINEA};
+        private static final TerritoryName[] ADJ_INDONESIA = new TerritoryName[] {NEW_GUINEA, WESTERN_AUSTRALIA, SIAM};
+        private static final TerritoryName[] ADJ_NEW_GUINEA = new TerritoryName[] {INDONESIA, WESTERN_AUSTRALIA, EASTERN_AUSTRALIA};
+        private static final TerritoryName[] ADJ_WESTERN_AUSTRALIA = new TerritoryName[] {INDONESIA, NEW_GUINEA, EASTERN_AUSTRALIA};
 
-        private static final TerritoryName[][] ADJTOTAL = new TerritoryName[][] {
+        private static final TerritoryName[][] ADJ_TOTAL = new TerritoryName[][] {
             // NORTH AMERICA
-            adjAlaska, adjNorthwestTerritory, adjAlberta, adjOntario, adjQuebec, adjGreenland, adjCentralAmerica,
-            adjWesternUnitedStates, adjEASTERN_UNITED_STATES,
+            ADJ_ALASKA, ADJ_NORTHWEST_TERRITORY, ADJ_ALBERTA, ADJ_ONTARIO, ADJ_QUEBEC, ADJ_GREENLAND, ADJ_CENTRAL_AMERICA,
+            ADJ_WESTERN_UNITED_STATES, ADJ_EASTERN_UNITED_STATES,
 
             // SOUTH AMERICA
-            adjVENEZUELA, adjBRAZIL, adjPERU, adjARGENTINA,
+            ADJ_VENEZUELA, ADJ_BRAZIL, ADJ_PERU, ADJ_ARGENTINA,
 
             // EUROPE
-            adjICELAND, adjGREAT_BRITAIN, adjWESTERN_EUROPE, adjSOUTHERN_EUROPE, adjNORTHERN_EUROPE, adjSCANDINAVIA, adjUKRAINE,
+            ADJ_ICELAND, ADJ_GREAT_BRITAIN, ADJ_WESTERN_EUROPE, ADJ_SOUTHERN_EUROPE, ADJ_NORTHERN_EUROPE, ADJ_SCANDINAVIA, ADJ_UKRAINE,
 
             // ASIA
-            adjURAL, adjSIBERIA, adjAFGHANISTAN, adjCHINA, adjINDIA, adjIRKUTSK, adjJAPAN, adjKAMCHATKA,
-            adjMIDDLE_EAST, adjMONGOLIA, adjSIAM, adjYAKUTSK,
+            ADJ_URAL, ADJ_SIBERIA, ADJ_AFGHANISTAN, ADJ_CHINA, ADJ_INDIA, ADJ_IRKUTSK, ADJ_JAPAN, ADJ_KAMCHATKA,
+            ADJ_MIDDLE_EAST, ADJ_MONGOLIA, ADJ_SIAM, ADJ_YAKUTSK,
 
             // AFRICA
-            adjNORTH_AFRICA, adjEGYPT, adjCONGO, adjEAST_AFRICA, adjSOUTH_AFRICA, adjMADAGASCAR,
+            ADJ_NORTH_AFRICA, ADJ_EGYPT, ADJ_CONGO, ADJ_EAST_AFRICA, ADJ_SOUTH_AFRICA, ADJ_MADAGASCAR,
 
             // AUSTRALIA
-            adjEASTERN_AUSTRALIA, adjINDONESIA, adjNEW_GUINEA, adjWESTERN_AUSTRALIA};
+            ADJ_EASTERN_AUSTRALIA, ADJ_INDONESIA, ADJ_NEW_GUINEA, ADJ_WESTERN_AUSTRALIA};
     }
     //endregion
 
@@ -196,8 +196,8 @@ public class Territory {
      * Creates all the territories adjacent territories in the map.
      */
     public static void init() {
-        if (adjacency.size() == 0) {
-            for (TerritoryName[] array : TerritoryName.ADJTOTAL) {
+        if (adjacency.isEmpty()) {
+            for (TerritoryName[] array : TerritoryName.ADJ_TOTAL) {
                 adjacency.add(Arrays.asList(array));
             }
         }
