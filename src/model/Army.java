@@ -47,21 +47,21 @@ public class Army {
     }
 
     /**
-     * Returns the value of the army in "Infantry units"
+     * Returns the value of the army in "Infantry units".
      * Type Infantry -> Value 1
      * Type Cavalry -> Value 5
      * Type Artillery -> Value 10
      * @return the value of the type of army
      */
     public int getValue() {
-        int k = ArmyType.values().length - 1;
+        int factor = ArmyType.values().length - 1;
         int value = 1;
         int ordinal = type.ordinal();
         while (ordinal > 0) {
-            value = value << k;
-            value += k - 1;
+            value = value << factor;
+            value += factor - 1;
             ordinal--;
-            k--;
+            factor--;
         }
         return value;
     }

@@ -119,7 +119,7 @@ public class Game {
     public void giveArmiesToPlayer(Player player, int num) {
         int[] availableByType = new int[3];
         ArrayList<Army> availableArmies = this.allArmies.get(player.getColor());
-        for (Army availableArmy : availableArmies){
+        for (Army availableArmy : availableArmies) {
             availableByType[availableArmy.getType().ordinal()]++;
         }
         int[] givenByType = new int[3];
@@ -251,11 +251,12 @@ public class Game {
 
     /**
      * Starts the game handling the different states.
+     * @param callback The event to call with respect to game status.
      */
     public void play(GameCallback callback) {
-        while(this.status != GameStatus.EXIT) {
+        while (this.status != GameStatus.EXIT) {
             boolean result = false;
-            switch(this.status) {
+            switch (this.status) {
                 case MENU:
                     result = callback.onMainMenu();
                     break;
