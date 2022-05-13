@@ -61,8 +61,18 @@ public class GameTest {
         game.initArmies();
 
         for (Territory territory : game.getBoard().getContinents().get(0).getTerritories()) {
-            
+            p1.placeArmies(territory, 1);
         }
+
+        Integer[] p1Bonus = game.giveBonus(p1, -1);
+        assertEquals(
+                game.getBoard().getContinents().get(0).getTerritories().size() / 3,
+                (int)p1Bonus[0]);
+
+        assertEquals(game.getBoard().getContinents().get(0).getValue(), (int)p1Bonus[1]);
+
+        assertEquals(0, (int)p1Bonus[2]);
+
     }
 
     @Test

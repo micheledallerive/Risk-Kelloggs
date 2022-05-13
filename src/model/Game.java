@@ -131,11 +131,10 @@ public class Game {
     /**
      * Gives the turn bonus to the player and returns the value of armies gained
      * divided by reason (for UI purposes).
-     * @param game the game the player is playing in
      * @param player the player to give the bonus to
      * @param indexCardsCombination the combination of cards that the player wants to play
      */
-    public Integer[] giveBonus(Game game, Player player, int indexCardsCombination) {
+    public Integer[] giveBonus(Player player, int indexCardsCombination) {
         Integer[] bonus = new Integer[3];
 
         /* bonus = 1 every 3 territories
@@ -146,17 +145,19 @@ public class Game {
         bonus[0] = player.getTerritories().size() / 3;
 
         // continent bonus
-        for (Continent continent : game.getBoard().getContinents()) {
+        for (Continent continent : this.getBoard().getContinents()) {
             if (continent.getOwner().getColor() == player.getColor()) {
                 bonus[1] += continent.getValue();
             }
         }
 
-        // cards bonus
-        int combinationArmies = player.playCardsCombination(
-                player.getCardCombinations().get(indexCardsCombination)
-        );
-        bonus[2] = combinationArmies;
+        if (indexCardsCombination != -1) {
+            // cards bonus
+            int combinationArmies = player.playCardsCombination(
+                    player.getCardCombinations().get(indexCardsCombination)
+            );
+            bonus[2] = combinationArmies;
+        }
 
         // add the bonus to the player
         giveArmiesToPlayer(player, bonus[0] + bonus[1] + bonus[2]);
