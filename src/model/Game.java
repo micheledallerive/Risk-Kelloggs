@@ -89,23 +89,16 @@ public class Game {
                 ArmyColor color = player.getColor();
                 ArrayList<Army> colorArmies = new ArrayList<>();
 
-                for (int i = 0; i < numInfantry; i++) {
-                    player.getArmies().add(new Army(ArmyType.INFANTRY, color, null));
-                }
-
-                for (int i = 0; i < 40 - numInfantry; i++) {
+                // Since we are only using INFANTRY instead of using also CAVALRY and ARTILLERY,
+                // the total amount of INFANTRY is 40 (the normal value) + 12 (CAVALRY) * 5 (the value)
+                // + 8 (ARTILLERY) * 10 (the value) = 40 + 140.
+                for (int i = 0; i < 140 + 40; i++) {
                     colorArmies.add(new Army(ArmyType.INFANTRY, color, null));
                 }
 
-                for (int i = 0; i < 12; i++) {
-                    colorArmies.add(new Army(ArmyType.CAVALRY, color, null));
-                }
-
-                for (int i = 0; i < 8; i++) {
-                    colorArmies.add(new Army(ArmyType.ARTILLERY, color, null));
-                }
-
                 this.allArmies.put(color, colorArmies);
+
+                giveArmiesToPlayer(player, numInfantry);
 
             }
         }
@@ -117,14 +110,8 @@ public class Game {
      * @param num the amount of armies
      */
     public void giveArmiesToPlayer(Player player, int num) {
-        int[] availableByType = new int[3];
-        ArrayList<Army> availableArmies = this.allArmies.get(player.getColor());
-        for (Army availableArmy : availableArmies) {
-            availableByType[availableArmy.getType().ordinal()]++;
-        }
-        int[] givenByType = new int[3];
-        int[] armyValues = new int[] {1,5,10};
-        // todo finish: find a way to give as many infantry as possible it's not an hard algorithm
+        player.getArmies().addAll(this.allArmies.get(player.getColor()).subList(0, num));
+        this.allArmies.get(player.getColor()).removeAll(this.allArmies.get(player.getColor()).subList(0, num));
     }
 
     /**

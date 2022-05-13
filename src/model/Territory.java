@@ -196,8 +196,10 @@ public class Territory {
      * Creates all the territories adjacent territories in the map.
      */
     public static void init() {
-        for (TerritoryName[] array : TerritoryName.ADJTOTAL) {
-            adjacency.add(Arrays.asList(array));
+        if (adjacency.size() == 0) {
+            for (TerritoryName[] array : TerritoryName.ADJTOTAL) {
+                adjacency.add(Arrays.asList(array));
+            }
         }
     }
 
