@@ -46,29 +46,9 @@ public class Army {
     public static int getValue(ArrayList<Army> armies) {
         int totalValue = 0;
         for (Army army : armies) {
-            totalValue += army.getValue();
+            totalValue += army.calculateValue();
         }
         return totalValue;
-    }
-
-    /**
-     * Returns the value of the army in "Infantry units".
-     * Type Infantry -> Value 1
-     * Type Cavalry -> Value 5
-     * Type Artillery -> Value 10
-     * @return the value of the type of army
-     */
-    public int getValue() {
-        int factor = ArmyType.values().length - 1;
-        int value = 1;
-        int ordinal = type.ordinal();
-        while (ordinal > 0) {
-            value <<= factor;
-            value += factor - 1;
-            ordinal--;
-            factor--;
-        }
-        return value;
     }
 
     /**
@@ -101,6 +81,39 @@ public class Army {
      */
     public void setTerritory(Territory territory) {
         this.territory = territory;
+    }
+    //endregion
+
+    //region METHODS
+    /**
+     * Returns the value of the army in "Infantry units".
+     * Type Infantry -> Value 1
+     * Type Cavalry -> Value 5
+     * Type Artillery -> Value 10
+     * @return the value of the type of army
+     */
+    public int calculateValue() {
+        int factor = ArmyType.values().length - 1;
+        int value = 1;
+        int ordinal = type.ordinal();
+        while (ordinal > 0) {
+            value <<= factor;
+            value += factor - 1;
+            ordinal--;
+            factor--;
+        }
+        return value;
+    }
+
+    /**
+     * Function - string representation of the object.
+     * @return String representation
+     */
+    @Override
+    public String toString() {
+        return "Army: Type= " + this.type.toString()
+                + "\tColor= " + this.color.toString()
+                + "\tTerritory= " + this.territory.toString();
     }
     //endregion
 }

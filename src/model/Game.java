@@ -134,6 +134,7 @@ public class Game {
      * @param game the game the player is playing in
      * @param player the player to give the bonus to
      * @param indexCardsCombination the combination of cards that the player wants to play
+     * @return Integer array representing bonus
      */
     public Integer[] giveBonus(Game game, Player player, int indexCardsCombination) {
         Integer[] bonus = new Integer[3];
