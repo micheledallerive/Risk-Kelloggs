@@ -76,11 +76,10 @@ public class Card {
     public static int trioType(final Card[] cards) {
         if (sameTypes(cards[0], cards[1], cards[2])) {
             return 1;
-        } else if (differentTypes(cards[0], cards[1], cards[2])) {
-            return 2;
-        } else {
+        } else if (wildTrio(cards[0], cards[1], cards[2])) {
             return 3;
         }
+        return 2;
     }
 
     /**
@@ -102,7 +101,10 @@ public class Card {
      * @return true if the cards have a different type
      */
     private static boolean differentTypes(final Card c1, final Card c2, final Card c3) {
-        return c1.type != c2.type && c1.type != c3.type && c2.type != c3.type;
+        return c1.type != c2.type
+                && c1.type != c3.type
+                && c2.type != c3.type
+                && !wildTrio(c1, c2, c3);
     }
 
     /**
@@ -113,9 +115,13 @@ public class Card {
      * @return true if the trio is valid combination with a wild card.
      */
     private static boolean wildTrio(final Card c1, final Card c2, final Card c3) {
-        return c1.type == c2.type && c3.type == CardType.WILD
-                || c1.type == c3.type && c2.type == CardType.WILD
-                || c2.type == c3.type && c1.type == CardType.WILD;
+        int wildCount = 0;
+        for (final Card card : new Card[] {c1, c2, c3}) {
+            if (card.type == CardType.WILD) {
+                wildCount++;
+            }
+        }
+        return wildCount == 1;
     }
 
     /**

@@ -238,7 +238,7 @@ public class Player {
             case 2: // three different cards
                 armiesCount += 10;
                 break;
-            case 3:
+            default:
                 armiesCount += 12;
                 break;
         }
