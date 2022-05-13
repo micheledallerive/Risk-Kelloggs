@@ -1,7 +1,7 @@
 package model;
 
+import model.Territory.TerritoryName;
 import model.enums.CardType;
-import model.enums.TerritoryName;
 
 //import java.util.Arrays;
 //import java.util.List;
@@ -98,9 +98,9 @@ public class Card {
      * @return true if the trio is valid combination with a wild card.
      */
     private static boolean wildTrio(final Card c1, final Card c2, final Card c3) {
-        return (c1.type == c2.type && c3.type == CardType.WILD)
-                || (c1.type == c3.type && c2.type == CardType.WILD)
-                || (c2.type == c3.type && c1.type == CardType.WILD);
+        return c1.type == c2.type && c3.type == CardType.WILD
+                || c1.type == c3.type && c2.type == CardType.WILD
+                || c2.type == c3.type && c1.type == CardType.WILD;
     }
 
     /**

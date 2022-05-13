@@ -3,7 +3,7 @@ package test;
 import model.Player;
 import model.Territory;
 import model.enums.ArmyColor;
-import model.enums.TerritoryName;
+import model.Territory.TerritoryName;
 
 import static org.junit.Assert.*;
 import org.junit.After;

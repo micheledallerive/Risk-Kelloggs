@@ -1,10 +1,21 @@
 package tui;
 
-import static tui.Utils.*;
+import static tui.Utils.clearConsole;
+import static tui.Utils.consolePause;
+import static tui.Utils.print;
+import static tui.Utils.printFormat;
+import static tui.Utils.printInfo;
+import static tui.Utils.printMap;
+import static tui.Utils.printOptions;
 
-import model.*;
+import model.AI;
+import model.Callback;
+import model.Die;
+import model.Game;
+import model.Player;
+import model.Territory;
+import model.Territory.TerritoryName;
 import model.enums.GameStatus;
-import model.enums.TerritoryName;
 
 import java.util.ArrayList;
 import java.util.Arrays;

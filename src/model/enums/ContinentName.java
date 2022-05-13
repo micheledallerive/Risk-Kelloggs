@@ -6,9 +6,9 @@ package model.enums;
  */
 public enum ContinentName {
     NORTH_AMERICA,
+    SOUTH_AMERICA,
     EUROPE,
     ASIA,
-    SOUTH_AMERICA,
     AFRICA,
     AUSTRALIA
 }

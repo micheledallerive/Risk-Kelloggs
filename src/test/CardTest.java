@@ -2,7 +2,7 @@ package test;
 
 import model.Card;
 import model.enums.CardType;
-import model.enums.TerritoryName;
+import model.Territory.TerritoryName;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;

@@ -1,10 +1,10 @@
 package model;
 
+import model.Territory.TerritoryName;
 import model.enums.ArmyColor;
 import model.enums.ArmyType;
 import model.enums.CardType;
 import model.enums.GameStatus;
-import model.enums.TerritoryName;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -48,7 +48,7 @@ public class Game {
     public Game(Board board, ArrayList<Player> players) {
         Territory.init();
         Continent.init();
-        StaticRandom.init();
+        RandomUtil.init();
         Die.init();
 
         this.board = board == null ? new Board() : board;
@@ -118,7 +118,7 @@ public class Game {
         if (this.cardsDeck.size() < 1) {
             return null;
         }
-        int randomIndex = StaticRandom.random.nextInt(this.cardsDeck.size());
+        int randomIndex = RandomUtil.random.nextInt(this.cardsDeck.size());
         Card card = this.cardsDeck.get(randomIndex);
         this.cardsDeck.remove(randomIndex);
         return card;

@@ -1,63 +1,101 @@
 package model;
 
-import static model.enums.TerritoryName.*;
-
+import model.Territory.TerritoryName;
 import model.enums.ContinentName;
-import model.enums.TerritoryName;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 
-
 /**
  * Represents a continent in the Risk map.
- * @author dallem@usi.ch
+ * @author dallem@usi.ch, moralj@usi.ch
  */
 public class Continent {
     //region FIELDS
-    public static List<List<TerritoryName>> TERRITORIES;
-    public static int[] VALUES;
+    public static List<List<TerritoryName>> territories;
+    public static int[] values;
 
     private final ContinentName name;
     private final ArrayList<Territory> countries;
-    private final int value;  // index of the continent in TERRITORIES
+    private final int value;  // index of the continent in territories
     //endregion
 
+    //region CONSTRUCTOR
     /**
      * Creates a new continent in the map.
-     * @param name the name of the continent
+     * @param name      the name of the continent
      * @param countries the countries that are inside the continent
-     * @param value the value if a player owns the whole continent
+     * @param value     the value if a player owns the whole continent
      */
     public Continent(ContinentName name, ArrayList<Territory> countries, int value) {
         this.name = name;
         this.countries = countries;
         this.value = value;
     }
+    //endregion
+
+    //region GETTERS AND SETTERS
+
+    /**
+     * Function - get continent values of a specified range in TerritoryName ordered enum declarations.
+     * @param start Start index number
+     * @param end End index number
+     * @return Territories of a continent ranged enum values in array collection.
+     */
+    private static TerritoryName[] getContinentValues(final byte start, final byte end) {
+        TerritoryName[] array = new TerritoryName[end - start];
+        for (byte i = start; i < end; i++) {
+            array[i - start] = TerritoryName.values()[i];
+        }
+        return array;
+    }
+
+    /**
+     * Function - get continent territories specified by continent name enum value.
+     * @param continent Continent enum value to get territories from.
+     * @return Territories enum array.
+     */
+    public static TerritoryName[] getContinentTerritories(final ContinentName continent) {
+        TerritoryName[] result = null;
+        switch (continent) {
+            case NORTH_AMERICA:
+                result = getContinentValues(Territory.INIT_NORTH_AMERICA, Territory.END_NORTH_AMERICA);
+                break;
+            case SOUTH_AMERICA:
+                result = getContinentValues(Territory.INIT_SOUTH_AMERICA, Territory.END_SOUTH_AMERICA);
+                break;
+            case EUROPE:
+                result = getContinentValues(Territory.INIT_EUROPE, Territory.END_EUROPE);
+                break;
+            case ASIA:
+                result = getContinentValues(Territory.INIT_ASIA, Territory.END_ASIA);
+                break;
+            case AFRICA:
+                result = getContinentValues(Territory.INIT_AFRICA, Territory.END_AFRICA);
+                break;
+            case AUSTRALIA:
+                result = getContinentValues(Territory.INIT_AUSTRALIA, Territory.END_AUSTRALIA);
+                break;
+            default:break;
+        }
+        return result;
+    }
 
     /**
      * Initialize the Continent static values.
      */
     public static void init() {
-        TERRITORIES = Arrays.asList(
-                Arrays.asList(ALASKA, NORTH_WEST_TERRITORY, GREENLAND,
-                        ALBERTA, ONTARIO, QUEBEC, WESTERN_UNITED_STATES,
-                        EASTERN_UNITED_STATES, CENTRAL_AMERICA),
-                Arrays.asList(ICELAND, SCANDINAVIA, GREAT_BRITAIN,
-                        NORTHERN_EUROPE, UKRAINE, WESTERN_EUROPE,
-                        SOUTHERN_EUROPE),
-                Arrays.asList(URAL, SIBERIA, YAKUTSK, IRKUTSK,
-                        KAMCHATKA, AFGHANISTAN, CHINA, MONGOLIA,
-                        JAPAN, MIDDLE_EAST, INDIA, SIAM),
-                Arrays.asList(VENEZUELA, BRAZIL, PERU, ARGENTINA),
-                Arrays.asList(NORTH_AFRICA, EGYPT, CONGO,
-                        EAST_AFRICA, SOUTH_AFRICA, MADAGASCAR),
-                Arrays.asList(INDONESIA, NEW_GUINEA,
-                        WESTERN_AUSTRALIA, EASTERN_AUSTRALIA)
+        territories = Arrays.asList(
+                Arrays.asList(getContinentTerritories(ContinentName.NORTH_AMERICA)),
+                Arrays.asList(getContinentTerritories(ContinentName.SOUTH_AMERICA)),
+                Arrays.asList(getContinentTerritories(ContinentName.EUROPE)),
+                Arrays.asList(getContinentTerritories(ContinentName.ASIA)),
+                Arrays.asList(getContinentTerritories(ContinentName.AFRICA)),
+                Arrays.asList(getContinentTerritories(ContinentName.AUSTRALIA))
         );
-        VALUES = new int[] {5, 5, 7, 2, 3, 2};
+        values = new int[] {5, 2, 5, 7, 3, 2};
     }
 
     /**
@@ -91,13 +129,15 @@ public class Continent {
     public ArrayList<Territory> getTerritories() {
         return this.countries;
     }
+    //endregion
 
+    //region METHODS
     /**
      * Checks if the whole continent is occupied by a single person.
      * @return true if a player owns all the continent
      */
     public boolean isOccupied() {
-        if (countries.size() == 0) {
+        if (countries.isEmpty()) {
             return false;
         }
         for (int i = 1; i < countries.size(); i++) {
@@ -120,4 +160,5 @@ public class Continent {
         }
         return null;
     }
+    //endregion
 }

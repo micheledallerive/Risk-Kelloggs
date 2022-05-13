@@ -6,8 +6,12 @@ import java.util.Random;
  * Class for initialize a unique random seed to generate pseudo-random code.
  * @author dallem@usi.ch, moralj@usi.ch
  */
-public class StaticRandom {
+public final class RandomUtil {
     public static Random random;
+
+    private RandomUtil() {
+        // eskere
+    }
 
     /**
      * Init method to create a random object to store it in the class for the whole game.

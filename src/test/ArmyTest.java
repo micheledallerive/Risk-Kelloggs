@@ -4,7 +4,7 @@ import model.Army;
 import model.Territory;
 import model.enums.ArmyColor;
 import model.enums.ArmyType;
-import model.enums.TerritoryName;
+import model.Territory.TerritoryName;
 import org.junit.Test;
 
 import static org.junit.Assert.*;

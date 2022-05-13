@@ -3,7 +3,6 @@ package model;
 import model.enums.ArmyColor;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -48,9 +47,9 @@ public class AI extends Player {
         if (available.size() == 0) {
             return;
         }
-        Territory from = available.get(StaticRandom.random.nextInt(available.size()));
+        Territory from = available.get(RandomUtil.random.nextInt(available.size()));
         Territory attackedTerritory = from.getAdjacent().get(
-                StaticRandom.random.nextInt(from.getAdjacent().size())
+                RandomUtil.random.nextInt(from.getAdjacent().size())
         );
         Player attackedPlayer = attackedTerritory.getOwner();
         if (attackedPlayer.isAI()) {
@@ -77,11 +76,11 @@ public class AI extends Player {
             }
         }
         if (freeTerritories.size() > 0) {
-            chosen = freeTerritories.get(StaticRandom.random.nextInt(freeTerritories.size()));
+            chosen = freeTerritories.get(RandomUtil.random.nextInt(freeTerritories.size()));
         } else {
             ArrayList<Territory> territories = this.getTerritories();
             System.out.println(territories.size());
-            chosen = territories.get(StaticRandom.random.nextInt(territories.size()));
+            chosen = territories.get(RandomUtil.random.nextInt(territories.size()));
         }
         int freeArmies = this.getFreeArmies().size();
         if (freeArmies < 1) {
@@ -89,7 +88,7 @@ public class AI extends Player {
         }
         int amount = onlyOne
                 ? 1
-                : StaticRandom.random.nextInt(Math.min(10, freeArmies)) + 1;
+                : RandomUtil.random.nextInt(Math.min(10, freeArmies)) + 1;
         this.placeArmies(chosen, amount);
         return chosen;
     }

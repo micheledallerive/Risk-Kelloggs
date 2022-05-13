@@ -145,7 +145,7 @@ public class Die {
      * Rolls the dice and stores the outcome.
      */
     public void roll() {
-        this.number = (byte) (StaticRandom.random.nextInt(MAX) + MIN + 1);
+        this.number = (byte) (RandomUtil.random.nextInt(MAX) + MIN + 1);
     }
 
     /**

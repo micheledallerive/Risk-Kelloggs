@@ -1,7 +1,7 @@
 package model;
 
+import model.Territory.TerritoryName;
 import model.enums.ContinentName;
-import model.enums.TerritoryName;
 
 import java.util.ArrayList;
 
@@ -78,11 +78,11 @@ public class Board {
         // foreach continent
         for (final ContinentName continentName : ContinentName.values()) {
             final int continentIndex = continentName.ordinal();
-            final int continentValue = Continent.VALUES[continentIndex]; // get number of territories in continent
+            final int continentValue = Continent.values[continentIndex]; // get number of territories in continent
             final ArrayList<Territory> continentTerritories = new ArrayList<>();
 
             // foreach territory in a continent, add it to this current continent object
-            for (final TerritoryName territoryName : Continent.TERRITORIES.get(continentIndex)) {
+            for (final TerritoryName territoryName : Continent.territories.get(continentIndex)) {
                 final Territory territory = this.territories.get(territoryName.ordinal());
                 continentTerritories.add(territory);
             }

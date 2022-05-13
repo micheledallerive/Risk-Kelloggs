@@ -3,7 +3,13 @@ package model;
 import model.enums.ArmyColor;
 import model.enums.DieColor;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -110,18 +116,18 @@ public class Player {
         List<ArmyColor> colors = Arrays.asList(ArmyColor.values());
         Collections.shuffle(colors);
 
-        byte i = 0;
+        byte index = 0;
 
-        while (i < users) {
-            ArmyColor color = colors.get(i);
-            players.add(new Player(color, names[i]));
-            i++;
+        while (index < users) {
+            ArmyColor color = colors.get(index);
+            players.add(new Player(color, names[index]));
+            index++;
         }
 
-        while (i < tot) {
-            ArmyColor color = colors.get(i);
+        while (index < tot) {
+            ArmyColor color = colors.get(index);
             players.add(new AI(color));
-            i++;
+            index++;
         }
         return players;
     }
