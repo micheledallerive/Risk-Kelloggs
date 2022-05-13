@@ -44,7 +44,7 @@ public class GameTest {
         assertTrue(p1.getArmies().isEmpty());
     }
 
-    /*@Test
+    @Test
     public void testGiveBonus() {
         Territory.init();
         Continent.init();
@@ -76,7 +76,7 @@ public class GameTest {
 
         assertEquals(0, p1Bonus[2]);
 
-    }*/
+    }
 
     @Test
     public void testCards() {
