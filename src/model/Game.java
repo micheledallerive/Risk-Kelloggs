@@ -238,11 +238,12 @@ public class Game {
 
     /**
      * Starts the game handling the different states.
+     * @param callback The event to call with respect to game status.
      */
     public void play(GameCallback callback) {
-        while(this.status != GameStatus.EXIT) {
+        while (this.status != GameStatus.EXIT) {
             boolean result = false;
-            switch(this.status) {
+            switch (this.status) {
                 case MENU:
                     result = callback.onMainMenu();
                     break;

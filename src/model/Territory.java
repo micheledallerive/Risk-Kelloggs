@@ -106,8 +106,8 @@ public class Territory {
 
         private static final TerritoryName[][] ADJTOTAL = new TerritoryName[][] {
             // NORTH AMERICA
-                adjAlaska, adjNorthwestTerritory, adjAlberta, adjOntario, adjQuebec, adjGreenland, adjCentralAmerica,
-                adjWesternUnitedStates, adjEASTERN_UNITED_STATES,
+            adjAlaska, adjNorthwestTerritory, adjAlberta, adjOntario, adjQuebec, adjGreenland, adjCentralAmerica,
+            adjWesternUnitedStates, adjEASTERN_UNITED_STATES,
 
             // SOUTH AMERICA
             adjVENEZUELA, adjBRAZIL, adjPERU, adjARGENTINA,

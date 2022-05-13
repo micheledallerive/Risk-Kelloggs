@@ -9,13 +9,13 @@ import static tui.Utils.printMap;
 import static tui.Utils.printOptions;
 
 import model.AI;
-import model.callback.Callback;
-import model.callback.GameCallback;
 import model.Die;
 import model.Game;
 import model.Player;
 import model.Territory;
 import model.Territory.TerritoryName;
+import model.callback.Callback;
+import model.callback.GameCallback;
 import model.enums.GameStatus;
 
 import java.util.ArrayList;

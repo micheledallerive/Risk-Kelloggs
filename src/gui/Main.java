@@ -2,18 +2,22 @@ package gui;
 
 import gui.views.JMainMenu;
 import model.Game;
-import model.callback.GameCallback;
 import model.enums.GameStatus;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
+import java.awt.BorderLayout;
+import java.awt.CardLayout;
+import java.awt.Container;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+
 
 /**
  * GUI class.
  * 
- * @author moralj@usi.ch
+ * @author moralj@usi.ch, dallem@usi.ch
  */
 public class Main {
     JPanel cards; //a panel that uses CardLayout
@@ -21,14 +25,23 @@ public class Main {
 
     Game game;
 
-    public void show(GameStatus what) {
-        if (what.toString().equals(current)) {
+    /**
+     * Procedure - show different game panel.
+     * @param currentStatus status to display
+     */
+    public void show(GameStatus currentStatus) {
+        if (currentStatus.toString().equals(current)) {
             return;
         }
         CardLayout cl = (CardLayout) (cards.getLayout());
-        cl.show(cards, what.toString());
-        current = what.toString();
+        cl.show(cards, currentStatus.toString());
+        current = currentStatus.toString();
     }
+
+    /**
+     * Procedure - setup the gui elements.
+     * @param pane Container object to add cards to.
+     */
     public void setup(Container pane) {
         // Create the game.
         this.game = new Game();
@@ -53,43 +66,43 @@ public class Main {
 
 
         show(GameStatus.MENU);
-//
-//        game.play(new GameCallback() {
-//            @Override
-//            public boolean onMainMenu() {
-//                //show(GameStatus.MENU);
-//                return false;
-//            }
-//
-//            @Override
-//            public boolean onGameSetup() {
-//
-//                return true;
-//            }
-//
-//            @Override
-//            public boolean onGamePlay() {
-//                show(GameStatus.PLAYING);
-//                return false;
-//            }
-//
-//            @Override
-//            public boolean onGamePause() {
-//                show(GameStatus.PAUSE);
-//                return false;
-//            }
-//
-//            @Override
-//            public boolean onGameEnd() {
-//                show(GameStatus.END);
-//                return false;
-//            }
-//
-//            @Override
-//            public void onGameExit() {
-//                System.exit(0);
-//            }
-//        });
+
+        // game.play(new GameCallback() {
+        //    @Override
+        //    public boolean onMainMenu() {
+        //        //show(GameStatus.MENU);
+        //        return false;
+        //    }
+        //
+        //    @Override
+        //    public boolean onGameSetup() {
+        //
+        //        return true;
+        //    }
+        //
+        //    @Override
+        //    public boolean onGamePlay() {
+        //        show(GameStatus.PLAYING);
+        //        return false;
+        //    }
+        //
+        //    @Override
+        //    public boolean onGamePause() {
+        //        show(GameStatus.PAUSE);
+        //        return false;
+        //    }
+        //
+        //    @Override
+        //    public boolean onGameEnd() {
+        //        show(GameStatus.END);
+        //        return false;
+        //    }
+        //
+        //    @Override
+        //    public void onGameExit() {
+        //        System.exit(0);
+        //    }
+        //});
     }
 
     /**
@@ -115,11 +128,15 @@ public class Main {
         frame.setVisible(true);
     }
 
+    /**
+     * Procedure - Main method.
+     * @param args Optional arguments.
+     */
     public static void main(String[] args) {
         /* Use an appropriate Look and Feel */
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-            //UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
+            // UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
         } catch (UnsupportedLookAndFeelException
                  | IllegalAccessException
                  | InstantiationException
