@@ -125,7 +125,7 @@ public class Card {
     }
 
     /**
-     * Returns the value of the card combination
+     * Returns the value of the card combination.
      * @param cards the trio of cards
      * @return the value of the card combination
      */

@@ -230,6 +230,8 @@ public class Player {
             }
         }
 
+        armiesCount += Card.getCombinationValue(cards);
+
 
         return armiesCount;
     }
