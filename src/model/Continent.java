@@ -45,8 +45,8 @@ public class Continent {
      * @return Territories of a continent ranged enum values in array collection.
      */
     private static TerritoryName[] getContinentValues(final byte start, final byte end) {
-        TerritoryName[] array = new TerritoryName[end - start];
-        for (byte i = start; i < end; i++) {
+        TerritoryName[] array = new TerritoryName[end + 1 - start];
+        for (byte i = start; i <= end; i++) {
             array[i - start] = TerritoryName.values()[i];
         }
         return array;

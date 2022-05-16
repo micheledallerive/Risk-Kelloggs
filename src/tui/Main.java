@@ -253,6 +253,7 @@ public class Main {
                 Territory attackedTerritory = game.getBoard().getTerritories().get(
                         TerritoryName.valueOf(toAttack).ordinal()
                 );
+                Player attackedPlayer = attackedTerritory.getOwner();
                 print("What territory do you want to attack from?");
                 String fromStr = input.nextLine().toUpperCase();
                 Territory fromTerritory = game.getBoard().getTerritories().get(
@@ -262,16 +263,21 @@ public class Main {
                 if (fromTerritory != null) {
                     canAttack = fromTerritory.getArmiesCount() > 1;
                 }
-                if (fromTerritory != null && canAttack) {
+                if (fromTerritory != null && canAttack
+                    && attackedTerritory.getOwner() != player) {
                     int attackerMaxArmies = Math.min(fromTerritory.getArmiesCount() - 1, 3);
                     print("How many armies do you want to use to attack (1 - "
                             + attackerMaxArmies + ")");
                     int attackerArmies = numInput.nextInt();
+                    attackerArmies = Math.min(attackerArmies, attackerMaxArmies);
+                    int defenderArmies = attackedTerritory.getArmiesCount();
                     Integer[] losses = player.attack(fromTerritory, attackedTerritory, attackerArmies);
-                    print(" lost " + losses[0] + " armies");
-                    print(attackedTerritory.getOwner().getColor().toString()
-                            + player.getName()
+                    print(player.getName() + " lost " + losses[0] + " armies");
+                    print(attackedPlayer.getColor().toString()
                             + " lost " + losses[1] + " armies");
+                    if (losses[1] == defenderArmies) {
+                        print("You conquered " + attackedTerritory.getName().toString() + "!");
+                    }
                 } else {
                     print("You can't attack that territory...");
                 }
