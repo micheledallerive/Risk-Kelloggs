@@ -23,6 +23,9 @@ public class Game {
     private GameStatus status;
     private ArrayList<Card> cardsDeck;
     private HashMap<ArmyColor, ArrayList<Army>> allArmies;
+    private int turnsPlayed;
+    private Player playerStarting;
+
     //endregion
 
     //region CONSTRUCTORS
@@ -58,6 +61,8 @@ public class Game {
         this.status = GameStatus.MENU;
         this.cardsDeck = new ArrayList<>();
         this.allArmies = new HashMap<>();
+        this.turnsPlayed = 0;
+        this.playerStarting = null;
 
         this.initCards();
     }
@@ -132,7 +137,7 @@ public class Game {
      * Gives the turn bonus to the player and returns the value of armies gained
      * divided by reason (for UI purposes).
      * @param player the player to give the bonus to
-     * @param indexCardsCombination the combination of cards that the player wants to play
+     * @param indexCardsCombination the combination of cards that the player wants to play (-1 to not play)
      * @return Integer array representing bonus
      */
     public int[] giveBonus(Player player, int indexCardsCombination) {
@@ -225,10 +230,37 @@ public class Game {
     }
 
     /**
+     * Returns the current number of turns each player played.
+     * @return the current number of turns each player played.
+     */
+    public int getTurnsPlayed() {
+        return this.turnsPlayed;
+    }
+
+    /**
+     * Sets the player that starts the game.
+     * @param player the player that starts the game.
+     */
+    public void setPlayerStarting(Player player) {
+        this.playerStarting = player;
+    }
+
+    /**
+     * Sets the current number of turns each player played.
+     * @param turnsPlayed the number of turns each player played.
+     */
+    public void setTurnsPlayed(int turnsPlayed) {
+        this.turnsPlayed = turnsPlayed;
+    }
+
+    /**
      * Updates the current turn to the next player.
      */
     public void nextTurn() {
         this.turn = (this.turn + 1) % this.players.size();
+        if(players.get(turn).getColor() == playerStarting.getColor()) {
+            this.turnsPlayed++;
+        }
     }
 
     /**

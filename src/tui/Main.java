@@ -1,18 +1,6 @@
 package tui;
 
-import static tui.Utils.clearConsole;
-import static tui.Utils.consolePause;
-import static tui.Utils.print;
-import static tui.Utils.printFormat;
-import static tui.Utils.printInfo;
-import static tui.Utils.printMap;
-import static tui.Utils.printOptions;
-
-import model.AI;
-import model.Die;
-import model.Game;
-import model.Player;
-import model.Territory;
+import model.*;
 import model.Territory.TerritoryName;
 import model.callback.Callback;
 import model.callback.GameCallback;
@@ -21,6 +9,9 @@ import model.enums.GameStatus;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
+import java.util.stream.Collectors;
+
+import static tui.Utils.*;
 
 /**
  * TUI class.
@@ -120,6 +111,7 @@ public class Main {
             print("You start");
         }
         game.setTurn(maxIndex);
+        game.setPlayerStarting(game.getPlayers().get(maxIndex));
 
         consolePause(input);
 
@@ -129,37 +121,10 @@ public class Main {
             if (currentPlayer.getFreeArmies().size() > 0) {
                 clearConsole();
                 if (currentPlayer.isAI()) {
-                    Territory chosen = ((AI)currentPlayer).placeArmy(game, !finishedTerritories);
-                    print(currentPlayer.getColor().toString() + " chose " + chosen.getName().toString());
+                    ((AI)currentPlayer).placeArmy(game, !finishedTerritories);
+                    //print(currentPlayer.getColor().toString() + " chose " + chosen.getName().toString());
                 } else {
-                    printMap(game);
-                    String territoryStr;
-                    int amount = -10;
-                    boolean validName = true;
-
-                    do {
-                        print("Enter the territory where you want to place your armies: ");
-                        territoryStr = input.nextLine().toUpperCase();
-                        if (finishedTerritories) {
-                            print("Enter the amount of armies you want to place (you have "
-                                + currentPlayer.getFreeArmies().size() + " armies): ");
-                            amount = numInput.nextInt();
-                        } else {
-                            amount = 1;
-                        }
-                        final String finalTerritoryStr = territoryStr;
-                        validName = Arrays.stream(TerritoryName.values()).anyMatch((n) -> n.name().equals(finalTerritoryStr));
-                    }
-                    while (amount < 1
-                            || amount > currentPlayer.getFreeArmies().size()
-                            || !validName);
-
-                    TerritoryName territoryName = TerritoryName.valueOf(territoryStr);
-                    Territory territory = game.getBoard().getTerritories().get(territoryName.ordinal());
-                    if ((territory.getOwner() == currentPlayer && finishedTerritories)
-                            || territory.getOwner() == null) {
-                        currentPlayer.placeArmies(territory, amount);
-                    }
+                    placeArmies(!finishedTerritories);
                 }
             }
             finishedTerritories = game.getBoard().getTerritories()
@@ -169,7 +134,41 @@ public class Main {
         }
 
         game.setTurn(maxIndex);
+        game.setTurnsPlayed(0);
         return true;
+    }
+
+    private void placeArmies(boolean freeTerritories) {
+        printMap(game);
+        String territoryStr;
+        int amount = -10;
+        boolean validName = true;
+
+        Player currentPlayer = game.getPlayers().get(game.getTurn());
+
+        do {
+            print("Enter the territory where you want to place your armies: ");
+            territoryStr = input.nextLine().toUpperCase();
+            if (!freeTerritories) {
+                print("Enter the amount of armies you want to place (you have "
+                        + currentPlayer.getFreeArmies().size() + " armies): ");
+                amount = numInput.nextInt();
+            } else {
+                amount = 1;
+            }
+            final String finalTerritoryStr = territoryStr;
+            validName = Arrays.stream(TerritoryName.values()).anyMatch((n) -> n.name().equals(finalTerritoryStr));
+        }
+        while (amount < 1
+                || amount > currentPlayer.getFreeArmies().size()
+                || !validName);
+
+        TerritoryName territoryName = TerritoryName.valueOf(territoryStr);
+        Territory territory = game.getBoard().getTerritories().get(territoryName.ordinal());
+        if ((territory.getOwner() == currentPlayer && !freeTerritories)
+                || territory.getOwner() == null) {
+            currentPlayer.placeArmies(territory, amount);
+        }
     }
 
     /**
@@ -177,11 +176,46 @@ public class Main {
      */
     private boolean playing() {
         Player player = game.getPlayers().get(game.getTurn());
+        int numOfTerritories = player.getTerritories().size();
         if (player.isAI()) {
-            playingAttack();
+            ((AI)player).attack(new Callback() {
+                @Override
+                public void onPlayerAttacked(Player attacker, Player attacked,
+                                             Territory fromTerritory, Territory attackedTerritory) {
+                    print(player.getColor().toString() + " is attacking you in "
+                            + attackedTerritory.getName().toString() + "!");
+                    print("How many armies do you want to defend with (max. "
+                            + Math.min(attackedTerritory.getArmiesCount(), 3)
+                            + ")?");
+                    int defend = numInput.nextInt();
+                    Integer[] losses = attacker.attack(fromTerritory, attackedTerritory,
+                            Math.min(fromTerritory.getArmiesCount(), 3), defend);
+                    print(
+                            attacker.getColor().toString() + " lost " + losses[0] + " armies",
+                            attacked.getName() + " lost " + losses[1] + " armies"
+                    );
+                    consolePause(input);
+                }
+
+                @Override
+                public void onAIAttacked(Player attacker, Player attacked,
+                                         Territory fromTerritory, Territory attackedTerritory) {
+                    if (fromTerritory.getArmiesCount() < 2) { return; }
+                    attacker.attack(fromTerritory, attackedTerritory,
+                            Math.min(fromTerritory.getArmiesCount() - 1, 3),
+                            Math.min(attackedTerritory.getArmiesCount(), 3));
+                }
+            });
         } else {
+            if (game.getTurnsPlayed() > 0) {
+                print(game.getTurnsPlayed());
+                playingSetup();
+                consolePause(input);
+            }
             boolean endTurn = false;
             while (!endTurn) {
+                printMap(game);
+                print();
                 printOptions(
                         "Attack a territory",
                         "Move armies between territories",
@@ -202,103 +236,120 @@ public class Main {
                         break;
                 }
             }
+            if(player.getTerritories().size() > numOfTerritories) {
+                print("You conquered "
+                        + (player.getTerritories().size() - numOfTerritories)
+                        + " territories, so you can pick a card!");
+                Card pickedCard = player.pickCard(game);
+                print("You picked the card: " + pickedCard.toString());
+                consolePause(input);
+            }
         }
         game.nextTurn();
         // if the worls is conquered it needs to go on, otherwise keep playing
         return this.game.isWorldConquered();
     }
 
+    private void playingSetup() {
+        Player player = game.getPlayers().get(game.getTurn());
+        ArrayList<Card[]> combinations = player.getCardCombinations();
+        int choice = -1;
+        if (combinations.size() > 0) {
+            print("You have the following card combinations:");
+            for (int i = 0; i < combinations.size(); i++) {
+                print((i+1) + ": " + combinations.get(i)[0].toString() + ", "
+                        + combinations.get(i)[1].toString() + ", "
+                        + combinations.get(i)[2].toString());
+            }
+            do {
+                print("Which one do you want to use? (-1 to use none)");
+                choice = numInput.nextInt();
+            }while(choice < -1 || choice > combinations.size());
+        }
+        Card[] playedCombination = null;
+        if (choice != -1) {
+            playedCombination = combinations.get(choice - 1);
+        }
+        int[] bonus = game.giveBonus(player, choice);
+
+        print("You got " + bonus[0] + " armies because you own " + player.getTerritories().size() + " territories.");
+
+        ArrayList<Continent> continents = player.getContinents(game);
+        if (continents.size() > 0) {
+            String continent_str = continents.stream().map(Continent::toString).collect(Collectors.joining(", "));
+            print("You got " + bonus[1] + " armies because you own " + continent_str + ".");
+        }
+
+        if (choice != -1) {
+            String cards_str = playedCombination[0].getType().toString()
+                    + ", " + playedCombination[1].getType().toString()
+                    + ", " + playedCombination[2].getType().toString();
+            print("You got " + bonus[2] + " armies because you played the combination: " + cards_str + ".");
+        }
+
+        consolePause(input);
+
+        print("You have " + player.getFreeArmies().size() + " armies to place.");
+        placeArmies(false);
+
+    }
+
     private void playingAttack() {
         Player player = game.getPlayers().get(game.getTurn());
-        if (player.isAI()) {
-            //print("AI");
-            for (int attacks = 0; attacks < 1; attacks++) {
-                ((AI)player).attack(new Callback() {
-                    @Override
-                    public void onPlayerAttacked(Player attacker, Player attacked,
-                                                 Territory fromTerritory, Territory attackedTerritory) {
-                        print(player.getColor().toString() + " is attacking you in "
-                                + attackedTerritory.getName().toString() + "!");
-                        print("How many armies do you want to defend with (max. "
-                                + Math.min(attackedTerritory.getArmiesCount(), 3)
-                                + ")?");
-                        int defend = numInput.nextInt();
-                        Integer[] losses = attacker.attack(fromTerritory, attackedTerritory,
-                                Math.min(fromTerritory.getArmiesCount(), 3), defend);
-                        print(
-                                attacker.getColor().toString() + " lost " + losses[0] + " armies",
-                                attacked.getName() + " lost " + losses[1] + " armies"
-                        );
-                        consolePause(input);
-                    }
-
-                    @Override
-                    public void onAIAttacked(Player attacker, Player attacked,
-                                             Territory fromTerritory, Territory attackedTerritory) {
-                        if (fromTerritory.getArmiesCount() < 2) { return; }
-                        print(attacker.getColor() + " attacked " + attacked.getColor()
-                            + " in " + attackedTerritory.getName().toString()
-                            + " from " + fromTerritory.getName().toString());
-                        attacker.attack(fromTerritory, attackedTerritory,
-                                Math.min(fromTerritory.getArmiesCount() - 1, 3),
-                                Math.min(attackedTerritory.getArmiesCount(), 3));
-                    }
-                });
+        String toAttack = askTerritory("Which territory do you want to attack?", input);
+        if (!toAttack.equalsIgnoreCase("none")) {
+            Territory attackedTerritory = game.getBoard().getTerritories().get(
+                    TerritoryName.valueOf(toAttack).ordinal()
+            );
+            Player attackedPlayer = attackedTerritory.getOwner();
+            String fromStr = askTerritory("What territory do you want to attack from?", input);
+            Territory fromTerritory = game.getBoard().getTerritories().get(
+                    TerritoryName.valueOf(fromStr).ordinal()
+            );
+            boolean canAttack = false;
+            if (fromTerritory != null) {
+                canAttack = fromTerritory.getArmiesCount() > 1;
             }
-        } else {
-            printMap(game);
-            print("What territory do you want to attack?");
-            String toAttack = input.nextLine().toUpperCase();
-            if (!toAttack.equalsIgnoreCase("none")) {
-                Territory attackedTerritory = game.getBoard().getTerritories().get(
-                        TerritoryName.valueOf(toAttack).ordinal()
-                );
-                Player attackedPlayer = attackedTerritory.getOwner();
-                print("What territory do you want to attack from?");
-                String fromStr = input.nextLine().toUpperCase();
-                Territory fromTerritory = game.getBoard().getTerritories().get(
-                        TerritoryName.valueOf(fromStr).ordinal()
-                );
-                boolean canAttack = false;
-                if (fromTerritory != null) {
-                    canAttack = fromTerritory.getArmiesCount() > 1;
-                }
-                if (fromTerritory != null && canAttack
+            if (fromTerritory != null && canAttack
                     && attackedTerritory.getOwner() != player) {
-                    int attackerMaxArmies = Math.min(fromTerritory.getArmiesCount() - 1, 3);
-                    print("How many armies do you want to use to attack (1 - "
-                            + attackerMaxArmies + ")");
-                    int attackerArmies = numInput.nextInt();
-                    attackerArmies = Math.min(attackerArmies, attackerMaxArmies);
-                    int defenderArmies = attackedTerritory.getArmiesCount();
-                    Integer[] losses = player.attack(fromTerritory, attackedTerritory, attackerArmies);
-                    print(player.getName() + " lost " + losses[0] + " armies");
-                    print(attackedPlayer.getColor().toString()
-                            + " lost " + losses[1] + " armies");
-                    if (losses[1] == defenderArmies) {
-                        print("You conquered " + attackedTerritory.getName().toString() + "!");
-                    }
-                } else {
-                    print("You can't attack that territory...");
+                int attackerMaxArmies = Math.min(fromTerritory.getArmiesCount() - 1, 3);
+                print("How many armies do you want to use to attack (1 - "
+                        + attackerMaxArmies + ")");
+                int attackerArmies = numInput.nextInt();
+                attackerArmies = Math.min(attackerArmies, attackerMaxArmies);
+                int defenderArmies = attackedTerritory.getArmiesCount();
+                Integer[] losses = player.attack(fromTerritory, attackedTerritory, attackerArmies);
+                print(player.getName() + " lost " + losses[0] + " armies");
+                print(attackedPlayer.getColor().toString()
+                        + " lost " + losses[1] + " armies");
+                if (losses[1] == defenderArmies) {
+                    print("You conquered " + attackedTerritory.getName().toString() + "!");
                 }
+            } else {
+                print("You can't attack that territory...");
             }
-            consolePause(input);
         }
+        consolePause(input);
     }
 
     private void playingMove() {
         print("Where do you want to move the armies from?");
+
         String fromStr = input.nextLine();
-        print("Where do you want to move the armies to?");
-        String toStr = input.nextLine();
-        print("How many armies do you want to move?");
-        int amount = numInput.nextInt();
         Territory fromTerritory = game.getBoard().getTerritories().get(
                 TerritoryName.valueOf(fromStr.toUpperCase()).ordinal()
         );
+
+        print("Where do you want to move the armies to?");
+
+        String toStr = input.nextLine();
         Territory toTerritory = game.getBoard().getTerritories().get(
                 TerritoryName.valueOf(toStr.toUpperCase()).ordinal()
         );
+
+        print("How many armies do you want to move? (1 - "
+            + (fromTerritory.getArmiesCount() - 1) + ")");
+        int amount = numInput.nextInt();
         Player player = game.getPlayers().get(game.getTurn());
         player.moveArmies(amount, fromTerritory, toTerritory);
     }

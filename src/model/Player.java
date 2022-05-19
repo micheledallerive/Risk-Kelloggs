@@ -92,6 +92,20 @@ public class Player {
         }
         return new ArrayList<>(set);
     }
+
+    /**
+     * Return the list of continents owned by the player.
+     * @return The continents of the player.
+     */
+    public ArrayList<Continent> getContinents(Game game) {
+        ArrayList<Continent> continents = new ArrayList<>();
+        for (final Continent continent : game.getBoard().getContinents()) {
+            if (continent.getOwner() == this) {
+                continents.add(continent);
+            }
+        }
+        return continents;
+    }
     //endregion
 
     //region METHODS
@@ -239,10 +253,12 @@ public class Player {
     /**
      * Pick a random card from the game deck.
      * @param game The game the player is playing in.
+     * @return The card picked.
      */
-    public void pickCard(final Game game) {
+    public Card pickCard(final Game game) {
         Card card = game.getRandomCard();
         this.cards.add(card);
+        return card;
     }
 
     /**

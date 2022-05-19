@@ -160,5 +160,11 @@ public class Continent {
         }
         return null;
     }
+
+    @Override
+    public String toString() {
+        String str = name.toString();
+        return str.substring(0,1).toUpperCase() + str.substring(1).toLowerCase();
+    }
     //endregion
 }

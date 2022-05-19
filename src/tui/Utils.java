@@ -2,6 +2,7 @@ package tui;
 
 import model.Continent;
 import model.Game;
+import model.Territory;
 import model.enums.ArmyColor;
 
 import java.util.Arrays;
@@ -148,13 +149,23 @@ public class Utils {
         print("(Click any key to continue...)");
         scanner.nextLine();
     }
-    /*
-     ___   ___   ___
-| 1 |-|   |-|   |
-|_5_|-|___|-|___|
-  |  /  |  /  |
- _|_/  _|_/  _|_
-|   |-|   |-|   |
-|___|-|___|-|___|
+
+    /**
+     * Asks for a territory and checks its validity.
+     *
+     * @param message the message to print.
+     * @param input the input stream.
+     * @return the string of the territory.
      */
+    public static String askTerritory(String message, Scanner input) {
+        String toAttack;
+        boolean valid = false;
+        do {
+            print(message);
+            toAttack = input.nextLine();
+            String finalToAttack = toAttack;
+            valid = Arrays.stream(Territory.TerritoryName.values()).anyMatch((n) -> n.name().equals(finalToAttack));
+        }while(!valid);
+        return toAttack;
+    }
 }
