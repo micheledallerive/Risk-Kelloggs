@@ -11,6 +11,20 @@ import java.util.Scanner;
  * @author dallem@usi.ch
  */
 public class Territory {
+    //region CONSTANTS
+    public static final byte INIT_NORTH_AMERICA = 0;
+    public static final byte END_NORTH_AMERICA = 8;
+    public static final byte INIT_SOUTH_AMERICA = 9;
+    public static final byte END_SOUTH_AMERICA = 12;
+    public static final byte INIT_EUROPE = 13;
+    public static final byte END_EUROPE = 19;
+    public static final byte INIT_ASIA = 20;
+    public static final byte END_ASIA = 31;
+    public static final byte INIT_AFRICA = 32;
+    public static final byte END_AFRICA = 37;
+    public static final byte INIT_AUSTRALIA = 38;
+    public static final byte END_AUSTRALIA = 41;
+    //endregion
 
     //region ENUM
 
