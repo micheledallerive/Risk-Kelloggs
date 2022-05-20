@@ -1,6 +1,21 @@
 package tui;
 
-import model.*;
+import static tui.Utils.askTerritory;
+import static tui.Utils.clearConsole;
+import static tui.Utils.consolePause;
+import static tui.Utils.print;
+import static tui.Utils.printFormat;
+import static tui.Utils.printInfo;
+import static tui.Utils.printMap;
+import static tui.Utils.printOptions;
+
+import model.AI;
+import model.Card;
+import model.Continent;
+import model.Die;
+import model.Game;
+import model.Player;
+import model.Territory;
 import model.Territory.TerritoryName;
 import model.callback.Callback;
 import model.callback.GameCallback;
@@ -11,7 +26,6 @@ import java.util.Arrays;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
-import static tui.Utils.*;
 
 /**
  * TUI class.
@@ -236,7 +250,7 @@ public class Main {
                         break;
                 }
             }
-            if(player.getTerritories().size() > numOfTerritories) {
+            if (player.getTerritories().size() > numOfTerritories) {
                 print("You conquered "
                         + (player.getTerritories().size() - numOfTerritories)
                         + " territories, so you can pick a card!");
@@ -257,14 +271,19 @@ public class Main {
         if (combinations.size() > 0) {
             print("You have the following card combinations:");
             for (int i = 0; i < combinations.size(); i++) {
-                print((i+1) + ": " + combinations.get(i)[0].toString() + ", "
-                        + combinations.get(i)[1].toString() + ", "
+                print((i + 1)
+                        + ": "
+                        + combinations.get(i)[0].toString()
+                        + ", "
+                        + combinations.get(i)[1].toString()
+                        + ", "
                         + combinations.get(i)[2].toString());
             }
             do {
                 print("Which one do you want to use? (-1 to use none)");
                 choice = numInput.nextInt();
-            }while(choice < -1 || choice > combinations.size());
+            }
+            while (choice < -1 || choice > combinations.size());
         }
         Card[] playedCombination = null;
         if (choice != -1) {
@@ -276,15 +295,15 @@ public class Main {
 
         ArrayList<Continent> continents = player.getContinents(game);
         if (continents.size() > 0) {
-            String continent_str = continents.stream().map(Continent::toString).collect(Collectors.joining(", "));
-            print("You got " + bonus[1] + " armies because you own " + continent_str + ".");
+            String continentStr = continents.stream().map(Continent::toString).collect(Collectors.joining(", "));
+            print("You got " + bonus[1] + " armies because you own " + continentStr + ".");
         }
 
         if (choice != -1) {
-            String cards_str = playedCombination[0].getType().toString()
+            String cardsStr = playedCombination[0].getType().toString()
                     + ", " + playedCombination[1].getType().toString()
                     + ", " + playedCombination[2].getType().toString();
-            print("You got " + bonus[2] + " armies because you played the combination: " + cards_str + ".");
+            print("You got " + bonus[2] + " armies because you played the combination: " + cardsStr + ".");
         }
 
         consolePause(input);

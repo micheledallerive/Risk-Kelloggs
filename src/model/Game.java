@@ -258,7 +258,7 @@ public class Game {
      */
     public void nextTurn() {
         this.turn = (this.turn + 1) % this.players.size();
-        if(players.get(turn).getColor() == playerStarting.getColor()) {
+        if (this.players.get(this.turn) == this.playerStarting) {
             this.turnsPlayed++;
         }
     }

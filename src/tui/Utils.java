@@ -30,7 +30,7 @@ public class Utils {
      * @param messages the messages to print one per line.
      */
     public static void print(Object... messages) {
-        for (Object message : messages) {
+        for (final Object message : messages) {
             print(message);
         }
     }
@@ -165,7 +165,8 @@ public class Utils {
             toAttack = input.nextLine();
             String finalToAttack = toAttack;
             valid = Arrays.stream(Territory.TerritoryName.values()).anyMatch((n) -> n.name().equals(finalToAttack));
-        }while(!valid);
+        }
+        while (!valid);
         return toAttack;
     }
 }
