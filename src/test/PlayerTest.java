@@ -246,4 +246,26 @@ public class PlayerTest {
         assertEquals(6, game.getPlayers().size());
         assertFalse(game.getPlayers().get(0).isAI());
     }
+
+    @Test
+    public void testContinents() {
+        Game game = new Game();
+        Player p1 = new Player(ArmyColor.BLACK, "bob");
+        Player p2 = new Player(ArmyColor.RED, "red");
+        Player p3 = new Player(ArmyColor.BLUE, "jane");
+        Player p4 = new Player(ArmyColor.GREEN, "john");
+
+        game.addPlayer(p1);
+        game.addPlayer(p2);
+        game.addPlayer(p3);
+        game.addPlayer(p4);
+
+        game.initArmies();
+
+        for(Territory t : game.getBoard().getContinents().get(0).getTerritories()) {
+            t.setOwner(p1);
+        }
+        assertEquals(1, p1.getContinents(game).size());
+        assertEquals(game.getBoard().getContinents().get(0), p1.getContinents(game).get(0));
+    }
 }
