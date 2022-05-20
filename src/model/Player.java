@@ -6,7 +6,6 @@ import model.enums.DieColor;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -23,7 +22,7 @@ public class Player {
     //endregion
 
     //region FIELDS
-    private final String name;
+    private final String playerName;
     private final ArmyColor color;
     private final ArrayList<Card> cards;
     private final ArrayList<Army> armies;
@@ -33,17 +32,14 @@ public class Player {
     /**
      * Creates a new player.
      * @param color The color of the army of the player.
-     * @param name The name of the player.
+     * @param playerName The name of the player.
      */
-    public Player(final ArmyColor color, final String name) {
-        this.name = name;
+    public Player(final ArmyColor color, final String playerName) {
+        this.playerName = playerName;
         this.color = color;
         this.cards = new ArrayList<>();
         this.armies = new ArrayList<>();
     }
-    //endregion
-
-    //region GETTERS AND SETTERS
     //endregion
 
     //region GETTERS AND SETTERS
@@ -52,7 +48,7 @@ public class Player {
      * @return Player name as String object
      */
     public String getName() {
-        return this.name;
+        return this.playerName;
     }
 
     /**
@@ -274,7 +270,6 @@ public class Player {
         Iterator<Army> it = this.getFreeArmies().iterator();
         for (byte i = 0; i < amount && it.hasNext(); i++) {
             Army next = it.next();
-            territory.addArmy(next);
             next.setTerritory(territory);
             it.remove();
         }
@@ -338,7 +333,6 @@ public class Player {
         while (num > 0) {
             Army next = iterator.next();
             next.setTerritory(to);
-            to.addArmy(next);
             iterator.remove();
             num--;
         }

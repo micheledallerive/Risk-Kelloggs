@@ -6,11 +6,8 @@ import model.enums.ArmyColor;
 import model.Territory.TerritoryName;
 
 import static org.junit.Assert.*;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
 
-import java.util.List;
+import org.junit.Test;
 
 
 /**

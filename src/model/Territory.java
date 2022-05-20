@@ -54,7 +54,6 @@ public class Territory {
     private Player owner;
     private TerritoryName name;
     private ArrayList<Territory> adjacent;
-    private ArrayList<Army> armies;
     //endregion
 
     //region CONSTRUCTORS
@@ -74,7 +73,6 @@ public class Territory {
     public Territory(TerritoryName name, ArrayList<Territory> adjacent) {
         this.adjacent = adjacent;
         this.owner = null;
-        this.armies = new ArrayList<>();
         this.name = name;
     }
     //endregion
@@ -89,7 +87,7 @@ public class Territory {
     }
 
     /**
-     * Returns the territory name.
+     * Returns the name of the territory.
      * @return the territory name.
      */
     public TerritoryName getName() {
@@ -105,11 +103,20 @@ public class Territory {
     }
 
     /**
-     * Returns the list of the armies owned by the player.
-     * @return the armies owned by the player
+     * Returns the armies that are placed in the territory.
+     * @return the armies placed in the territory.
      */
     public ArrayList<Army> getArmies() {
-        return this.armies;
+        ArrayList<Army> armies = new ArrayList<>();
+        if (owner == null) {
+            return armies;
+        }
+        for (Army army : owner.getArmies()) {
+            if (army.getTerritory() == this) {
+                armies.add(army);
+            }
+        }
+        return armies;
     }
     //endregion
 
@@ -158,19 +165,7 @@ public class Territory {
      * @return the number of armies in this territory
      */
     public int getArmiesCount() {
-        int totalArmies = 0;
-        for (Army army : this.armies) {
-            totalArmies += army.calculateValue();
-        }
-        return totalArmies;
-    }
-
-    /**
-     * Adds an army to the current territory.
-     * @param army the army to add to the territory.
-     */
-    public void addArmy(final Army army) {
-        this.armies.add(army);
+        return getArmies().size();
     }
 
     /**

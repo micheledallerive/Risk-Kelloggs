@@ -309,7 +309,7 @@ public class Main {
         print("You have " + player.getFreeArmies().size() + " armies to place.");
 
         consolePause(input);
-        while(player.getFreeArmies().size() > 0) {
+        while (player.getFreeArmies().size() > 0) {
             placeArmies(false);
         }
 
