@@ -15,8 +15,8 @@ import java.util.Locale;
  */
 public class Continent {
     //region FIELDS
-    public static List<List<TerritoryName>> territories;
-    public static int[] values;
+    public static final List<List<TerritoryName>> TERRITORIES = new ArrayList<>();
+    public static final int[] EXTRA_VALUES = new int[] {5, 2, 5, 7, 3, 2};
 
     private final ContinentName name;
     private final ArrayList<Territory> countries;
@@ -88,15 +88,10 @@ public class Continent {
      * Initialize the Continent static values.
      */
     public static void init() {
-        territories = Arrays.asList(
-                Arrays.asList(getContinentTerritories(ContinentName.NORTH_AMERICA)),
-                Arrays.asList(getContinentTerritories(ContinentName.SOUTH_AMERICA)),
-                Arrays.asList(getContinentTerritories(ContinentName.EUROPE)),
-                Arrays.asList(getContinentTerritories(ContinentName.ASIA)),
-                Arrays.asList(getContinentTerritories(ContinentName.AFRICA)),
-                Arrays.asList(getContinentTerritories(ContinentName.AUSTRALIA))
-        );
-        values = new int[] {5, 2, 5, 7, 3, 2};
+        for (final ContinentName continentName : ContinentName.values()) {
+            final TerritoryName[] continentTerritories = getContinentTerritories(continentName);
+            TERRITORIES.add(Arrays.asList(continentTerritories));
+        }
     }
 
     /**

@@ -20,8 +20,8 @@ public class ContinentTest {
     @Test
     public void testInit() {
         Continent.init();
-        assertEquals(6, Continent.territories.size());
-        assertEquals(6, Continent.values.length);
+        assertEquals(6, Continent.TERRITORIES.size());
+        assertEquals(6, Continent.EXTRA_VALUES.length);
     }
 
     @Test
