@@ -146,7 +146,7 @@ public class Utils {
      * @param scanner The scanner object used to pause by requiring the input
      */
     public static void consolePause(Scanner scanner) {
-        print("(Click any key to continue...)");
+        print("(Press enter to continue...)");
         scanner.nextLine();
     }
 
@@ -162,7 +162,7 @@ public class Utils {
         boolean valid = false;
         do {
             print(message);
-            toAttack = input.nextLine();
+            toAttack = input.nextLine().toUpperCase().replaceAll(" ", "_");
             String finalToAttack = toAttack;
             valid = Arrays.stream(Territory.TerritoryName.values()).anyMatch((n) -> n.name().equals(finalToAttack));
         }while(!valid);

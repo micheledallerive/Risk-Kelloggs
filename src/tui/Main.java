@@ -207,8 +207,8 @@ public class Main {
                 }
             });
         } else {
+            print("----- IT'S YOUR TURN -----")
             if (game.getTurnsPlayed() > 0) {
-                print(game.getTurnsPlayed());
                 playingSetup();
                 consolePause(input);
             }
@@ -287,10 +287,12 @@ public class Main {
             print("You got " + bonus[2] + " armies because you played the combination: " + cards_str + ".");
         }
 
-        consolePause(input);
-
         print("You have " + player.getFreeArmies().size() + " armies to place.");
-        placeArmies(false);
+
+        consolePause(input);
+        while(player.getFreeArmies().size() > 0) {
+            placeArmies(false);
+        }
 
     }
 

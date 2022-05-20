@@ -164,7 +164,14 @@ public class Continent {
     @Override
     public String toString() {
         String str = name.toString();
-        return str.substring(0,1).toUpperCase() + str.substring(1).toLowerCase();
+        String[] parts = str.split("_");
+        StringBuilder builder = new StringBuilder();
+        for (String part : parts) {
+            builder.append(part.substring(0,1).toUpperCase());
+            builder.append(part.substring(1).toLowerCase());
+            builder.append(" ");
+        }
+        return builder.toString();
     }
     //endregion
 }
