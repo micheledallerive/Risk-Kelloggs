@@ -174,7 +174,6 @@ public class GameTest {
         assertEquals(1, game.getTurn());
         game.nextTurn();
         assertEquals(2, game.getTurn());
-
         game.setTurn(3);
         assertEquals(3, game.getTurn());
     }

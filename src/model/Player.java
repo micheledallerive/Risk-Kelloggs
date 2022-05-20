@@ -95,9 +95,10 @@ public class Player {
 
     /**
      * Return the list of continents owned by the player.
+     * @param game The game object
      * @return The continents of the player.
      */
-    public ArrayList<Continent> getContinents(Game game) {
+    public ArrayList<Continent> getContinents(final Game game) {
         ArrayList<Continent> continents = new ArrayList<>();
         for (final Continent continent : game.getBoard().getContinents()) {
             if (continent.getOwner() == this) {

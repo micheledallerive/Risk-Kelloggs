@@ -6,6 +6,7 @@ import model.enums.ContinentName;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 
 
 /**
@@ -167,8 +168,8 @@ public class Continent {
         String[] parts = str.split("_");
         StringBuilder builder = new StringBuilder();
         for (String part : parts) {
-            builder.append(part.substring(0,1).toUpperCase());
-            builder.append(part.substring(1).toLowerCase());
+            builder.append(part.substring(0,1).toUpperCase(Locale.US));
+            builder.append(part.substring(1).toLowerCase(Locale.US));
             builder.append(" ");
         }
         return builder.toString();
