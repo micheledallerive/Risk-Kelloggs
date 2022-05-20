@@ -118,7 +118,7 @@ public class Territory {
      * Creates all the territories adjacent territories in the map.
      */
     public static void init() {
-        if (adjacency.size() == 0) {
+        if (adjacency.isEmpty()) {
             try {
                 File file = new File("src/model/data/territory.adj");
                 Scanner scanner = new Scanner(file);

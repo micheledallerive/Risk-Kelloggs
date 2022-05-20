@@ -137,7 +137,7 @@ public class Game {
      * Gives the turn bonus to the player and returns the value of armies gained
      * divided by reason (for UI purposes).
      * @param player the player to give the bonus to
-     * @param indexCardsCombination the combination of cards that the player wants to play (-1 to not play)
+     * @param indexCardsCombination cards combination the player wants to play (-1 to not play)
      * @return Integer array representing bonus
      */
     public int[] giveBonus(Player player, int indexCardsCombination) {

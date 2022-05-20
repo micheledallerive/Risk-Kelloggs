@@ -6,6 +6,7 @@ import model.enums.ContinentName;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 
 
 /**
@@ -163,8 +164,10 @@ public class Continent {
 
     @Override
     public String toString() {
-        String str = name.toString();
-        return str.substring(0,1).toUpperCase() + str.substring(1).toLowerCase();
+        final String str = name.toString();
+        final String upper = str.substring(0,1).toUpperCase(Locale.US);
+        final String lower = str.substring(1).toLowerCase(Locale.US);
+        return upper + lower;
     }
     //endregion
 }
