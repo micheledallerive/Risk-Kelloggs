@@ -56,7 +56,6 @@ public class Territory {
     private ArrayList<Territory> adjacent;
     //endregion
 
-    //region CONSTRUCTORS
     /**
      * Creates a new territory and initializes it.
      * @param name the name of the territory
@@ -75,9 +74,7 @@ public class Territory {
         this.owner = null;
         this.name = name;
     }
-    //endregion
 
-    //region GETTERS AND SETTERS
     /**
      * Returns the player that owns the territory.
      * @return the player that owns the territory
@@ -150,6 +147,15 @@ public class Territory {
         for (TerritoryName[] array : TerritoryName.ADJ_TOTAL) {
             adjacency.add(Arrays.asList(array));
         }*/
+    }
+
+    /**
+     * Returns the territory that corresponds to the TerritoryName.
+     * @param game the game
+     * @param territoryName the name of the territory
+     */
+    public static Territory getTerritory(Game game, TerritoryName territoryName) {
+        return game.getBoard().getTerritories().get(territoryName.ordinal());
     }
 
     /**

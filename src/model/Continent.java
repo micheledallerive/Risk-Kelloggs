@@ -172,7 +172,7 @@ public class Continent {
             builder.append(part.substring(1).toLowerCase(Locale.US));
             builder.append(" ");
         }
-        return builder.toString();
+        return builder.deleteCharAt(builder.length() - 1).toString();
     }
     //endregion
 }

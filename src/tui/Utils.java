@@ -1,14 +1,17 @@
 package tui;
 
+import com.sun.istack.internal.Nullable;
 import model.Continent;
 import model.Game;
 import model.Territory;
+import model.Territory.TerritoryName;
 import model.enums.ArmyColor;
 
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
+import java.util.function.Function;
 
 
 /**
@@ -30,6 +33,9 @@ public class Utils {
      * @param messages the messages to print one per line.
      */
     public static void print(Object... messages) {
+        if (messages.length == 0) {
+            System.out.println();
+        }
         for (final Object message : messages) {
             print(message);
         }
@@ -155,18 +161,56 @@ public class Utils {
      *
      * @param message the message to print.
      * @param input the input stream.
-     * @return the string of the territory.
+     * @param validator a function that checks if the input is valid.
+     * @return the TerritoryName.
      */
-    public static String askTerritory(String message, Scanner input) {
-        String toAttack;
+    public static TerritoryName askTerritory(String message, Scanner input,
+                                                       @Nullable Function<TerritoryName, Boolean> validator) {
+        String territory;
+        TerritoryName territoryName;
         boolean valid = false;
+        int i = 0;
         do {
+            if (i > 0) {
+                print("Invalid territory name. Please try again.");
+            }
             print(message);
-            toAttack = input.nextLine().toUpperCase().replaceAll(" ", "_");
-            String finalToAttack = toAttack;
-            valid = Arrays.stream(Territory.TerritoryName.values()).anyMatch((n) -> n.name().equals(finalToAttack));
+            territory = input.nextLine().toUpperCase().replaceAll(" ", "_");
+            String finalToAttack = territory;
+            valid = Arrays.stream(TerritoryName.values()).anyMatch((n) -> n.name().equals(finalToAttack))
+                && (validator == null || validator.apply(TerritoryName.valueOf(territory)));
+            territoryName = TerritoryName.valueOf(territory);
+            i++;
         }
         while (!valid);
-        return toAttack;
+        return territoryName;
+    }
+
+    /**
+     * Asks for a number within a range with a custom validator.
+     *
+     * @param message the messag to print.
+     * @param input the scanner.
+     * @param min the min value of the range.
+     * @param max the max value of the range.
+     * @param validator a function that checks if the input is valid.
+     * @return the number.
+     */
+    public static int askNumber(String message, Scanner input, int min, int max,
+                                @Nullable Function<Integer, Boolean> validator) {
+        int number;
+        boolean valid = false;
+        int i = 0;
+        do {
+            if (i > 0) {
+                print("Invalid number. Please try again.");
+            }
+            print(message);
+            number = input.nextInt();
+            i++;
+            valid = (number >= min && number <= max) && (validator == null || validator.apply(number));
+        }
+        while (!valid);
+        return number;
     }
 }

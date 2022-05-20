@@ -105,18 +105,13 @@ public class PlayerTest {
         bob.placeArmies(from, 15);
         alice.placeArmies(to, 4);
 
-        while(from.getArmiesCount() > 1 && to.getArmiesCount() > 0) {
-            Integer[] result = bob.attack(from, to, 2, 1);
-            assertEquals(2, result.length);
-            assertTrue(result[0] >= 0 && result[0] < 2);
-            assertTrue(result[1] >= 0 && result[1] < 2);
-        }
+        int[] results = bob.attack(from, to, 3, 3);
+        assertTrue(results[0] >= 0 && results[0] <= 3);
+        assertTrue(results[1] >= 0 && results[1] <= 3);
 
-        int count = 10;
-        while (to.getArmiesCount() > 0 && count > 0) {
-            bob.attack(from, to, 3);
-            count--;
-        }
+        int[] results2 = bob.attack(from, to, 3);
+        assertTrue(results[0] >= 0 && results[0] <= 3);
+        assertTrue(results[1] >= 0 && results[1] <= 3);
     }
 
     @Test

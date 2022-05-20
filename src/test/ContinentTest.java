@@ -52,4 +52,22 @@ public class ContinentTest {
         assertEquals(p1, asia.getOwner());
     }
 
+    @Test
+    public void testString() {
+        Game game = new Game();
+
+        Continent europe = game.getBoard().getContinents().get(2);
+        assertEquals("Europe", europe.toString());
+        Continent africa = game.getBoard().getContinents().get(4);
+        assertEquals("Africa", africa.toString());
+        Continent asia = game.getBoard().getContinents().get(3);
+        assertEquals("Asia", asia.toString());
+        Continent northAmerica = game.getBoard().getContinents().get(0);
+        assertEquals("North America", northAmerica.toString());
+        Continent southAmerica = game.getBoard().getContinents().get(1);
+        assertEquals("South America", southAmerica.toString());
+        Continent australia = game.getBoard().getContinents().get(5);
+        assertEquals("Australia", australia.toString());
+    }
+
 }

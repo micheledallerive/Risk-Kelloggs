@@ -110,6 +110,16 @@ public class Game {
     }
 
     /**
+     * Add back an army to the all armies map.
+     * @param color The color of the army.
+     * @param army The army to add.
+     */
+    public void addArmy(ArmyColor color, Army army) {
+        ArrayList<Army> armies = this.allArmies.get(color);
+        armies.add(army);
+    }
+
+    /**
      * Moves the chosen amount of armies from the total armies to the armies owned by the player.
      * @param player the player to give armies to
      * @param num the amount of armies

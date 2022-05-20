@@ -1,14 +1,5 @@
 package tui;
 
-import static tui.Utils.askTerritory;
-import static tui.Utils.clearConsole;
-import static tui.Utils.consolePause;
-import static tui.Utils.print;
-import static tui.Utils.printFormat;
-import static tui.Utils.printInfo;
-import static tui.Utils.printMap;
-import static tui.Utils.printOptions;
-
 import model.AI;
 import model.Card;
 import model.Continent;
@@ -25,6 +16,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
 import java.util.stream.Collectors;
+
+import static tui.Utils.*;
 
 
 /**
@@ -154,34 +147,25 @@ public class Main {
 
     private void placeArmies(boolean freeTerritories) {
         printMap(game);
-        String territoryStr;
-        int amount = -10;
-        boolean validName = true;
 
         Player currentPlayer = game.getPlayers().get(game.getTurn());
 
-        do {
-            print("Enter the territory where you want to place your armies: ");
-            territoryStr = input.nextLine().toUpperCase();
-            if (!freeTerritories) {
-                print("Enter the amount of armies you want to place (you have "
-                        + currentPlayer.getFreeArmies().size() + " armies): ");
-                amount = numInput.nextInt();
-            } else {
-                amount = 1;
-            }
-            final String finalTerritoryStr = territoryStr;
-            validName = Arrays.stream(TerritoryName.values()).anyMatch((n) -> n.name().equals(finalTerritoryStr));
-        }
-        while (amount < 1
-                || amount > currentPlayer.getFreeArmies().size()
-                || !validName);
 
-        TerritoryName territoryName = TerritoryName.valueOf(territoryStr);
-        Territory territory = game.getBoard().getTerritories().get(territoryName.ordinal());
+        TerritoryName chosenName = askTerritory("Enter the territory where you want to place your armies: ",
+                input, (tn) -> ((freeTerritories && Territory.getTerritory(game, tn).getOwner() == null)
+                        || (!freeTerritories && Territory.getTerritory(game, tn).getOwner() == currentPlayer)));
+
+        int armies = 1;
+        if (!freeTerritories) {
+            armies = askNumber("Enter the amount of armies you want to place"
+                            + (freeTerritories ? "" : " (You have " + currentPlayer.getFreeArmies().size() + " free armies)"),
+                    numInput, 1, currentPlayer.getFreeArmies().size(), null);
+        }
+
+        Territory territory = game.getBoard().getTerritories().get(chosenName.ordinal());
         if ((territory.getOwner() == currentPlayer && !freeTerritories)
                 || territory.getOwner() == null) {
-            currentPlayer.placeArmies(territory, amount);
+            currentPlayer.placeArmies(territory, armies);
         }
     }
 
@@ -202,7 +186,7 @@ public class Main {
                             + Math.min(attackedTerritory.getArmiesCount(), 3)
                             + ")?");
                     int defend = numInput.nextInt();
-                    Integer[] losses = attacker.attack(fromTerritory, attackedTerritory,
+                    int[] losses = attacker.attack(fromTerritory, attackedTerritory,
                             Math.min(fromTerritory.getArmiesCount(), 3), defend);
                     print(
                             attacker.getColor().toString() + " lost " + losses[0] + " armies",
@@ -317,29 +301,33 @@ public class Main {
 
     private void playingAttack() {
         Player player = game.getPlayers().get(game.getTurn());
-        String toAttack = askTerritory("Which territory do you want to attack?", input);
-        if (!toAttack.equalsIgnoreCase("none")) {
-            Territory attackedTerritory = game.getBoard().getTerritories().get(
-                    TerritoryName.valueOf(toAttack).ordinal()
+        Territory fromTerritory = game.getBoard().getTerritories().get(
+                askTerritory(
+                        "What territory do you want to attack from?",
+                        input,
+                        (tn) -> player.getTerritories().stream().anyMatch(t -> t.getName() == tn))
+                        .ordinal()
+        );
+
+        if (fromTerritory.getName() != TerritoryName.NONE) {
+
+            TerritoryName toAttack = askTerritory(
+                    "Which territory do you want to attack?",
+                    input,
+                    (tn) -> fromTerritory.getAdjacent().stream().anyMatch(t -> t.getName() == tn)
             );
+            Territory attackedTerritory = game.getBoard().getTerritories().get(toAttack.ordinal());
             Player attackedPlayer = attackedTerritory.getOwner();
-            String fromStr = askTerritory("What territory do you want to attack from?", input);
-            Territory fromTerritory = game.getBoard().getTerritories().get(
-                    TerritoryName.valueOf(fromStr).ordinal()
-            );
             boolean canAttack = false;
-            if (fromTerritory != null) {
-                canAttack = fromTerritory.getArmiesCount() > 1;
-            }
-            if (fromTerritory != null && canAttack
-                    && attackedTerritory.getOwner() != player) {
+            canAttack = fromTerritory.getArmiesCount() > 1;
+            if (canAttack && attackedTerritory.getOwner() != player) {
                 int attackerMaxArmies = Math.min(fromTerritory.getArmiesCount() - 1, 3);
                 print("How many armies do you want to use to attack (1 - "
                         + attackerMaxArmies + ")");
                 int attackerArmies = numInput.nextInt();
                 attackerArmies = Math.min(attackerArmies, attackerMaxArmies);
                 int defenderArmies = attackedTerritory.getArmiesCount();
-                Integer[] losses = player.attack(fromTerritory, attackedTerritory, attackerArmies);
+                int[] losses = player.attack(fromTerritory, attackedTerritory, attackerArmies);
                 print(player.getName() + " lost " + losses[0] + " armies");
                 print(attackedPlayer.getColor().toString()
                         + " lost " + losses[1] + " armies");

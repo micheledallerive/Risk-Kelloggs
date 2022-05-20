@@ -28,7 +28,6 @@ public class Player {
     private final ArrayList<Army> armies;
     //endregion
 
-    //region CONSTRUCTORS
     /**
      * Creates a new player.
      * @param color The color of the army of the player.
@@ -40,9 +39,7 @@ public class Player {
         this.cards = new ArrayList<>();
         this.armies = new ArrayList<>();
     }
-    //endregion
 
-    //region GETTERS AND SETTERS
     /**
      * Return the name of the player.
      * @return Player name as String object
@@ -168,7 +165,7 @@ public class Player {
      * @return an array containing how many armies the attacker has lost
      *          and how many armies the defender has lost.
      */
-    public Integer[] attack(final Territory fromTerritory, final Territory territory,
+    public int[] attack(final Territory fromTerritory, final Territory territory,
                           int armies, int ...defArmies) {
         for (int i = 0; i < armies; i++) {
             Die.getRedDice().get(i).roll();
@@ -195,7 +192,7 @@ public class Player {
             territory.setOwner(fromTerritory.getOwner());
         }
 
-        return new Integer[]{attackerLost, defenderLost};
+        return new int[]{attackerLost, defenderLost};
     }
 
     /**
@@ -270,6 +267,8 @@ public class Player {
         Iterator<Army> it = this.getFreeArmies().iterator();
         for (byte i = 0; i < amount && it.hasNext(); i++) {
             Army next = it.next();
+            if (territory.getOwner() == null)
+                territory.setOwner(this);
             next.setTerritory(territory);
             it.remove();
         }
@@ -281,18 +280,13 @@ public class Player {
      * @param armies The number of armies to remove
      */
     public void removeArmies(final Territory territory, int armies) {
-        ArrayList<Army> toRemove = new ArrayList<>();
         Iterator<Army> iterator = this.armies.iterator();
         while (armies > 0 && iterator.hasNext()) {
             Army army = iterator.next();
             if (army.getTerritory().getName() == territory.getName()) {
-                toRemove.add(army);
                 iterator.remove();
                 armies--;
             }
-        }
-        for (final Army army : toRemove) {
-            territory.getArmies().remove(army);
         }
     }
 
