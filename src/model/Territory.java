@@ -136,6 +136,7 @@ public class Territory {
      * Returns the territory that corresponds to the TerritoryName.
      * @param game the game
      * @param territoryName the name of the territory
+     * @return the territory that corresponds to the TerritoryName.
      */
     public static Territory getTerritory(Game game, TerritoryName territoryName) {
         return game.getBoard().getTerritories().get(territoryName.ordinal());

@@ -1,6 +1,5 @@
 package tui;
 
-import com.sun.istack.internal.Nullable;
 import model.Continent;
 import model.Game;
 import model.Territory;
@@ -165,13 +164,13 @@ public class Utils {
      * @return the TerritoryName.
      */
     public static TerritoryName askTerritory(String message, Scanner input,
-                                                       @Nullable Function<TerritoryName, Boolean> validator) {
+                                                       Function<TerritoryName, Boolean> validator) {
         String territory;
         TerritoryName territoryName;
         boolean valid = false;
-        int i = 0;
+        int counter = 0;
         do {
-            if (i > 0) {
+            if (counter > 0) {
                 print("Invalid territory name. Please try again.");
             }
             print(message);
@@ -180,7 +179,7 @@ public class Utils {
             valid = Arrays.stream(TerritoryName.values()).anyMatch((n) -> n.name().equals(finalToAttack))
                 && (validator == null || validator.apply(TerritoryName.valueOf(territory)));
             territoryName = TerritoryName.valueOf(territory);
-            i++;
+            counter++;
         }
         while (!valid);
         return territoryName;
@@ -197,17 +196,17 @@ public class Utils {
      * @return the number.
      */
     public static int askNumber(String message, Scanner input, int min, int max,
-                                @Nullable Function<Integer, Boolean> validator) {
+                                Function<Integer, Boolean> validator) {
         int number;
         boolean valid = false;
-        int i = 0;
+        int counter = 0;
         do {
-            if (i > 0) {
+            if (counter > 0) {
                 print("Invalid number. Please try again.");
             }
             print(message);
             number = input.nextInt();
-            i++;
+            counter++;
             valid = (number >= min && number <= max) && (validator == null || validator.apply(number));
         }
         while (!valid);

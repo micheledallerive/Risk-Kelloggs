@@ -1,5 +1,15 @@
 package tui;
 
+import static tui.Utils.askNumber;
+import static tui.Utils.askTerritory;
+import static tui.Utils.clearConsole;
+import static tui.Utils.consolePause;
+import static tui.Utils.print;
+import static tui.Utils.printFormat;
+import static tui.Utils.printInfo;
+import static tui.Utils.printMap;
+import static tui.Utils.printOptions;
+
 import model.AI;
 import model.Card;
 import model.Continent;
@@ -16,8 +26,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
 import java.util.stream.Collectors;
-
-import static tui.Utils.*;
 
 
 /**
@@ -303,18 +311,17 @@ public class Main {
         Player player = game.getPlayers().get(game.getTurn());
         Territory fromTerritory = game.getBoard().getTerritories().get(
                 askTerritory(
-                        "What territory do you want to attack from?",
-                        input,
-                        (tn) -> player.getTerritories().stream().anyMatch(t -> t.getName() == tn))
-                        .ordinal()
+                    "What territory do you want to attack from?",
+                    input,
+                    (tn) -> player.getTerritories().stream().anyMatch(t -> t.getName() == tn)).ordinal()
         );
 
         if (fromTerritory.getName() != TerritoryName.NONE) {
 
             TerritoryName toAttack = askTerritory(
-                    "Which territory do you want to attack?",
-                    input,
-                    (tn) -> fromTerritory.getAdjacent().stream().anyMatch(t -> t.getName() == tn)
+                "Which territory do you want to attack?",
+                input,
+                (tn) -> fromTerritory.getAdjacent().stream().anyMatch(t -> t.getName() == tn)
             );
             Territory attackedTerritory = game.getBoard().getTerritories().get(toAttack.ordinal());
             Player attackedPlayer = attackedTerritory.getOwner();

@@ -263,8 +263,9 @@ public class Player {
         final Iterator<Army> it = this.getFreeArmies().iterator();
         for (byte i = 0; i < amount && it.hasNext(); i++) {
             Army next = it.next();
-            if (territory.getOwner() == null)
+            if (territory.getOwner() == null) {
                 territory.setOwner(this);
+            }
             next.setTerritory(territory);
             it.remove();
         }
