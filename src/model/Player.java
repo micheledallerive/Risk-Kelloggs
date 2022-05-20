@@ -44,7 +44,7 @@ public class Player {
 
     //region GETTERS AND SETTERS
     /**
-     * Return the name of the player.
+     * Give string representation of player's name.
      * @return Player name as String object
      */
     public String getName() {
@@ -52,56 +52,27 @@ public class Player {
     }
 
     /**
-     * Return the color of the player.
-     * @return The color of the player.
+     * Give player's color.
+     * @return player's color.
      */
     public ArmyColor getColor() {
         return this.color;
     }
 
     /**
-     * Return the cards owned by the players.
-     * @return the player's cards.
+     * Give player's cards.
+     * @return player's cards.
      */
     public ArrayList<Card> getCards() {
         return this.cards;
     }
 
     /**
-     * Return the list of the armies owned by the player.
-     * @return The player's armies.
+     * Give player's army list.
+     * @return player's armies.
      */
     public ArrayList<Army> getArmies() {
         return this.armies;
-    }
-
-    /**
-     * Return the list of territories owned by the player.
-     * @return The territories of the player.
-     */
-    public ArrayList<Territory> getTerritories() {
-        HashSet<Territory> set = new HashSet<>();
-        for (final Army army : armies) {
-            if (army.getTerritory() != null) {
-                set.add(army.getTerritory());
-            }
-        }
-        return new ArrayList<>(set);
-    }
-
-    /**
-     * Return the list of continents owned by the player.
-     * @param game The game object
-     * @return The continents of the player.
-     */
-    public ArrayList<Continent> getContinents(final Game game) {
-        ArrayList<Continent> continents = new ArrayList<>();
-        for (final Continent continent : game.getBoard().getContinents()) {
-            if (continent.getOwner() == this) {
-                continents.add(continent);
-            }
-        }
-        return continents;
     }
     //endregion
 
@@ -123,24 +94,51 @@ public class Player {
      * @return Return the list of players
      */
     public static ArrayList<Player> generatePlayersRandomly(final byte tot, final byte users, final String[] names) {
-        ArrayList<Player> players = new ArrayList<>(tot);
-        List<ArmyColor> colors = Arrays.asList(ArmyColor.values());
+        final ArrayList<Player> players = new ArrayList<>(tot);
+        final List<ArmyColor> colors = Arrays.asList(ArmyColor.values());
         Collections.shuffle(colors);
 
+        ArmyColor color = null;
         byte index = 0;
-
-        while (index < users) {
-            ArmyColor color = colors.get(index);
+        for (;index < users; index++) {
+            color = colors.get(index);
             players.add(new Player(color, names[index]));
-            index++;
         }
 
-        while (index < tot) {
-            ArmyColor color = colors.get(index);
+        for (; index < tot; index++) {
+            color = colors.get(index);
             players.add(new AI(color));
-            index++;
         }
         return players;
+    }
+
+    /**
+     * Give player's territories list.
+     * @return player's territories.
+     */
+    public ArrayList<Territory> getTerritories() {
+        final HashSet<Territory> set = new HashSet<>();
+        for (final Army army : armies) {
+            if (army.getTerritory() != null) {
+                set.add(army.getTerritory());
+            }
+        }
+        return new ArrayList<>(set);
+    }
+
+    /**
+     * Return the list of continents owned by the player.
+     * @param game The game object
+     * @return The continents of the player.
+     */
+    public ArrayList<Continent> getContinents(final Game game) {
+        final ArrayList<Continent> continents = new ArrayList<>();
+        for (final Continent continent : game.getBoard().getContinents()) {
+            if (continent.getOwner() == this) {
+                continents.add(continent);
+            }
+        }
+        return continents;
     }
 
     /**
@@ -156,7 +154,7 @@ public class Player {
      * @return If the player is an AI
      */
     public boolean isAI() {
-        return this instanceof AI;
+        return false;
     }
 
     /**
@@ -175,23 +173,23 @@ public class Player {
         }
 
         Player defender = territory.getOwner();
-        int defenderMaxArmies = Math.min(territory.getArmiesCount(), 3);
-        int defenderArmies = defArmies.length == 1 ? defArmies[0] : defenderMaxArmies;
+        final int defenderMaxArmies = Math.min(territory.getArmiesCount(), 3);
+        final int defenderArmies = defArmies.length == 1 ? defArmies[0] : defenderMaxArmies;
         for (int i = 0; i < defenderArmies; i++) {
             Die.getBlueDice().get(i).roll();
         }
 
         ArrayList<DieColor> rollResult = Die.winner();
 
-        int defenderLost = (int) rollResult.stream()
+        final int defenderLost = (int) rollResult.stream()
                 .filter(dieColor -> dieColor == DieColor.RED).count();
-        int attackerLost = rollResult.size() - defenderLost;
+        final int attackerLost = rollResult.size() - defenderLost;
 
         this.removeArmies(fromTerritory, attackerLost);
         defender.removeArmies(territory, defenderLost);
 
         if (territory.getArmiesCount() == 0) {
-            moveArmies(armies - attackerLost, fromTerritory, territory);
+            moveArmies((byte) (armies - attackerLost), fromTerritory, territory);
             territory.setOwner(fromTerritory.getOwner());
         }
 
@@ -203,13 +201,13 @@ public class Player {
      * @return A list of all the valid trio card combinations.
      */
     public ArrayList<Card[]> getCardCombinations() {
-        ArrayList<Card[]> validCombinations = new ArrayList<>();
+        final ArrayList<Card[]> validCombinations = new ArrayList<>();
         for (int i = 0; i < this.cards.size() - 2; i++) {
             for (int j = i + 1; j < this.cards.size() - 1; j++) {
                 for (int k = j + 1; k < this.cards.size(); k++) {
-                    Card c1 = this.cards.get(i);
-                    Card c2 = this.cards.get(j);
-                    Card c3 = this.cards.get(k);
+                    final Card c1 = this.cards.get(i);
+                    final Card c2 = this.cards.get(j);
+                    final Card c3 = this.cards.get(k);
                     if (Card.validTrio(c1,c2,c3)) {
                         validCombinations.add(new Card[] {c1, c2, c3});
                     }
@@ -224,16 +222,16 @@ public class Player {
      * @param cards the trio of cards to play
      * @return the number of armies gained
      */
-    public int playCardsCombination(Card[] cards) {
-        ArrayList<Territory> playerTerritories = getTerritories();
+    public int playCardsCombination(final Card[] cards) {
+        final ArrayList<Territory> playerTerritories = getTerritories();
         int armiesCount = 0;
 
-        for (Card card : cards) {
+        for (final Card card : cards) {
             this.cards.remove(card);
         }
 
-        for (Territory territory : playerTerritories) {
-            for (Card card : cards) {
+        for (final Territory territory : playerTerritories) {
+            for (final Card card : cards) {
                 if (card.getTerritory() == territory.getName() // if the player owns the territory
                     && armiesCount == 0) { // but you can only get the bonus once
                     armiesCount += 2;
@@ -242,8 +240,6 @@ public class Player {
         }
 
         armiesCount += Card.getCombinationValue(cards);
-
-
         return armiesCount;
     }
 
@@ -253,7 +249,7 @@ public class Player {
      * @return The card picked.
      */
     public Card pickCard(final Game game) {
-        Card card = game.getRandomCard();
+        final Card card = game.getRandomCard();
         this.cards.add(card);
         return card;
     }
@@ -267,7 +263,7 @@ public class Player {
      */
     public void placeArmies(final Territory territory, final int amount) {
         territory.setOwner(this);
-        Iterator<Army> it = this.getFreeArmies().iterator();
+        final Iterator<Army> it = this.getFreeArmies().iterator();
         for (byte i = 0; i < amount && it.hasNext(); i++) {
             Army next = it.next();
             next.setTerritory(territory);
@@ -281,8 +277,8 @@ public class Player {
      * @param armies The number of armies to remove
      */
     public void removeArmies(final Territory territory, int armies) {
-        ArrayList<Army> toRemove = new ArrayList<>();
-        Iterator<Army> iterator = this.armies.iterator();
+        final ArrayList<Army> toRemove = new ArrayList<>();
+        final Iterator<Army> iterator = this.armies.iterator();
         while (armies > 0 && iterator.hasNext()) {
             Army army = iterator.next();
             if (army.getTerritory().getName() == territory.getName()) {
@@ -326,15 +322,14 @@ public class Player {
      * @param from the territory where to remove the armies.
      * @param to the territory where to move the armies.
      */
-    public void moveArmies(int num, Territory from, Territory to) {
-        ArrayList<Army> armies = from.getArmies();
+    public void moveArmies(final byte num, final Territory from, final Territory to) {
+        final ArrayList<Army> armies = from.getArmies();
         if (armies.size() <= num) { return; }
-        Iterator<Army> iterator = armies.iterator();
-        while (num > 0) {
-            Army next = iterator.next();
+        final Iterator<Army> iterator = armies.iterator();
+        for (byte i = 0; i < num; i++) {
+            final Army next = iterator.next();
             next.setTerritory(to);
             iterator.remove();
-            num--;
         }
     }
     //endregion

@@ -93,5 +93,10 @@ public class AI extends Player {
         this.placeArmies(chosen, amount);
         return chosen;
     }
+
+    @Override
+    public boolean isAI() {
+        return true;
+    }
     //endregion
 }
