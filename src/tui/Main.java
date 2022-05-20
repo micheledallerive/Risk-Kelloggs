@@ -358,7 +358,7 @@ public class Main {
 
         print("How many armies do you want to move? (1 - "
             + (fromTerritory.getArmiesCount() - 1) + ")");
-        int amount = numInput.nextInt();
+        byte amount = (byte)numInput.nextInt();
         Player player = game.getPlayers().get(game.getTurn());
         player.moveArmies(amount, fromTerritory, toTerritory);
     }

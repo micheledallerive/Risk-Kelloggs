@@ -198,7 +198,7 @@ public class PlayerTest {
 
         bob.placeArmies(territory, 10);
         bob.placeArmies(other, 10);
-        bob.moveArmies(5, territory, other);
+        bob.moveArmies((byte)5, territory, other);
         assertEquals(5, territory.getArmiesCount());
         assertEquals(15, other.getArmiesCount());
         bob.removeArmy(territory.getArmies().get(0));

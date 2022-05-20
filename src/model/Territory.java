@@ -60,7 +60,7 @@ public class Territory {
      * Creates a new territory and initializes it.
      * @param name the name of the territory
      */
-    public Territory(TerritoryName name) {
+    public Territory(final TerritoryName name) {
         this(name, new ArrayList<Territory>());
     }
 
@@ -69,7 +69,7 @@ public class Territory {
      * @param name the name of the territory
      * @param adjacent the territories that are adjacent to this territory
      */
-    public Territory(TerritoryName name, ArrayList<Territory> adjacent) {
+    public Territory(final TerritoryName name, final ArrayList<Territory> adjacent) {
         this.adjacent = adjacent;
         this.owner = null;
         this.name = name;
@@ -100,20 +100,11 @@ public class Territory {
     }
 
     /**
-     * Returns the armies that are placed in the territory.
-     * @return the armies placed in the territory.
+     * Sets the owner of the territory.
+     * @param newOwner the player that owns the territory
      */
-    public ArrayList<Army> getArmies() {
-        ArrayList<Army> armies = new ArrayList<>();
-        if (owner == null) {
-            return armies;
-        }
-        for (Army army : owner.getArmies()) {
-            if (army.getTerritory() == this) {
-                armies.add(army);
-            }
-        }
-        return armies;
+    public void setOwner(final Player newOwner) {
+        this.owner = newOwner;
     }
     //endregion
 
@@ -124,29 +115,21 @@ public class Territory {
     public static void init() {
         if (adjacency.isEmpty()) {
             try {
-                File file = new File("src/model/data/territory.adj");
-                Scanner scanner = new Scanner(file);
+                final File file = new File("src/model/data/territory.adj");
+                final Scanner scanner = new Scanner(file);
                 while (scanner.hasNextLine()) {
-                    String line = scanner.nextLine();
-                    String[] split = line.split(",");
-                    ArrayList<TerritoryName> adjacent = new ArrayList<>();
-                    for (String s : split) {
+                    final String line = scanner.nextLine();
+                    final String[] split = line.split(",");
+                    final ArrayList<TerritoryName> adjacent = new ArrayList<>();
+                    for (final String s : split) {
                         adjacent.add(TerritoryName.valueOf(s));
                     }
                     adjacency.add(adjacent);
                 }
-            } catch (FileNotFoundException exception) {
+            } catch (final FileNotFoundException exception) {
                 exception.printStackTrace();
             }
         }
-
-
-
-        /*if (!adjacency.isEmpty()) { return; }
-
-        for (TerritoryName[] array : TerritoryName.ADJ_TOTAL) {
-            adjacency.add(Arrays.asList(array));
-        }*/
     }
 
     /**
@@ -167,19 +150,28 @@ public class Territory {
     }
 
     /**
+     * Returns the armies that are placed in the territory.
+     * @return the armies placed in the territory.
+     */
+    public ArrayList<Army> getArmies() {
+        final ArrayList<Army> armies = new ArrayList<>();
+        if (this.owner == null) {
+            return armies;
+        }
+        for (final Army army : this.owner.getArmies()) {
+            if (army.getTerritory() == this) {
+                armies.add(army);
+            }
+        }
+        return armies;
+    }
+
+    /**
      * Returns the number of armies in the territory.
      * @return the number of armies in this territory
      */
     public int getArmiesCount() {
-        return getArmies().size();
-    }
-
-    /**
-     * Sets the owner of the territory.
-     * @param owner the player that owns the territory
-     */
-    public void setOwner(final Player owner) {
-        this.owner = owner;
+        return this.getArmies().size();
     }
 
     /**
