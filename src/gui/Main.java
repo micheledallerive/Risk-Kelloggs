@@ -34,9 +34,10 @@ public class Main {
 
     /**
      * Procedure - setup the gui elements.
-     * @param pane Container object to add cards to.
+     * @param frame The frame of the game.
      */
-    public void setup(Container pane) {
+    public void setup(JFrame frame) {
+        Container pane = frame.getContentPane();
         // Create the game.
         this.game = new Game();
 
@@ -44,7 +45,13 @@ public class Main {
         JPanel mainMenuCard = new JMainMenu(new ClickCallback() {
             @Override
             public void onClick(int id) {
-                //how(TEXTPANEL);
+                switch(id) {
+                    case 0: //play
+                        break;
+                    case 1:// exit
+                        frame.dispose();
+                        return;
+                }
             }
         });
 
@@ -104,6 +111,7 @@ public class Main {
     private static void createAndShowGUI() {
         //Create and set up the window.
         JFrame frame = new JFrame("Risk");
+        frame.setSize(800,600);
 
         JMenuBar menubar = new JMenuBar();
         JMenu menu = new JMenu("Options");
@@ -129,7 +137,8 @@ public class Main {
 
         //Create and set up the content pane.
         Main main = new Main();
-        main.setup(frame.getContentPane());
+
+        main.setup(frame);
 
         //Display the window.
         frame.pack();
