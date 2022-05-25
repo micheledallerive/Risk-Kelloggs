@@ -19,7 +19,6 @@ public class PlayerTest {
     @Test
     public void testConstructor() {
         Player player1  = new Player(ArmyColor.BLACK, "bob");
-        Player player2 = new Player(ArmyColor.RED, "john");
         assertEquals(player1.getArmies().size(), 0);
         //assertEquals(player2.getTerritories().size(), 0);
         assertEquals(0, player1.getCards().size());
@@ -87,7 +86,6 @@ public class PlayerTest {
                 new Card(CardType.INFANTRY, game.getBoard().getTerritories().get(0).getName()),
                 new Card(CardType.WILD, null)}));
 
-        int oldArmiesCount = player.getArmies().size();
         game.giveArmiesToPlayer(player, armiesGained);
     }
 
@@ -110,8 +108,8 @@ public class PlayerTest {
         assertTrue(results[1] >= 0 && results[1] <= 3);
 
         int[] results2 = bob.attack(from, to, 3);
-        assertTrue(results[0] >= 0 && results[0] <= 3);
-        assertTrue(results[1] >= 0 && results[1] <= 3);
+        assertTrue(results2[0] >= 0 && results2[0] <= 3);
+        assertTrue(results2[1] >= 0 && results2[1] <= 3);
     }
 
     @Test

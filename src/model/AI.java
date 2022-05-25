@@ -80,7 +80,6 @@ public class AI extends Player {
             chosen = freeTerritories.get(RandomUtil.random.nextInt(freeTerritories.size()));
         } else {
             ArrayList<Territory> territories = this.getTerritories();
-            System.out.println(territories.size());
             chosen = territories.get(RandomUtil.random.nextInt(territories.size()));
         }
         int freeArmies = this.getFreeArmies().size();
