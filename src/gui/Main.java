@@ -1,13 +1,16 @@
 package gui;
 
+import gui.components.MapPanel;
 import gui.views.JMainMenu;
 import model.Game;
+import model.Player;
 import model.enums.GameStatus;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
 import javax.swing.*;
 
 
@@ -40,6 +43,10 @@ public class Main {
         Container pane = frame.getContentPane();
         // Create the game.
         this.game = new Game();
+        /*ArrayList<Player> players;
+        players = Player.generatePlayersRandomly((byte)6, (byte)1, new String[]{"bob"});
+        for(Player player : players) game.addPlayer(player);
+        game.initArmies();*/
 
         //Create the "cards".
         JPanel mainMenuCard = new JMainMenu(new ClickCallback() {
@@ -55,15 +62,19 @@ public class Main {
             }
         });
 
+        JPanel mapCard = new MapPanel(game);
+
         JPanel card2 = new JPanel();
         card2.add(new JTextField("TextField", 20));
 
         //Create the panel that contains the "cards".
         cards = new JPanel(new CardLayout());
         cards.add(mainMenuCard, GameStatus.MENU.toString());
+        cards.add(mapCard, GameStatus.PLAYING.toString());
         //cards.add(card2, TEXTPANEL);
         pane.add(cards, BorderLayout.CENTER);
-        show(GameStatus.MENU);
+        show(GameStatus.PLAYING);
+
 
         // game.play(new GameCallback() {
         //    @Override
