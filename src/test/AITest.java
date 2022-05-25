@@ -62,7 +62,6 @@ public class AITest {
                     assertEquals(attackedTerritory.getOwner(), player);
                     playerAttacked[0] =true;
                 }
-
                 @Override
                 public void onAIAttacked(Player attacker, Player attacked, Territory fromTerritory, Territory attackedTerritory) {
                     if (fromTerritory.getOwner()!=blue || attackedTerritory.getOwner() == null) {

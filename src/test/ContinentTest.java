@@ -26,7 +26,7 @@ public class ContinentTest {
 
     @Test
     public void testConstructorGetterSetter() {
-        Game g = new Game();
+        new Game();
         Continent europe = new Continent(ContinentName.EUROPE, new ArrayList<Territory>(), 0);
         assertEquals(ContinentName.EUROPE, europe.getName());
         assertNull(europe.getOwner());
@@ -44,7 +44,9 @@ public class ContinentTest {
         assertEquals(5, asia.getValue());
 
         Player p1 = new Player(ArmyColor.BLUE, "bob");
-        for(Territory t : asiaTerritories) t.setOwner(p1);
+        for(Territory t : asiaTerritories) {
+            t.setOwner(p1);
+        }
         asiaTerritories.get(0).setOwner(null);
         assertFalse(asia.isOccupied());
         asiaTerritories.get(0).setOwner(p1);
