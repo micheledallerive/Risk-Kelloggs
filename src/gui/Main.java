@@ -4,14 +4,11 @@ import gui.views.JMainMenu;
 import model.Game;
 import model.enums.GameStatus;
 
-import java.awt.BorderLayout;
-import java.awt.CardLayout;
-import java.awt.Container;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.beans.PropertyChangeListener;
+import javax.swing.*;
 
 
 /**
@@ -22,17 +19,14 @@ import javax.swing.UnsupportedLookAndFeelException;
 public class Main {
     JPanel cards; //a panel that uses CardLayout
     String current = ""; //current card
-
     Game game;
 
     /**
      * Procedure - show different game panel.
      * @param currentStatus status to display
      */
-    public void show(GameStatus currentStatus) {
-        if (currentStatus.toString().equals(current)) {
-            return;
-        }
+    public void show(final GameStatus currentStatus) {
+        if (currentStatus.toString().equals(current)) { return; }
         CardLayout cl = (CardLayout) (cards.getLayout());
         cl.show(cards, currentStatus.toString());
         current = currentStatus.toString();
@@ -61,10 +55,7 @@ public class Main {
         cards = new JPanel(new CardLayout());
         cards.add(mainMenuCard, GameStatus.MENU.toString());
         //cards.add(card2, TEXTPANEL);
-
         pane.add(cards, BorderLayout.CENTER);
-
-
         show(GameStatus.MENU);
 
         // game.play(new GameCallback() {
@@ -113,10 +104,27 @@ public class Main {
     private static void createAndShowGUI() {
         //Create and set up the window.
         JFrame frame = new JFrame("Risk");
-        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        frame.setUndecorated(true);
-        frame.setVisible(true);
 
+        JMenuBar menubar = new JMenuBar();
+        JMenu menu = new JMenu("Options");
+        JMenuItem item1 = new JMenuItem("Save");
+        JMenuItem item2 = new JMenuItem("Load");
+        JMenuItem item3 = new JMenuItem("Quit");
+        item3.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                frame.dispose();
+            }
+        });
+        menu.add(item1);
+        menu.add(item2);
+        menu.add(item3);
+        menubar.add(menu);
+        frame.setJMenuBar(menubar);
+
+        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        frame.setVisible(true);
+        frame.setIconImage(new ImageIcon("./img/icon.png").getImage());
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         //Create and set up the content pane.
@@ -150,5 +158,4 @@ public class Main {
         //creating and showing this application's GUI.
         javax.swing.SwingUtilities.invokeLater(Main::createAndShowGUI);
     }
-
 }

@@ -10,6 +10,10 @@ import java.util.ArrayList;
  * @author dallem@usi.ch, moralj@usi.ch
  */
 public class Army {
+    //region ENUMS
+
+    //endregion
+
     //region FIELDS
     private final ArmyType type;
     private final ArmyColor color;

@@ -39,7 +39,6 @@ public class JMainMenu extends JPanel {
         exitButton.setPreferredSize(new Dimension(200, 75));
         exitButton.addActionListener(e -> callback.onClick(0));
 
-
         JPanel buttonPanel = new JPanel();
 
         SpringLayout buttonLayout = new SpringLayout();
