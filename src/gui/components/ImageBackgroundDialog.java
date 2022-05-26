@@ -1,8 +1,11 @@
 package gui.components;
 
-import javax.swing.*;
+import java.awt.Image;
+import javax.swing.ImageIcon;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import java.awt.*;
 
 public class ImageBackgroundDialog extends JDialog {
     public ImageBackgroundDialog(JFrame parent, String title, boolean modal,
@@ -19,6 +22,7 @@ public class ImageBackgroundDialog extends JDialog {
         panel.setRoundedCorners(radius);
         panel.setBorder(new EmptyBorder(30,20,30,20));
         setContentPane(panel);
+        setUndecorated(true);
     }
 
 }

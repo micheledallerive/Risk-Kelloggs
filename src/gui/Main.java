@@ -10,9 +10,9 @@ import model.enums.GameStatus;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Enumeration;
 import javax.swing.*;
 import javax.swing.plaf.FontUIResource;
-
 
 /**
  * GUI class.
@@ -21,65 +21,23 @@ import javax.swing.plaf.FontUIResource;
  */
 public class Main {
     JPanel cards; //a panel that uses CardLayout
-    String current = ""; //current card
+    GameStatus current; //current card
     Game game;
 
-    private void setDefaultFont(Font font) {
-        FontUIResource myFont = new FontUIResource(font);
-        UIManager.put("CheckBoxMenuItem.acceleratorFont", myFont);
-        UIManager.put("Button.font", myFont);
-        UIManager.put("ToggleButton.font", myFont);
-        UIManager.put("RadioButton.font", myFont);
-        UIManager.put("CheckBox.font", myFont);
-        UIManager.put("ColorChooser.font", myFont);
-        UIManager.put("ComboBox.font", myFont);
-        UIManager.put("Label.font", myFont);
-        UIManager.put("List.font", myFont);
-        UIManager.put("MenuBar.font", myFont);
-        UIManager.put("Menu.acceleratorFont", myFont);
-        UIManager.put("RadioButtonMenuItem.acceleratorFont", myFont);
-        UIManager.put("MenuItem.acceleratorFont", myFont);
-        UIManager.put("MenuItem.font", myFont);
-        UIManager.put("RadioButtonMenuItem.font", myFont);
-        UIManager.put("CheckBoxMenuItem.font", myFont);
-        UIManager.put("OptionPane.buttonFont", myFont);
-        UIManager.put("OptionPane.messageFont", myFont);
-        UIManager.put("Menu.font", myFont);
-        UIManager.put("PopupMenu.font", myFont);
-        UIManager.put("OptionPane.font", myFont);
-        UIManager.put("Panel.font", myFont);
-        UIManager.put("ProgressBar.font", myFont);
-        UIManager.put("ScrollPane.font", myFont);
-        UIManager.put("Viewport.font", myFont);
-        UIManager.put("TabbedPane.font", myFont);
-        UIManager.put("Slider.font", myFont);
-        UIManager.put("Table.font", myFont);
-        UIManager.put("TableHeader.font", myFont);
-        UIManager.put("TextField.font", myFont);
-        UIManager.put("Spinner.font", myFont);
-        UIManager.put("PasswordField.font", myFont);
-        UIManager.put("TextArea.font", myFont);
-        UIManager.put("TextPane.font", myFont);
-        UIManager.put("EditorPane.font", myFont);
-        UIManager.put("TabbedPane.smallFont", myFont);
-        UIManager.put("TitledBorder.font", myFont);
-        UIManager.put("ToolBar.font", myFont);
-        UIManager.put("ToolTip.font", myFont);
-        UIManager.put("Tree.font", myFont);
-        UIManager.put("FormattedTextField.font", myFont);
-        UIManager.put("IconButton.font", myFont);
-        UIManager.put("InternalFrame.optionDialogTitleFont", myFont);
-        UIManager.put("InternalFrame.paletteTitleFont", myFont);
-        UIManager.put("InternalFrame.titleFont", myFont);
+    public static void setUIFont (final FontUIResource f){
+        Enumeration keys = UIManager.getDefaults().keys();
+        while (keys.hasMoreElements()) {
+            Object key = keys.nextElement();
+            Object value = UIManager.get (key);
+            if (value instanceof javax.swing.plaf.FontUIResource)
+                UIManager.put (key, f);
+        }
     }
 
     private void inits() {
-
         FontManager.init();
-        setDefaultFont(FontManager.getFont());
-
+        setUIFont(new FontUIResource(FontManager.getFont()));
         JDie.init();
-
         Map.init();
     }
 
@@ -87,18 +45,17 @@ public class Main {
         /* Use an appropriate Look and Feel */
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-            // UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
-        } catch (UnsupportedLookAndFeelException
+        } catch (final UnsupportedLookAndFeelException
                  | IllegalAccessException
                  | InstantiationException
-                 | ClassNotFoundException ex) {
+                 | ClassNotFoundException
+                 | ClassCastException ex) {
             ex.printStackTrace();
         }
         /* Turn off metal's use of bold fonts */
         UIManager.put("swing.boldMetal", Boolean.FALSE);
 
         inits();
-
         this.game = new Game();
 
         //Schedule a job for the event dispatch thread:
@@ -111,12 +68,12 @@ public class Main {
      * @param currentStatus status to display
      */
     public void show(final GameStatus currentStatus) {
-        if (currentStatus.toString().equals(current)) { return; }
+        if (currentStatus == current) { return; }
 
         CardLayout cl = (CardLayout) (cards.getLayout());
         cl.show(cards, currentStatus.toString());
         cards.getComponents()[0].requestFocus();
-        current = currentStatus.toString();
+        current = currentStatus;
     }
 
     /**
@@ -153,43 +110,6 @@ public class Main {
      */
     public void setup(JFrame frame) {
         initCards(frame);
-
-        // game.play(new GameCallback() {
-        //    @Override
-        //    public boolean onMainMenu() {
-        //        //show(GameStatus.MENU);
-        //        return false;
-        //    }
-        //
-        //    @Override
-        //    public boolean onGameSetup() {
-        //
-        //        return true;
-        //    }
-        //
-        //    @Override
-        //    public boolean onGamePlay() {
-        //        show(GameStatus.PLAYING);
-        //        return false;
-        //    }
-        //
-        //    @Override
-        //    public boolean onGamePause() {
-        //        show(GameStatus.PAUSE);
-        //        return false;
-        //    }
-        //
-        //    @Override
-        //    public boolean onGameEnd() {
-        //        show(GameStatus.END);
-        //        return false;
-        //    }
-        //
-        //    @Override
-        //    public void onGameExit() {
-        //        System.exit(0);
-        //    }
-        //});
     }
 
     /**
@@ -200,8 +120,6 @@ public class Main {
     private void createAndShowGUI() {
         //Create and set up the window.
         JFrame frame = new JFrame("Risk");
-        frame.setSize(800,600);
-
         JMenuBar menubar = new JMenuBar();
         JMenu menu = new JMenu("Options");
         JMenuItem item1 = new JMenuItem("Save");
@@ -221,7 +139,7 @@ public class Main {
         frame.setJMenuBar(menubar);
 
         frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        frame.setVisible(true);
+        frame.setResizable(false);
         frame.setIconImage(new ImageIcon("./img/icon.png").getImage());
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 

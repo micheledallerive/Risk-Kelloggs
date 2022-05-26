@@ -1,7 +1,6 @@
 package gui.components;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JPanel;
 
 public class TransparentPanel extends JPanel {
     {

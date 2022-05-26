@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.util.Map;
 
 public class FontManager {
-    public static Font font;
+    private static Font font;
 
     public static void init() {
         try {

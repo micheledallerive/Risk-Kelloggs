@@ -12,9 +12,10 @@ import java.util.ArrayList;
  */
 public class Die {
     //region CONSTANTS
-    static final byte MIN = 0;
-    static final byte MAX = 6;
-    static final byte INVALID = -1;
+    private static final byte MIN = 0;
+    private static final byte MAX = 6;
+    private static final byte INVALID = -1;
+    private static final byte AMOUNT = 3;
     //endregion
 
     //region FIELDS
@@ -90,7 +91,7 @@ public class Die {
     public static void init() {
         redDice = new ArrayList<>();
         blueDice = new ArrayList<>();
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < AMOUNT; i++) {
             redDice.add(new Die(DieColor.RED));
             blueDice.add(new Die(DieColor.BLUE));
         }
@@ -110,8 +111,8 @@ public class Die {
         ArrayList<DieColor> outcomes = new ArrayList<>();
         byte red = redDice.get(0).getNumber();
         byte blue = blueDice.get(0).getNumber();
-        for (byte i = 1; i < 3 && (red > INVALID && blue > INVALID); i++) {
-            // If I reach a die that was not used in this roll (value = -1), I want to stop checking them
+        for (byte i = 1; i < AMOUNT && (red != INVALID && blue != INVALID); i++) {
+            // If I reach a die that was not used in this roll (INVALID), I want to stop checking them
             if (red > blue) {
                 outcomes.add(DieColor.RED);
             } else {
@@ -120,7 +121,6 @@ public class Die {
 
             red = redDice.get(i).getNumber();
             blue = blueDice.get(i).getNumber();
-
         }
 
         Die.resetAll();

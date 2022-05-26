@@ -55,6 +55,7 @@ public class JMainMenu extends ImageBackgroundPanel {
         titlePanel.setLayout(new GridBagLayout());
         JLabel title = new JLabel("Risk Kellogg's");
         title.setFont(FontManager.getFont().deriveFont(Font.BOLD, 100));
+        title.setForeground(Color.WHITE);
 
         titlePanel.add(title);
 
@@ -62,6 +63,7 @@ public class JMainMenu extends ImageBackgroundPanel {
         labelPanel.setLayout(new GridBagLayout());
         JLabel label = new JLabel("Press a key or click anywhere to start...");
         label.setFont(FontManager.getFont().deriveFont(Font.PLAIN, 40));
+        label.setForeground(Color.WHITE);
         labelPanel.add(label);
 
 
@@ -83,6 +85,5 @@ public class JMainMenu extends ImageBackgroundPanel {
                 callback.onEvent(0);
             }
         });
-
     }
 }

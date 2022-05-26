@@ -7,7 +7,7 @@ import java.awt.*;
 
 public class ImageBackgroundPanel extends TransparentPanel {
 
-    private Image image;
+    private final Image image;
     private Image roundedImage;
     private float brightness;
 
