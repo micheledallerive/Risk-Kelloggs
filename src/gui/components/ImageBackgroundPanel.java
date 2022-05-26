@@ -25,12 +25,19 @@ public class ImageBackgroundPanel extends JPanel {
         this(new ImageIcon(path).getImage(), brightness);
     }
 
+    public void setBrightness(float brightness) {
+        this.brightness = brightness;
+        repaint();
+    }
+
     @Override
-    protected void paintComponent(Graphics g) {
+    public void paintComponent(Graphics g) {
         super.paintComponent(g);
         g.drawImage(image, 0, 0, getWidth(), getHeight(), this);
         int brightness = (int)(256 - 256 * this.brightness);
         g.setColor(new Color(0,0,0,brightness));
         g.fillRect(0, 0, getWidth(), getHeight());
     }
+
+
 }

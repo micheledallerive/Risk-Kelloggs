@@ -1,6 +1,7 @@
 package gui;
 
-import gui.components.MapPanel;
+import gui.views.JSetup;
+import gui.views.MapPanel;
 import gui.views.JMainMenu;
 import model.Game;
 import model.enums.GameStatus;
@@ -8,10 +9,8 @@ import model.enums.GameStatus;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
 import javax.swing.*;
+import javax.swing.plaf.FontUIResource;
 
 
 /**
@@ -23,6 +22,55 @@ public class Main {
     JPanel cards; //a panel that uses CardLayout
     String current = ""; //current card
     Game game;
+
+    private void setDefaultFont(Font font) {
+        FontUIResource myFont = new FontUIResource(font);
+        UIManager.put("CheckBoxMenuItem.acceleratorFont", myFont);
+        UIManager.put("Button.font", myFont);
+        UIManager.put("ToggleButton.font", myFont);
+        UIManager.put("RadioButton.font", myFont);
+        UIManager.put("CheckBox.font", myFont);
+        UIManager.put("ColorChooser.font", myFont);
+        UIManager.put("ComboBox.font", myFont);
+        UIManager.put("Label.font", myFont);
+        UIManager.put("List.font", myFont);
+        UIManager.put("MenuBar.font", myFont);
+        UIManager.put("Menu.acceleratorFont", myFont);
+        UIManager.put("RadioButtonMenuItem.acceleratorFont", myFont);
+        UIManager.put("MenuItem.acceleratorFont", myFont);
+        UIManager.put("MenuItem.font", myFont);
+        UIManager.put("RadioButtonMenuItem.font", myFont);
+        UIManager.put("CheckBoxMenuItem.font", myFont);
+        UIManager.put("OptionPane.buttonFont", myFont);
+        UIManager.put("OptionPane.messageFont", myFont);
+        UIManager.put("Menu.font", myFont);
+        UIManager.put("PopupMenu.font", myFont);
+        UIManager.put("OptionPane.font", myFont);
+        UIManager.put("Panel.font", myFont);
+        UIManager.put("ProgressBar.font", myFont);
+        UIManager.put("ScrollPane.font", myFont);
+        UIManager.put("Viewport.font", myFont);
+        UIManager.put("TabbedPane.font", myFont);
+        UIManager.put("Slider.font", myFont);
+        UIManager.put("Table.font", myFont);
+        UIManager.put("TableHeader.font", myFont);
+        UIManager.put("TextField.font", myFont);
+        UIManager.put("Spinner.font", myFont);
+        UIManager.put("PasswordField.font", myFont);
+        UIManager.put("TextArea.font", myFont);
+        UIManager.put("TextPane.font", myFont);
+        UIManager.put("EditorPane.font", myFont);
+        UIManager.put("TabbedPane.smallFont", myFont);
+        UIManager.put("TitledBorder.font", myFont);
+        UIManager.put("ToolBar.font", myFont);
+        UIManager.put("ToolTip.font", myFont);
+        UIManager.put("Tree.font", myFont);
+        UIManager.put("FormattedTextField.font", myFont);
+        UIManager.put("IconButton.font", myFont);
+        UIManager.put("InternalFrame.optionDialogTitleFont", myFont);
+        UIManager.put("InternalFrame.paletteTitleFont", myFont);
+        UIManager.put("InternalFrame.titleFont", myFont);
+    }
 
     public Main() {
         /* Use an appropriate Look and Feel */
@@ -39,6 +87,7 @@ public class Main {
         UIManager.put("swing.boldMetal", Boolean.FALSE);
 
         FontManager.init();
+        setDefaultFont(FontManager.getFont());
 
         this.game = new Game();
 
@@ -53,8 +102,10 @@ public class Main {
      */
     public void show(final GameStatus currentStatus) {
         if (currentStatus.toString().equals(current)) { return; }
+
         CardLayout cl = (CardLayout) (cards.getLayout());
         cl.show(cards, currentStatus.toString());
+        cards.getComponents()[0].requestFocus();
         current = currentStatus.toString();
     }
 
@@ -69,21 +120,21 @@ public class Main {
         JPanel mainMenuCard = new JMainMenu(new EventCallback() {
             @Override
             public void onEvent(int id) {
-
+                System.out.println("Changing status");
+                game.nextStatus();
+                show(game.getStatus());
             }
         });
 
-        JPanel mapCard = new MapPanel(game);
-
-        JPanel card2 = new JPanel();
-        card2.add(new JTextField("TextField", 20));
+        JPanel playCard = new JSetup(game, frame);
 
         //Create the panel that contains the "cards".
         cards = new JPanel(new CardLayout());
         cards.add(mainMenuCard, GameStatus.MENU.toString());
-        cards.add(mapCard, GameStatus.PLAYING.toString());
-        //cards.add(card2, TEXTPANEL);
+        cards.add(playCard, GameStatus.SETUP.toString());
         pane.add(cards, BorderLayout.CENTER);
+
+        show(GameStatus.MENU);
     }
 
     /**
@@ -92,8 +143,6 @@ public class Main {
      */
     public void setup(JFrame frame) {
         initCards(frame);
-        show(GameStatus.MENU);
-
 
         // game.play(new GameCallback() {
         //    @Override

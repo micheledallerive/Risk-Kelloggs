@@ -1,8 +1,10 @@
 package gui;
 
 import java.awt.*;
+import java.awt.font.TextAttribute;
 import java.io.File;
 import java.io.IOException;
+import java.util.Map;
 
 public class FontManager {
     public static Font font;
@@ -20,7 +22,11 @@ public class FontManager {
     public static Font getFont() {
         return font;
     }
-    public static Font getBoldFont() {
-        return font.deriveFont(Font.BOLD);
+
+    public static Font addLetterSpacing(Font font, float spacing) {
+        Map<TextAttribute, Object> attributes = (Map<TextAttribute, Object>) font.getAttributes();
+        attributes.put(TextAttribute.TRACKING, spacing);
+        return font.deriveFont(attributes);
     }
+
 }

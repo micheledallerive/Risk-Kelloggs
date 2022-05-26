@@ -1,6 +1,7 @@
-package gui.components;
+package gui.views;
 
 import gui.Map;
+import gui.components.ImageBackgroundPanel;
 import model.Game;
 import model.Territory;
 
@@ -14,7 +15,7 @@ public class MapPanel extends ImageBackgroundPanel {
     private Game game;
 
     public MapPanel(Game game) {
-        super("src/gui/images/map.jpg", 1f);
+        super("src/gui/assets/images/map.jpg", 1f);
         this.game = game;
         Map.init();
         addMouseListener(new MouseAdapter() {
@@ -28,6 +29,18 @@ public class MapPanel extends ImageBackgroundPanel {
                     y = y * Map.HEIGHT / getHeight();
                     Territory territory = getClickedTerritory(x, y);
                     System.out.println(territory.getName());
+                }
+            }
+
+            @Override
+            public void mouseMoved(MouseEvent e) {
+                super.mouseMoved(e);
+                int x = e.getX();
+                int y = e.getY();
+                x = x * Map.WIDTH / getWidth();
+                y = y * Map.HEIGHT / getHeight();
+                if (getClickedTerritory(x, y) != null) {
+                    setCursor(new Cursor(Cursor.HAND_CURSOR));
                 }
             }
         });
@@ -45,6 +58,7 @@ public class MapPanel extends ImageBackgroundPanel {
     @Override
     public void paintComponent(java.awt.Graphics g) {
         super.paintComponent(g);
+
     }
 }
 

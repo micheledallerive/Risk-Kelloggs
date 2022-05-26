@@ -328,4 +328,10 @@ public class Player {
         }
     }
     //endregion
+
+
+    @Override
+    public String toString() {
+        return isAI() ? this.color.toString() : this.playerName;
+    }
 }

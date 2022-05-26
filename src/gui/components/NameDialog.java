@@ -1,26 +1,55 @@
 package gui.components;
 
-import javax.swing.*;
+import gui.EventCallback;
+import gui.FontManager;
 
-public class NameDialog extends JDialog {
-    private JTextField nameField;
-    private JButton okButton;
+import javax.swing.*;
+import javax.swing.border.Border;
+import javax.swing.border.EmptyBorder;
+import java.awt.*;
+
+public class NameDialog extends MessageDialog {
+    private final JTextField nameField;
 
     public NameDialog(JFrame parent) {
-        super(parent, "Enter your name", true);
-        setSize(300, 100);
+        super(parent, "", true);
         setLocationRelativeTo(parent);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
+
+        Border defaultBorder = new EmptyBorder(10, 0, 10, 0);
+
+        JPanel labelPanel = new TransparentPanel();
+        labelPanel.setBorder(defaultBorder);
         JLabel label = new JLabel("Enter your name:");
-        add(label);
+        label.setFont(label.getFont().deriveFont(24f));
+        labelPanel.setLayout(new GridBagLayout());
+        labelPanel.add(label);
+
+        JPanel namePanel = new TransparentPanel();
+        namePanel.setBorder(defaultBorder);
+        namePanel.setLayout(new GridBagLayout());
         nameField = new JTextField(20);
-        add(nameField);
-        okButton = new JButton("OK");
+        nameField.setMargin(new Insets(5, 5, 5, 5));
+        nameField.setFont(FontManager.addLetterSpacing(nameField.getFont().deriveFont(18f), .1f));
+        namePanel.add(nameField);
+
+        JPanel okPanel = new TransparentPanel();
+        okPanel.setBorder(defaultBorder);
+        okPanel.setLayout(new GridBagLayout());
+        JButton okButton = new JButton("OK");
+        okButton.setPreferredSize(new Dimension(100, 40));
+        okButton.setFont(okButton.getFont().deriveFont(18f));
         okButton.addActionListener(e -> {
             dispose();
+            triggerDisposeListener();
         });
-        add(okButton);
+        okPanel.add(okButton);
+
+        setLayout(new GridLayout(3, 1));
+        add(labelPanel);
+        add(namePanel);
+        add(okPanel);
+
     }
 
     public String getName() {
