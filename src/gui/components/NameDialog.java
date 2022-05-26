@@ -13,9 +13,8 @@ public class NameDialog extends MessageDialog {
     private final JTextField nameField;
 
     public NameDialog(JFrame parent) {
-        super(parent, "", true);
-        setLocationRelativeTo(parent);
-        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        super(parent, "", true, 100);
+        setLocationRelativeTo(null);
 
         Border defaultBorder = new EmptyBorder(10, 0, 10, 0);
 
@@ -49,21 +48,10 @@ public class NameDialog extends MessageDialog {
         add(labelPanel);
         add(namePanel);
         add(okPanel);
-
-        parent.setGlassPane(new JComponent() {
-            public void paintComponent(Graphics g) {
-                g.setColor(new Color(0, 0, 0, 150));
-                g.fillRect(0, 0, getWidth(), getHeight());
-                super.paintComponent(g);
-            }
-        });
-        parent.getGlassPane().setVisible(true);
     }
 
     private void actionPerformed(ActionEvent e) {
         dispose();
-        parent.getGlassPane().setVisible(false);
-        triggerDisposeListener();
     }
 
     public String getName() {

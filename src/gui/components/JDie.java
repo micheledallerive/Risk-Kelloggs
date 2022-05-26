@@ -3,6 +3,7 @@ package gui.components;
 import model.Die;
 
 import javax.swing.*;
+import java.awt.*;
 
 public class JDie extends JComponent {
     private static final ImageIcon[] images = new ImageIcon[6];
@@ -22,7 +23,7 @@ public class JDie extends JComponent {
     }
 
     public JDie(int frameDuration, int totalDuration) {
-        setSize(64,64);
+        setPreferredSize(new Dimension(64,64));
         this.timer = new Timer(frameDuration, e -> {
             this.value = (int) (Math.random() * 6);
             if(animation == totalDuration/frameDuration) {
