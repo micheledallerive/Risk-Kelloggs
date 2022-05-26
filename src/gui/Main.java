@@ -18,7 +18,7 @@ import javax.swing.*;
  */
 public class Main {
     JPanel cards; //a panel that uses CardLayout
-    String current = ""; //current card
+    GameStatus current; //current card
     Game game;
 
     /**
@@ -26,10 +26,10 @@ public class Main {
      * @param currentStatus status to display
      */
     public void show(final GameStatus currentStatus) {
-        if (currentStatus.toString().equals(current)) { return; }
-        CardLayout cl = (CardLayout) (cards.getLayout());
+        if (this.current == currentStatus) { return; }
+        final CardLayout cl = (CardLayout) (this.cards.getLayout());
         cl.show(cards, currentStatus.toString());
-        current = currentStatus.toString();
+        this.current = currentStatus;
     }
 
     /**
@@ -57,43 +57,6 @@ public class Main {
         //cards.add(card2, TEXTPANEL);
         pane.add(cards, BorderLayout.CENTER);
         show(GameStatus.MENU);
-
-        // game.play(new GameCallback() {
-        //    @Override
-        //    public boolean onMainMenu() {
-        //        //show(GameStatus.MENU);
-        //        return false;
-        //    }
-        //
-        //    @Override
-        //    public boolean onGameSetup() {
-        //
-        //        return true;
-        //    }
-        //
-        //    @Override
-        //    public boolean onGamePlay() {
-        //        show(GameStatus.PLAYING);
-        //        return false;
-        //    }
-        //
-        //    @Override
-        //    public boolean onGamePause() {
-        //        show(GameStatus.PAUSE);
-        //        return false;
-        //    }
-        //
-        //    @Override
-        //    public boolean onGameEnd() {
-        //        show(GameStatus.END);
-        //        return false;
-        //    }
-        //
-        //    @Override
-        //    public void onGameExit() {
-        //        System.exit(0);
-        //    }
-        //});
     }
 
     /**
@@ -104,7 +67,6 @@ public class Main {
     private static void createAndShowGUI() {
         //Create and set up the window.
         JFrame frame = new JFrame("Risk");
-
         JMenuBar menubar = new JMenuBar();
         JMenu menu = new JMenu("Options");
         JMenuItem item1 = new JMenuItem("Save");
@@ -123,7 +85,7 @@ public class Main {
         frame.setJMenuBar(menubar);
 
         frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        frame.setVisible(true);
+        frame.setResizable(false);
         frame.setIconImage(new ImageIcon("./img/icon.png").getImage());
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
