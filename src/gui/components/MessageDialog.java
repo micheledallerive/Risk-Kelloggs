@@ -3,27 +3,41 @@ package gui.components;
 import gui.EventCallback;
 
 import javax.swing.*;
+import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class MessageDialog extends ImageBackgroundDialog {
 
     JFrame parent;
-    EventCallback callback;
 
     public MessageDialog(JFrame parent, String title, boolean modal) {
-        super(parent, title, modal, "src/gui/assets/images/dialog_texture.jpg", 1f);
+        this(parent, title, modal, 0);
+    }
+
+    public MessageDialog(JFrame parent, String title, boolean modal, int radius) {
+        super(parent, title, modal, "src/gui/assets/images/dialog_texture.png", 1f, radius);
         this.parent = parent;
         setResizable(false);
+        setUndecorated(true);
         setLocationRelativeTo(parent);
-        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-    }
+        setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
 
-    public void addDisposeListener(EventCallback callback) {
-        this.callback = callback;
-    }
+        parent.setGlassPane(new JComponent() {
+            public void paintComponent(Graphics g) {
+                g.setColor(new Color(0, 0, 0, 200));
+                g.fillRect(0, 0, getWidth(), getHeight());
+                super.paintComponent(g);
+            }
+        });
+        parent.getGlassPane().setVisible(true);
 
-    public void triggerDisposeListener() {
-        if(callback!=null) {
-            callback.onEvent(0);
-        }
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosed(WindowEvent e) {
+                super.windowClosed(e);
+                parent.getGlassPane().setVisible(false);
+            }
+        });
     }
 }
