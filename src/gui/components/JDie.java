@@ -1,13 +1,15 @@
 package gui.components;
 
+import gui.EventCallback;
 import model.Die;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class JDie extends JComponent {
     private static final ImageIcon[] images = new ImageIcon[6];
-    private int animation = 0;
 
     public static void init() {
         for (int i = 0; i < 6; i++) {
@@ -17,15 +19,17 @@ public class JDie extends JComponent {
 
     private Timer timer;
     private int value;
+    private EventCallback callback;
+    private int animation = 0;
 
     public JDie() {
         this(250, 5000);
     }
 
     public JDie(int frameDuration, int totalDuration) {
+        super();
         setPreferredSize(new Dimension(64,64));
         this.timer = new Timer(frameDuration, e -> {
-            this.value = (int) (Math.random() * 6);
             if(animation == totalDuration/frameDuration) {
                 animation = value-1;
                 stop();
@@ -36,13 +40,22 @@ public class JDie extends JComponent {
         });
     }
 
-    public void start() {
+    public int getValue() {
+        return this.value;
+    }
+
+    public void roll() {
+        this.value = Die.casualRoll();
         this.timer.start();
-        Die.casualRoll();
+    }
+
+    public void addCallback(EventCallback callback) {
+        this.callback = callback;
     }
 
     public void stop() {
         this.timer.stop();
+        if(callback != null) this.callback.onEvent(0);
     }
 
     @Override
