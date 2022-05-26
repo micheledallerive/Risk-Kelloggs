@@ -3,14 +3,14 @@ package gui;
 import gui.components.MapPanel;
 import gui.views.JMainMenu;
 import model.Game;
-import model.Player;
 import model.enums.GameStatus;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.beans.PropertyChangeListener;
-import java.util.ArrayList;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import javax.swing.*;
 
 
@@ -24,6 +24,29 @@ public class Main {
     String current = ""; //current card
     Game game;
 
+    public Main() {
+        /* Use an appropriate Look and Feel */
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            // UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
+        } catch (UnsupportedLookAndFeelException
+                 | IllegalAccessException
+                 | InstantiationException
+                 | ClassNotFoundException ex) {
+            ex.printStackTrace();
+        }
+        /* Turn off metal's use of bold fonts */
+        UIManager.put("swing.boldMetal", Boolean.FALSE);
+
+        FontManager.init();
+
+        this.game = new Game();
+
+        //Schedule a job for the event dispatch thread:
+        //creating and showing this application's GUI.
+        javax.swing.SwingUtilities.invokeLater(this::createAndShowGUI);
+    }
+
     /**
      * Procedure - show different game panel.
      * @param currentStatus status to display
@@ -36,29 +59,17 @@ public class Main {
     }
 
     /**
-     * Procedure - setup the gui elements.
-     * @param frame The frame of the game.
+     * Initialize all the card panels.
+     * @param frame the frame of the game.
      */
-    public void setup(JFrame frame) {
+    public void initCards(JFrame frame) {
         Container pane = frame.getContentPane();
-        // Create the game.
-        this.game = new Game();
-        /*ArrayList<Player> players;
-        players = Player.generatePlayersRandomly((byte)6, (byte)1, new String[]{"bob"});
-        for(Player player : players) game.addPlayer(player);
-        game.initArmies();*/
 
         //Create the "cards".
-        JPanel mainMenuCard = new JMainMenu(new ClickCallback() {
+        JPanel mainMenuCard = new JMainMenu(new EventCallback() {
             @Override
-            public void onClick(int id) {
-                switch(id) {
-                    case 0: //play
-                        break;
-                    case 1:// exit
-                        frame.dispose();
-                        return;
-                }
+            public void onEvent(int id) {
+
             }
         });
 
@@ -73,7 +84,15 @@ public class Main {
         cards.add(mapCard, GameStatus.PLAYING.toString());
         //cards.add(card2, TEXTPANEL);
         pane.add(cards, BorderLayout.CENTER);
-        show(GameStatus.PLAYING);
+    }
+
+    /**
+     * Procedure - setup the gui elements.
+     * @param frame The frame of the game.
+     */
+    public void setup(JFrame frame) {
+        initCards(frame);
+        show(GameStatus.MENU);
 
 
         // game.play(new GameCallback() {
@@ -119,7 +138,7 @@ public class Main {
      * this method should be invoked from the
      * event dispatch thread.
      */
-    private static void createAndShowGUI() {
+    private void createAndShowGUI() {
         //Create and set up the window.
         JFrame frame = new JFrame("Risk");
         frame.setSize(800,600);
@@ -129,6 +148,7 @@ public class Main {
         JMenuItem item1 = new JMenuItem("Save");
         JMenuItem item2 = new JMenuItem("Load");
         JMenuItem item3 = new JMenuItem("Quit");
+        item1.setEnabled(this.game.getStatus().ordinal() > GameStatus.MENU.ordinal());
         item3.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -146,10 +166,7 @@ public class Main {
         frame.setIconImage(new ImageIcon("./img/icon.png").getImage());
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        //Create and set up the content pane.
-        Main main = new Main();
-
-        main.setup(frame);
+        setup(frame);
 
         //Display the window.
         frame.pack();
@@ -161,21 +178,6 @@ public class Main {
      * @param args Optional arguments.
      */
     public static void main(String[] args) {
-        /* Use an appropriate Look and Feel */
-        try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-            // UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
-        } catch (UnsupportedLookAndFeelException
-                 | IllegalAccessException
-                 | InstantiationException
-                 | ClassNotFoundException ex) {
-            ex.printStackTrace();
-        }
-        /* Turn off metal's use of bold fonts */
-        UIManager.put("swing.boldMetal", Boolean.FALSE);
-
-        //Schedule a job for the event dispatch thread:
-        //creating and showing this application's GUI.
-        javax.swing.SwingUtilities.invokeLater(Main::createAndShowGUI);
+        new Main();
     }
 }

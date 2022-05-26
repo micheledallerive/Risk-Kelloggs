@@ -1,12 +1,15 @@
 package gui.views;
 
-import gui.ClickCallback;
+import gui.EventCallback;
+import gui.FontManager;
 import gui.components.ImageBackgroundPanel;
 import gui.components.TransparentPanel;
 
 import java.awt.*;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 
 
 /**
@@ -14,40 +17,53 @@ import javax.swing.border.EmptyBorder;
  * @author dallem@usi.ch
  */
 public class JMainMenu extends ImageBackgroundPanel {
+
+    private void updateText(final JLabel label) {
+        final String DEFAULT = "Press any key to start";
+        final String[] dots = new String[]{"", ".", "..", "..."};
+        final int[] dotsCounter = {0};
+        Runnable runnable = () -> {
+            int carry = dotsCounter[0]%dots.length;
+            int indexToShow;
+            if(carry % 2 == 0) {
+                indexToShow = dotsCounter[0];
+            } else {
+                indexToShow = dots.length - dotsCounter[0];
+            }
+            label.setText(DEFAULT + dots[indexToShow]);
+            dotsCounter[0]++;
+        };
+        ScheduledExecutorService executor =
+                Executors.newScheduledThreadPool(1);
+        executor.scheduleAtFixedRate(runnable, 0, 750, TimeUnit.MILLISECONDS);
+    }
+
     /**
      * Constructor.
      * @param callback Event for clickable buttons
      */
-    public JMainMenu(ClickCallback callback) {
-        super("src/gui/images/main_menu.png");
+    public JMainMenu(EventCallback callback) {
+        super("src/gui/assets/images/main_menu.png");
 
-        GridLayout layout = new GridLayout(3, 1);
+        GridLayout layout = new GridLayout(4, 1);
+
+        JPanel titlePanel = new TransparentPanel();
+        titlePanel.setLayout(new GridBagLayout());
+        JLabel title = new JLabel("Risk Kellogg's");
+        title.setFont(FontManager.getFont().deriveFont(Font.BOLD, 80));
+        titlePanel.add(title);
 
         JPanel labelPanel = new TransparentPanel();
         labelPanel.setLayout(new GridBagLayout());
-        JLabel label = new JLabel("Risk Kellogg's");
-        label.setFont(new Font("Arial", Font.BOLD, 80));
+        JLabel label = new JLabel("Press any key to start");
+        label.setFont(FontManager.getFont().deriveFont(Font.PLAIN, 40));
+        updateText(label);
         labelPanel.add(label);
 
-        JPanel buttonPlayPanel = new TransparentPanel();
-        buttonPlayPanel.setLayout(new GridBagLayout());
-        JButton playButton = new JButton("PLAY!");
-        playButton.setFont(new Font("Arial", Font.BOLD, 32));
-        playButton.setPreferredSize(new Dimension(275, 100));
-        playButton.addActionListener(e -> callback.onClick(0));
-        buttonPlayPanel.add(playButton);
 
-        JPanel buttonExitPanel = new TransparentPanel();
-        buttonExitPanel.setLayout(new GridBagLayout());
-        JButton exitButton = new JButton("EXIT");
-        exitButton.setFont(new Font("Arial", Font.BOLD, 32));
-        exitButton.setPreferredSize(new Dimension(275, 100));
-        exitButton.addActionListener(e -> callback.onClick(1));
-        buttonExitPanel.add(exitButton);
-
+        add(titlePanel);
+        add(new TransparentPanel());
         add(labelPanel);
-        add(buttonPlayPanel);
-        add(buttonExitPanel);
         setLayout(layout);
     }
 }
