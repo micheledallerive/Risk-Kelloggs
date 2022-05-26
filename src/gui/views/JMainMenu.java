@@ -1,62 +1,89 @@
 package gui.views;
 
-import gui.ClickCallback;
+import gui.EventCallback;
+import gui.FontManager;
+import gui.components.ImageBackgroundPanel;
+import gui.components.TransparentPanel;
 
-import java.awt.Dimension;
-import java.awt.Font;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.SpringLayout;
+import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 
 
 /**
  * Class JMainMenu extended from JPanel to create main menu.
  * @author dallem@usi.ch
  */
-public class JMainMenu extends JPanel {
-    private static final Font FONT_BUTTON = new Font("Arial", Font.BOLD, 32);
-    private static final Dimension DIMENSION_BUTTON = new Dimension(200, 75);
+public class JMainMenu extends ImageBackgroundPanel {
+
+    /*private void updateText(final JLabel label) {
+        final String DEFAULT = "Press any key to start";
+        final String[] dots = new String[]{"", ".", "..", "..."};
+        final String[] spaces = new String[]{"   ", "  ", " " , ""};
+        final int[] dotsCounter = {0};
+        Runnable runnable = () -> {
+            int laps = dotsCounter[0]/dots.length;
+            int indexToShow;
+            if(laps % 2 == 0) {
+                indexToShow = dotsCounter[0]%dots.length;
+            } else {
+                indexToShow = dots.length - dotsCounter[0]%dots.length -1;
+            }
+            label.setText(DEFAULT + dots[indexToShow] + spaces[indexToShow]);
+            dotsCounter[0]++;
+        };
+        ScheduledExecutorService executor =
+                Executors.newScheduledThreadPool(1);
+        executor.scheduleAtFixedRate(runnable, 0, 750, TimeUnit.MILLISECONDS);
+    }*/
 
     /**
      * Constructor.
      * @param callback Event for clickable buttons
      */
-    public JMainMenu(ClickCallback callback) {
-        SpringLayout layout = new SpringLayout();
+    public JMainMenu(EventCallback callback) {
+        super("src/gui/assets/images/main_menu.jpg");
 
-        // main title, choose font and place its top to top of panel and center to center of panel
-        JLabel label = new JLabel("Risk Kellogg's");
-        label.setFont(new Font("Arial", Font.BOLD, 80));
-        layout.putConstraint(SpringLayout.NORTH, label, 48, SpringLayout.NORTH, this);
-        layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, label, 0, SpringLayout.HORIZONTAL_CENTER, this);
+        GridLayout layout = new GridLayout(4, 1);
 
-        // play & exit buttons, choose font and dimension, add the listener with param '0' to onclick event
-        JButton playButton = new JButton("PLAY!");
-        JButton exitButton = new JButton("EXIT");
-        playButton.setFont(FONT_BUTTON);
-        exitButton.setFont(FONT_BUTTON);
-        playButton.setPreferredSize(DIMENSION_BUTTON);
-        exitButton.setPreferredSize(DIMENSION_BUTTON);
-        playButton.addActionListener(e -> callback.onClick(0));
-        exitButton.addActionListener(e -> callback.onClick(0));
+        JPanel titlePanel = new TransparentPanel();
+        titlePanel.setBorder(new EmptyBorder(50, 0, 0, 0));
+        titlePanel.setLayout(new GridBagLayout());
+        JLabel title = new JLabel("Risk Kellogg's");
+        title.setFont(FontManager.getFont().deriveFont(Font.BOLD, 100));
+        title.setForeground(Color.WHITE);
 
-        // add a panel for buttons, place them in a layout and set the panel with it, add the panel to the main layout
-        JPanel buttonPanel = new JPanel();
-        buttonPanel.add(playButton);
-        buttonPanel.add(exitButton);
-        SpringLayout buttonLayout = new SpringLayout();
-        buttonLayout.putConstraint(SpringLayout.NORTH, playButton, 0, SpringLayout.NORTH, buttonPanel);
-        buttonLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, playButton, 0, SpringLayout.HORIZONTAL_CENTER, buttonPanel);
-        buttonLayout.putConstraint(SpringLayout.NORTH, exitButton, 48, SpringLayout.SOUTH, playButton);
-        buttonLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, exitButton, 0, SpringLayout.HORIZONTAL_CENTER, buttonPanel);
-        buttonPanel.setLayout(buttonLayout);
-        layout.putConstraint(SpringLayout.NORTH, buttonPanel, 48, SpringLayout.NORTH, this);
-        layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, buttonPanel, 0, SpringLayout.HORIZONTAL_CENTER, this);
+        titlePanel.add(title);
 
-        // add gui objects to JFrame and set the main layout
-        this.add(label);
-        this.add(buttonPanel);
-        this.setLayout(layout);
+        JPanel labelPanel = new TransparentPanel();
+        labelPanel.setLayout(new GridBagLayout());
+        JLabel label = new JLabel("Press a key or click anywhere to start...");
+        label.setFont(FontManager.getFont().deriveFont(Font.PLAIN, 40));
+        label.setForeground(Color.WHITE);
+        labelPanel.add(label);
+
+
+        add(titlePanel);
+        add(new TransparentPanel());
+        add(labelPanel);
+        setLayout(layout);
+
+        addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                callback.onEvent(0);
+            }
+        });
+
+        addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                callback.onEvent(0);
+            }
+        });
     }
 }

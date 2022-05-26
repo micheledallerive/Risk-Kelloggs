@@ -120,11 +120,7 @@ public class Main {
             }
             printFormat("%-30s %-5s\n", who + ":", rolls.get(i).toString());
         }
-        if (game.getPlayers().get(maxIndex).isAI()) {
-            print(game.getPlayers().get(maxIndex).getColor().toString() + " starts");
-        } else {
-            print("You start");
-        }
+        print(game.getPlayers().get(maxIndex) + " start" + (game.getPlayers().get(maxIndex).isAI()?"s":""));
         game.setTurn(maxIndex);
         game.setPlayerStarting(game.getPlayers().get(maxIndex));
 
@@ -188,7 +184,7 @@ public class Main {
                 @Override
                 public void onPlayerAttacked(Player attacker, Player attacked,
                                              Territory fromTerritory, Territory attackedTerritory) {
-                    print(player.getColor().toString() + " is attacking you in "
+                    print(player + " is attacking you in "
                             + attackedTerritory.getName().toString() + "!");
                     print("How many armies do you want to defend with (max. "
                             + Math.min(attackedTerritory.getArmiesCount(), 3)
@@ -197,8 +193,8 @@ public class Main {
                     int[] losses = attacker.attack(fromTerritory, attackedTerritory,
                             Math.min(fromTerritory.getArmiesCount(), 3), defend);
                     print(
-                            attacker.getColor().toString() + " lost " + losses[0] + " armies",
-                            attacked.getName() + " lost " + losses[1] + " armies"
+                            attacker + " lost " + losses[0] + " armies",
+                            attacked + " lost " + losses[1] + " armies"
                     );
                     consolePause(input);
                 }
@@ -336,7 +332,7 @@ public class Main {
                 int defenderArmies = attackedTerritory.getArmiesCount();
                 int[] losses = player.attack(fromTerritory, attackedTerritory, attackerArmies);
                 print(player.getName() + " lost " + losses[0] + " armies");
-                print(attackedPlayer.getColor().toString()
+                print(attackedPlayer
                         + " lost " + losses[1] + " armies");
                 if (losses[1] == defenderArmies) {
                     print("You conquered " + attackedTerritory.getName().toString() + "!");

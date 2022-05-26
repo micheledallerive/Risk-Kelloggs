@@ -1,5 +1,8 @@
 package gui;
 
+import gui.components.JDie;
+import gui.views.JSetup;
+import gui.views.MapPanel;
 import gui.views.JMainMenu;
 import model.Game;
 import model.enums.GameStatus;
@@ -7,9 +10,9 @@ import model.enums.GameStatus;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.beans.PropertyChangeListener;
+import java.util.Enumeration;
 import javax.swing.*;
-
+import javax.swing.plaf.FontUIResource;
 
 /**
  * GUI class.
@@ -21,42 +24,92 @@ public class Main {
     GameStatus current; //current card
     Game game;
 
+    public static void setUIFont (final FontUIResource f){
+        Enumeration keys = UIManager.getDefaults().keys();
+        while (keys.hasMoreElements()) {
+            Object key = keys.nextElement();
+            Object value = UIManager.get (key);
+            if (value instanceof javax.swing.plaf.FontUIResource)
+                UIManager.put (key, f);
+        }
+    }
+
+    private void inits() {
+        FontManager.init();
+        setUIFont(new FontUIResource(FontManager.getFont()));
+        JDie.init();
+        Map.init();
+    }
+
+    public Main() {
+        /* Use an appropriate Look and Feel */
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (final UnsupportedLookAndFeelException
+                 | IllegalAccessException
+                 | InstantiationException
+                 | ClassNotFoundException
+                 | ClassCastException ex) {
+            ex.printStackTrace();
+        }
+        /* Turn off metal's use of bold fonts */
+        UIManager.put("swing.boldMetal", Boolean.FALSE);
+
+        inits();
+        this.game = new Game();
+
+        //Schedule a job for the event dispatch thread:
+        //creating and showing this application's GUI.
+        javax.swing.SwingUtilities.invokeLater(this::createAndShowGUI);
+    }
+
     /**
      * Procedure - show different game panel.
      * @param currentStatus status to display
      */
     public void show(final GameStatus currentStatus) {
-        if (this.current == currentStatus) { return; }
-        final CardLayout cl = (CardLayout) (this.cards.getLayout());
+        if (currentStatus == current) { return; }
+
+        CardLayout cl = (CardLayout) (cards.getLayout());
         cl.show(cards, currentStatus.toString());
-        this.current = currentStatus;
+        cards.getComponents()[0].requestFocus();
+        current = currentStatus;
     }
 
     /**
-     * Procedure - setup the gui elements.
-     * @param pane Container object to add cards to.
+     * Initialize all the card panels.
+     * @param frame the frame of the game.
      */
-    public void setup(Container pane) {
-        // Create the game.
-        this.game = new Game();
+    public void initCards(JFrame frame) {
+        Container pane = frame.getContentPane();
 
         //Create the "cards".
-        JPanel mainMenuCard = new JMainMenu(new ClickCallback() {
+        JPanel mainMenuCard = new JMainMenu(new EventCallback() {
             @Override
-            public void onClick(int id) {
-                //how(TEXTPANEL);
+            public void onEvent(int id) {
+                System.out.println("Changing status");
+                game.nextStatus();
+                show(game.getStatus());
             }
         });
 
-        JPanel card2 = new JPanel();
-        card2.add(new JTextField("TextField", 20));
+        JPanel playCard = new JSetup(game, frame);
 
         //Create the panel that contains the "cards".
         cards = new JPanel(new CardLayout());
         cards.add(mainMenuCard, GameStatus.MENU.toString());
-        //cards.add(card2, TEXTPANEL);
+        cards.add(playCard, GameStatus.SETUP.toString());
         pane.add(cards, BorderLayout.CENTER);
+
         show(GameStatus.MENU);
+    }
+
+    /**
+     * Procedure - setup the gui elements.
+     * @param frame The frame of the game.
+     */
+    public void setup(JFrame frame) {
+        initCards(frame);
     }
 
     /**
@@ -64,7 +117,7 @@ public class Main {
      * this method should be invoked from the
      * event dispatch thread.
      */
-    private static void createAndShowGUI() {
+    private void createAndShowGUI() {
         //Create and set up the window.
         JFrame frame = new JFrame("Risk");
         JMenuBar menubar = new JMenuBar();
@@ -72,6 +125,7 @@ public class Main {
         JMenuItem item1 = new JMenuItem("Save");
         JMenuItem item2 = new JMenuItem("Load");
         JMenuItem item3 = new JMenuItem("Quit");
+        item1.setEnabled(this.game.getStatus().ordinal() > GameStatus.MENU.ordinal());
         item3.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -89,9 +143,7 @@ public class Main {
         frame.setIconImage(new ImageIcon("./img/icon.png").getImage());
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        //Create and set up the content pane.
-        Main main = new Main();
-        main.setup(frame.getContentPane());
+        setup(frame);
 
         //Display the window.
         frame.pack();
@@ -103,21 +155,6 @@ public class Main {
      * @param args Optional arguments.
      */
     public static void main(String[] args) {
-        /* Use an appropriate Look and Feel */
-        try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-            // UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
-        } catch (UnsupportedLookAndFeelException
-                 | IllegalAccessException
-                 | InstantiationException
-                 | ClassNotFoundException ex) {
-            ex.printStackTrace();
-        }
-        /* Turn off metal's use of bold fonts */
-        UIManager.put("swing.boldMetal", Boolean.FALSE);
-
-        //Schedule a job for the event dispatch thread:
-        //creating and showing this application's GUI.
-        javax.swing.SwingUtilities.invokeLater(Main::createAndShowGUI);
+        new Main();
     }
 }
