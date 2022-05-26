@@ -208,6 +208,17 @@ public class Game {
     }
 
     /**
+     * Initializes randomly created players.
+     * @param total the total number of players
+     * @param users the number of actual players (not AIs)
+     * @param names the names of the players
+     */
+    public void initializePlayers(int total, int users, String[] names) {
+        ArrayList<Player> toAddPlayers = Player.generatePlayersRandomly((byte)total,(byte)users,names);
+        this.players.addAll(toAddPlayers);
+    }
+
+    /**
      * Returns the current state of the game.
      * @return the GameStatus
      */

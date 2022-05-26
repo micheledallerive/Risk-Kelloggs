@@ -46,7 +46,7 @@ public class JMainMenu extends ImageBackgroundPanel {
      * @param callback Event for clickable buttons
      */
     public JMainMenu(EventCallback callback) {
-        super("src/gui/assets/images/main_menu.png");
+        super("src/gui/assets/images/main_menu.jpg");
 
         GridLayout layout = new GridLayout(4, 1);
 

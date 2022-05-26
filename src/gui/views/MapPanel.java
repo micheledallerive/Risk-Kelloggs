@@ -17,7 +17,6 @@ public class MapPanel extends ImageBackgroundPanel {
     public MapPanel(Game game) {
         super("src/gui/assets/images/map.jpg", 1f);
         this.game = game;
-        Map.init();
         addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -28,10 +27,12 @@ public class MapPanel extends ImageBackgroundPanel {
                     x = x * Map.WIDTH / getWidth();
                     y = y * Map.HEIGHT / getHeight();
                     Territory territory = getClickedTerritory(x, y);
-                    System.out.println(territory.getName());
+                    if (territory!=null)
+                        System.out.println(territory.getName());
                 }
             }
-
+        });
+        addMouseMotionListener(new MouseAdapter() {
             @Override
             public void mouseMoved(MouseEvent e) {
                 super.mouseMoved(e);
@@ -41,6 +42,8 @@ public class MapPanel extends ImageBackgroundPanel {
                 y = y * Map.HEIGHT / getHeight();
                 if (getClickedTerritory(x, y) != null) {
                     setCursor(new Cursor(Cursor.HAND_CURSOR));
+                } else {
+                    setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
                 }
             }
         });

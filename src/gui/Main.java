@@ -1,5 +1,6 @@
 package gui;
 
+import gui.components.JDie;
 import gui.views.JSetup;
 import gui.views.MapPanel;
 import gui.views.JMainMenu;
@@ -72,6 +73,16 @@ public class Main {
         UIManager.put("InternalFrame.titleFont", myFont);
     }
 
+    private void inits() {
+
+        FontManager.init();
+        setDefaultFont(FontManager.getFont());
+
+        JDie.init();
+
+        Map.init();
+    }
+
     public Main() {
         /* Use an appropriate Look and Feel */
         try {
@@ -86,8 +97,7 @@ public class Main {
         /* Turn off metal's use of bold fonts */
         UIManager.put("swing.boldMetal", Boolean.FALSE);
 
-        FontManager.init();
-        setDefaultFont(FontManager.getFont());
+        inits();
 
         this.game = new Game();
 
