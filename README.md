@@ -1,6 +1,6 @@
-# Project PROJECTNAME
+# Project Risk Kellogg's
 
-Our game Risk-Kellogg's is a Risk-based game: the goal of every play is to conquer the whole world.
+Our game Risk-Kellogg's is a Risk-based game: the goal of every player is to conquer the whole world.
 
 ## Team Members
 
