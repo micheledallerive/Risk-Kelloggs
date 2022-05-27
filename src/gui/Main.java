@@ -21,8 +21,6 @@ import javax.swing.plaf.FontUIResource;
  * @author moralj@usi.ch, dallem@usi.ch
  */
 public class Main {
-    JPanel cards; // a panel that uses CardLayout
-    GameStatus current; // current card
     Game game;
 
     public static void setUIFont(final FontUIResource f) {
@@ -66,63 +64,9 @@ public class Main {
         new MainWindow(this.game);
     }
 
-    /**
-     * Procedure - show different game panel.
-     * 
-     * @param currentStatus status to display
-     */
-    public void show(final GameStatus currentStatus) {
-        if (currentStatus == current) {
-            return;
-        }
-
-        CardLayout cl = (CardLayout) (cards.getLayout());
-        cl.show(cards, currentStatus.toString());
-        cards.getComponents()[0].requestFocus();
-        current = currentStatus;
-    }
-
-    /**
-     * Initialize all the card panels.
-     * 
-     * @param frame the frame of the game.
-     */
-    public void initCards(JFrame frame) {
-        Container pane = frame.getContentPane();
-
-        // Create the "cards".
-        JPanel mainMenuCard = new JMainMenu(new EventCallback() {
-            @Override
-            public void onEvent(int id) {
-                System.out.println("Changing status");
-                game.nextStatus();
-                show(game.getStatus());
-            }
-        });
-
-        JPanel playCard = new JSetup(game, frame);
-
-        // Create the panel that contains the "cards".
-        cards = new JPanel(new CardLayout());
-        cards.add(mainMenuCard, GameStatus.MENU.toString());
-        cards.add(playCard, GameStatus.SETUP.toString());
-        pane.add(cards, BorderLayout.CENTER);
-
-        show(GameStatus.MENU);
-    }
-
-    /**
-     * Procedure - setup the gui elements.
-     * 
-     * @param frame The frame of the game.
-     */
-    public void setup(final JFrame frame) {
-        initCards(frame);
-    }
 
     /**
      * Procedure - Main method.
-     * 
      * @param args Optional arguments.
      */
     public static void main(String[] args) {
