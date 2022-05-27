@@ -336,14 +336,26 @@ public class Game {
     //endregion
 
     //region EVENTS
+
+    /**
+     * Procedure - add status listener to its listeners arraylist.
+     * @param sl StatusListener interface implemented.
+     */
     public void addListener(final StatusListener sl) {
         this.statusListeners.add(sl);
     }
 
+    /**
+     * Procedure - remove status listeners to its listeners arraylist.
+     * @param sl StatusListener interface implemented.
+     */
     public void removeListener(final StatusListener sl) {
         this.statusListeners.remove(sl);
     }
 
+    /**
+     * Procedure - notify all registered listener whenever game status change.
+     */
     public void fireStatusChanged() {
         for (final StatusListener sc : this.statusListeners) {
             sc.changed(this.status);

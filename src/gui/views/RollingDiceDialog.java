@@ -5,15 +5,21 @@ import gui.components.MessageDialog;
 import gui.components.PlayerIconComponent;
 import gui.components.TransparentPanel;
 import model.Game;
-import model.enums.ArmyColor;
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
+import java.awt.Insets;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
 
 public class RollingDiceDialog extends MessageDialog {
 
     public RollingDiceDialog(JFrame parent, String windowTitle, boolean modal, Game game) {
-        super(parent,windowTitle,modal,100);
+        super(parent, windowTitle, modal, 100);
 
         setLocationRelativeTo(null);
 
@@ -31,10 +37,9 @@ public class RollingDiceDialog extends MessageDialog {
 
         c.insets = new Insets(10, 0, 0, 0);
         c.gridy = 0;
-        titlePanel.add(title,c);
+        titlePanel.add(title, c);
         c.gridy = 1;
-        titlePanel.add(subtitle,c);
-
+        titlePanel.add(subtitle, c);
 
         GridLayout diceLayout = new GridLayout(3, 5);
         diceLayout.setHgap(20);
@@ -43,18 +48,18 @@ public class RollingDiceDialog extends MessageDialog {
         JPanel dicePanel = new TransparentPanel();
         dicePanel.setLayout(diceLayout);
 
-        for(int i = 0; i < 3; i++) {
-            dicePanel.add(new PlayerIconComponent(game.getPlayers().get(2*i), false));
+        for (int i = 0; i < 3; i++) {
+            dicePanel.add(new PlayerIconComponent(game.getPlayers().get(2 * i), false));
             dicePanel.add(new JDie());
             dicePanel.add(new TransparentPanel());
             dicePanel.add(new JDie());
-            dicePanel.add(new PlayerIconComponent(game.getPlayers().get(2*i + 1), true));
+            dicePanel.add(new PlayerIconComponent(game.getPlayers().get(2 * i + 1), true));
         }
 
         gbc.gridy = 0;
-        add(titlePanel,gbc);
+        add(titlePanel, gbc);
         gbc.insets = new Insets(50, 0, 0, 0);
         gbc.gridy = 1;
-        add(dicePanel,gbc);
+        add(dicePanel, gbc);
     }
 }

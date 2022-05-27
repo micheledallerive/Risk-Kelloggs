@@ -1,34 +1,34 @@
 package gui.views;
 
-import gui.EventCallback;
-import gui.components.ImageBackgroundPanel;
-import gui.components.JDie;
 import gui.components.NameDialog;
 import model.Game;
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.BorderLayout;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 /**
- * Class JPanel to set up after main menu, the player's name before the start of the game.
+ * Class JPanel to set up after main menu, the player's name before the start of
+ * the game.
+ * 
  * @author dallem@usi.ch
  */
 public class JSetup extends JPanel {
-    //region FIELDS
+    // region FIELDS
     private Game game;
     private JFrame parent;
-    //endregion
+    // endregion
 
-    //region CONSTRUCTORS
+    // region CONSTRUCTORS
 
     /**
      * Constructor.
-     * @param game
-     * @param parent
+     * @param game Game object.
+     * @param parent JFrame parent component.
      */
     public JSetup(final Game game, final JFrame parent) {
         super();
@@ -38,8 +38,9 @@ public class JSetup extends JPanel {
         setLayout(new BorderLayout());
 
         this.addComponentListener(new ComponentAdapter() {
-            @Override public void componentShown(ComponentEvent e) {
-                super.componentShown(e);
+            @Override
+            public void componentShown(ComponentEvent componentEvent) {
+                super.componentShown(componentEvent);
                 askForName();
             }
         });
@@ -48,24 +49,24 @@ public class JSetup extends JPanel {
         this.add(map, BorderLayout.CENTER);
         map.requestFocus();
     }
-    //endregion
+    // endregion
 
-    //region METHODS
-
+    // region METHODS
     /**
      * Procedure - handle name ask form.
      */
     private void askForName() {
         NameDialog nameDialog = new NameDialog(parent);
         nameDialog.addWindowListener(new WindowAdapter() {
-            @Override public void windowClosed(WindowEvent e) {
-                super.windowClosed(e);
+            @Override
+            public void windowClosed(WindowEvent windowEvent) {
+                super.windowClosed(windowEvent);
 
                 String name = nameDialog.getName();
                 if (name == null || name.isEmpty()) {
                     name = "Player";
                 }
-                game.initializePlayers(6, 1, new String[]{name});
+                game.initializePlayers(6, 1, new String[] { name });
                 chooseStartingPlayer();
             }
         });
@@ -83,5 +84,5 @@ public class JSetup extends JPanel {
         rollDice.setLocationRelativeTo(null);
         rollDice.setVisible(true);
     }
-    //endregion
+    // endregion
 }

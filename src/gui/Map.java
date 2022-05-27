@@ -14,7 +14,9 @@ public class Map {
     public static final int HEIGHT = 1280;
 
     public static void init() {
-        if (!POLYGONS.isEmpty()) { return; }
+        if (!POLYGONS.isEmpty()) {
+            return;
+        }
 
         try {
 

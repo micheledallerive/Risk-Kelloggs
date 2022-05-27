@@ -5,26 +5,35 @@ import model.Game;
 import model.StatusListener;
 import model.enums.GameStatus;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.BorderLayout;
+import java.awt.CardLayout;
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JPanel;
 
+/**
+ * Class main window for GUI main handler.
+ * @author moralj@usi.ch
+ */
 public class MainWindow extends JFrame {
-    //region CONSTANTS
+    // region CONSTANTS
     private static final String TITLE = "Risk";
     private static final String PATH_ICON = "./img/icon.png";
-    //endregion
+    // endregion
 
-    //region FIELDS
+    // region FIELDS
     private final Game game;
-    //private GameStatus current;
-    private JPanel cards; //a panel that uses CardLayout
-    //endregion
+    // private GameStatus current;
+    private JPanel cards; // a panel that uses CardLayout
+    // endregion
 
-    //region CONSTRUCTORS
+    // region CONSTRUCTORS
     /**
      * Constructor.
+     * 
      * @param game Game object.
      */
     public MainWindow(final Game game) {
@@ -41,22 +50,22 @@ public class MainWindow extends JFrame {
         this.setIconImage(new ImageIcon(PATH_ICON).getImage());
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        // content in window panels, which are card layout to substitute when a game status changes
+        // content in window panels, which are card layout to substitute when a game
+        // status changes
         this.initCards();
 
         // deployment
         this.pack();
         this.setVisible(true);
     }
-    //endregion
+    // endregion
 
-    //region METHODS
+    // region METHODS
     /**
      * Function - configure the menu bar.
      * @return JMenuBar swing object
      */
     private final JMenuBar menuBarConfiguration() {
-        JMenuBar menuBar = new JMenuBar();
         JMenu menu = new JMenu("Options");
         JMenuItem item1 = new JMenuItem("Save");
         JMenuItem item2 = new JMenuItem("Load");
@@ -65,6 +74,7 @@ public class MainWindow extends JFrame {
         menu.add(item1);
         menu.add(item2);
         menu.add(item3);
+        JMenuBar menuBar = new JMenuBar();
         menuBar.add(menu);
         return menuBar;
     }
@@ -75,27 +85,29 @@ public class MainWindow extends JFrame {
     private void initCards() {
         // show different game panel based on game status changing
         game.addListener(new StatusListener() {
-            @Override public void changed(final GameStatus status) {
+            @Override
+            public void changed(final GameStatus status) {
                 CardLayout cl = (CardLayout) (cards.getLayout());
                 cl.show(cards, status.toString());
                 cards.getComponents()[0].requestFocus();
             }
         });
 
-        //Create the "cards" (panels for each game status)
+        // Create the "cards" (panels for each game status)
         final JPanel mainMenuCard = new JMainMenu(new EventCallback() {
-            @Override public void onEvent(int id) {
+            @Override
+            public void onEvent(int id) {
                 game.nextStatus();
             }
         });
         final JPanel playCard = new JSetup(game, this);
 
-        //Create the panel that contains the "cards".
-        this.cards = new JPanel(new CardLayout());                      // create card layout for panels
-        this.cards.add(mainMenuCard, GameStatus.MENU.toString());        // add menu panel
-        this.cards.add(playCard, GameStatus.SETUP.toString());           // add setup panel
-        this.getContentPane().add(this.cards, BorderLayout.CENTER);     // position panels at the center whole screen
-        game.setStatus(GameStatus.MENU);                                // set first game status at menu
+        // Create the panel that contains the "cards".
+        this.cards = new JPanel(new CardLayout()); // create card layout for panels
+        this.cards.add(mainMenuCard, GameStatus.MENU.toString()); // add menu panel
+        this.cards.add(playCard, GameStatus.SETUP.toString()); // add setup panel
+        this.getContentPane().add(this.cards, BorderLayout.CENTER); // position panels at the center whole screen
+        game.setStatus(GameStatus.MENU); // set first game status at menu
     }
-    //endregion
+    // endregion
 }
