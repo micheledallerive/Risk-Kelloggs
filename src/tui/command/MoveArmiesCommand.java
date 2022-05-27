@@ -6,6 +6,7 @@ import model.Game;
 import model.Player;
 import model.Territory;
 
+import java.util.Locale;
 import java.util.Scanner;
 
 /**
@@ -35,7 +36,7 @@ public class MoveArmiesCommand extends Command {
 
         String fromStr = input.nextLine();
         Territory fromTerritory = game.getBoard().getTerritories().get(
-                Territory.TerritoryName.valueOf(fromStr.toUpperCase()).ordinal()
+                Territory.TerritoryName.valueOf(fromStr.toUpperCase(Locale.US)).ordinal()
         );
 
         print("Where do you want to move the armies to?");

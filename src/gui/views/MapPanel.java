@@ -23,7 +23,6 @@ public class MapPanel extends ImageBackgroundPanel {
     // endregion
 
     // region FIELDS
-    private final Game game;
     private final ArrayList<EventCallback> callbacks;
     // endregion
 
@@ -35,7 +34,6 @@ public class MapPanel extends ImageBackgroundPanel {
      */
     public MapPanel(final Game game) {
         super(MAP_PATH, BRIGHTNESS_DEFAULT);
-        this.game = game;
         this.callbacks = new ArrayList<>();
         this.addMouseListener(new MouseAdapter() {
             @Override
@@ -89,10 +87,18 @@ public class MapPanel extends ImageBackgroundPanel {
         return -1;
     }
 
+    /**
+     * Function - add a callback to the list of callbacks.
+     * @param callback Callback to add.
+     */
     public void addCallback(EventCallback callback) {
         this.callbacks.add(callback);
     }
 
+    /**
+     * Function - trigger all the callbacks.
+     * @param val Value to pass to the callbacks.
+     */
     public void triggerCallbacks(int val) {
         for (EventCallback callback : callbacks) {
             callback.onEvent(val);

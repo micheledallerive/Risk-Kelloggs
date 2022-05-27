@@ -8,7 +8,14 @@ import gui.components.TransparentPanel;
 import model.Game;
 import model.Player;
 
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
+import java.awt.Insets;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.JFrame;
@@ -38,7 +45,6 @@ public class RollingDiceDialog extends MessageDialog {
         setLocationRelativeTo(null);
 
         setLayout(new GridBagLayout());
-        GridBagConstraints gbc = new GridBagConstraints();
 
         JPanel titlePanel = new TransparentPanel();
         titlePanel.setLayout(new GridBagLayout());
@@ -63,16 +69,16 @@ public class RollingDiceDialog extends MessageDialog {
         dicePanel.setLayout(diceLayout);
 
         JDie[] dice = new JDie[6];
-        for(int i=0;i<6;i++) {
+        for (int i = 0; i < 6; i++) {
             dice[i] = new JDie();
         }
 
         for (int i = 0; i < 3; i++) {
-            dicePanel.add(new PlayerIconComponent(game.getPlayers().get(2*i), false));
-            dicePanel.add(dice[2*i]);
+            dicePanel.add(new PlayerIconComponent(game.getPlayers().get(2 * i), false));
+            dicePanel.add(dice[2 * i]);
             dicePanel.add(new TransparentPanel());
-            dicePanel.add(dice[2*i+1]);
-            dicePanel.add(new PlayerIconComponent(game.getPlayers().get(2*i + 1), true));
+            dicePanel.add(dice[2 * i + 1]);
+            dicePanel.add(new PlayerIconComponent(game.getPlayers().get(2 * i + 1), true));
         }
 
         final int[] maxValue = {0};
@@ -94,8 +100,8 @@ public class RollingDiceDialog extends MessageDialog {
         // roll player die only on click.
         dice[0].addMouseListener(new MouseAdapter() {
             @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
+            public void mouseClicked(MouseEvent event) {
+                super.mouseClicked(event);
                 if (!playerRolled[0]) {
                     dice[0].roll();
                 }
@@ -125,6 +131,7 @@ public class RollingDiceDialog extends MessageDialog {
         });
 
 
+        GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridy = 0;
         add(titlePanel, gbc);
         gbc.insets = new Insets(50, 0, 0, 0);
