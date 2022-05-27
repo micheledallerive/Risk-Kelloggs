@@ -7,14 +7,35 @@ import java.util.HashMap;
 import java.util.Scanner;
 import java.util.regex.PatternSyntaxException;
 
-public class Map {
-    public static final HashMap<String, Polygon> POLYGONS = new HashMap<>();
+/**
+ * Class map handling initialization of methods to have a direct representation and
+ * correspondence between map image and clickable map territory integrated with the game model.
+ * @author dallem@usi.ch
+ */
+public class MapUtils {
+    //region CONSTANTS
     private static final String FILE_BOUNDS = "src/gui/bounds.dat";
     public static final int WIDTH = 1920;
     public static final int HEIGHT = 1280;
+    //endregion
 
+    //region FIELDS
+    public static final HashMap<String, Polygon> POLYGONS = new HashMap<>();
+    //endregion
+
+    private MapUtils() {
+
+    }
+
+    //region METHODS
+    /**
+     * Procedure - get the polygons of the corresponding image map,
+     *  into a Hashmap for easy check and usage.
+     */
     public static void init() {
-        if (!POLYGONS.isEmpty()) { return; }
+        if (!POLYGONS.isEmpty()) {
+            return;
+        }
 
         try {
 
@@ -36,9 +57,10 @@ public class Map {
             }
 
         } catch (final FileNotFoundException | IllegalStateException | PatternSyntaxException | NumberFormatException
-                | NegativeArraySizeException | IndexOutOfBoundsException | NullPointerException exception) {
+                | NegativeArraySizeException | IndexOutOfBoundsException exception) {
             exception.printStackTrace();
             System.exit(0);
         }
     }
+    //endregion
 }

@@ -1,55 +1,103 @@
 package gui.components;
 
-import gui.Utils;
+import gui.ImageUtils;
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Image;
+import javax.swing.ImageIcon;
 
+/**
+ * Class for panel with background image.
+ * @author dallem@usi.ch
+ */
 public class ImageBackgroundPanel extends TransparentPanel {
 
+    //region CONSTANTS
+    private static final float BRIGHTNESS = 0.33f;
+    //endregion
+
+    //region FIELDS
     private final Image image;
     private Image roundedImage;
     private float brightness;
+    //endregion
 
-    public ImageBackgroundPanel(Image image) {
-        this(image, 0.33f);
+    //region CONSTRUCTORS
+
+    /**
+     * Constructor.
+     * @param image Image object of panel background.
+     */
+    public ImageBackgroundPanel(final Image image) {
+        this(image, BRIGHTNESS);
     }
 
-    public ImageBackgroundPanel(Image image, float brightness) {
+    /**
+     * Constructor.
+     * @param path String of image path.
+     */
+    public ImageBackgroundPanel(final String path) {
+        this(path, BRIGHTNESS);
+    }
+
+    /**
+     * Constructor.
+     * @param path String of image path.
+     * @param brightness Double number of brightness value.
+     */
+    public ImageBackgroundPanel(final String path, final float brightness) {
+        this(new ImageIcon(path).getImage(), brightness);
+    }
+
+    /**
+     * Main constructor.
+     * @param image Image object of panel background.
+     * @param brightness Double number of brightness value.
+     */
+    public ImageBackgroundPanel(final Image image, final float brightness) {
+        super();
         this.image = image;
         this.roundedImage = null;
         this.brightness = brightness;
     }
+    //endregion
 
-    public ImageBackgroundPanel(String path) {
-        this(path, 0.33f);
-    }
+    //region METHODS
 
-    public ImageBackgroundPanel(String path, float brightness) {
-        this(new ImageIcon(path).getImage(), brightness);
-    }
-
-    public void setBrightness(float brightness) {
+    /**
+     * setter of brightness field.
+     * @param brightness New float value for brightness.
+     */
+    public void setBrightness(final float brightness) {
         this.brightness = brightness;
     }
 
-    public void setRoundedCorners(int radius) {
-        roundedImage = Utils.makeRoundedCorner(Utils.imageToBufferedImage(image), radius);
-    }
-    public void resetRoundedCorners() {
-        roundedImage = null;
+    /**
+     * setter of rounded image field.
+     * @param radius New radius to round each image corner.
+     */
+    public void setRoundedCorners(final int radius) {
+        this.roundedImage = ImageUtils.makeRoundedCorner(ImageUtils.imageToBufferedImage(image), radius);
     }
 
-    @Override
-    public void paintComponent(Graphics g) {
-        super.paintComponent(g);
+    /**
+     * Procedure - reset rounded corners of image.
+     */
+    public void resetRoundedCorners() {
+        this.roundedImage = null;
+    }
+
+    @Override public void paintComponent(Graphics graphics) {
+        super.paintComponent(graphics);
         super.setOpaque(false);
 
         Image toDraw = roundedImage != null ? roundedImage : image;
-        g.drawImage(toDraw, 0, 0, getWidth(), getHeight(), this);
+        graphics.drawImage(toDraw, 0, 0, getWidth(), getHeight(), this);
 
-        int brightness = (int)(256 - 256 * this.brightness);
-        g.setColor(new Color(0,0,0,brightness));
-        g.fillRect(0, 0, getWidth(), getHeight());
+        final int brightness = (int)(256 - 256 * this.brightness);
+        graphics.setColor(new Color(0, 0, 0, brightness));
+        graphics.fillRect(0, 0, getWidth(), getHeight());
     }
+    //endregion
 }

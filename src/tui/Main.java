@@ -27,7 +27,6 @@ import tui.command.EndTurnCommand;
 import tui.command.MoveArmiesCommand;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
@@ -130,7 +129,7 @@ public class Main {
             }
             printFormat("%-30s %-5s\n", who + ":", rolls.get(i).toString());
         }
-        print(game.getPlayers().get(maxIndex) + " start" + (game.getPlayers().get(maxIndex).isAI()?"s":""));
+        print(game.getPlayers().get(maxIndex) + " start" + (game.getPlayers().get(maxIndex).isAI() ? "s" : ""));
         game.setTurn(maxIndex);
         game.setPlayerStarting(game.getPlayers().get(maxIndex));
 

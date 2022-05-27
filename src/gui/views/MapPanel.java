@@ -1,46 +1,65 @@
 package gui.views;
 
-import gui.Map;
+import gui.MapUtils;
 import gui.components.ImageBackgroundPanel;
 import model.Game;
 import model.Territory;
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Cursor;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+/**
+ * Class to display the map of risk game.
+ * 
+ * @author dallem@usi.ch, moralj@usi.ch
+ */
 public class MapPanel extends ImageBackgroundPanel {
+    // region CONSTANTS
+    private static final String MAP_PATH = "src/gui/assets/images/map.jpg";
+    private static final float BRIGHTNESS_DEFAULT = 1f;
+    // endregion
 
-    private Game game;
+    // region FIELDS
+    private final Game game;
+    // endregion
 
-    public MapPanel(Game game) {
-        super("src/gui/assets/images/map.jpg", 1f);
+    // region CONSTRUCTORS
+    /**
+     * Constructor.
+     * 
+     * @param game Game object.
+     */
+    public MapPanel(final Game game) {
+        super(MAP_PATH, BRIGHTNESS_DEFAULT);
         this.game = game;
-        addMouseListener(new MouseAdapter() {
+        this.addMouseListener(new MouseAdapter() {
             @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
-                if (e.getButton() == MouseEvent.BUTTON1) {
-                    int x = e.getX();
-                    int y = e.getY();
-                    x = x * Map.WIDTH / getWidth();
-                    y = y * Map.HEIGHT / getHeight();
-                    Territory territory = getClickedTerritory(x, y);
-                    if (territory!=null)
-                        System.out.println(territory.getName());
+            public void mouseClicked(final MouseEvent mouseEvent) {
+                super.mouseClicked(mouseEvent);
+                if (mouseEvent.getButton() != MouseEvent.BUTTON1) {
+                    return;
+                }
+
+                int pointX = mouseEvent.getX();
+                int pointY = mouseEvent.getY();
+                pointX = pointX * MapUtils.WIDTH / getWidth();
+                pointY = pointY * MapUtils.HEIGHT / getHeight();
+                Territory territory = getClickedTerritory(pointX, pointY);
+                if (territory != null) {
+                    System.out.println(territory.getName());
                 }
             }
         });
-        addMouseMotionListener(new MouseAdapter() {
+        this.addMouseMotionListener(new MouseAdapter() {
             @Override
-            public void mouseMoved(MouseEvent e) {
-                super.mouseMoved(e);
-                int x = e.getX();
-                int y = e.getY();
-                x = x * Map.WIDTH / getWidth();
-                y = y * Map.HEIGHT / getHeight();
-                if (getClickedTerritory(x, y) != null) {
+            public void mouseMoved(final MouseEvent mouseEvent) {
+                super.mouseMoved(mouseEvent);
+                int pointX = mouseEvent.getX();
+                int pointY = mouseEvent.getY();
+                pointX = pointX * MapUtils.WIDTH / getWidth();
+                pointY = pointY * MapUtils.HEIGHT / getHeight();
+                if (getClickedTerritory(pointX, pointY) != null) {
                     setCursor(new Cursor(Cursor.HAND_CURSOR));
                 } else {
                     setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
@@ -48,23 +67,23 @@ public class MapPanel extends ImageBackgroundPanel {
             }
         });
     }
+    // endregion
 
-    public Territory getClickedTerritory(int x, int y) {
-        for(String name : Map.POLYGONS.keySet()) {
-            if (Map.POLYGONS.get(name).contains(x,y)) {
-                return game.getBoard().getTerritories().get(Territory.TerritoryName.valueOf(name).ordinal());
+    // region METHODS
+    /**
+     * Function - give the territory clicked on the map.
+     * 
+     * @param pointX Abscissa of the clicked point.
+     * @param pointY Ordinate of the clicked point.
+     * @return Territory object.
+     */
+    public Territory getClickedTerritory(final int pointX, final int pointY) {
+        for (final String name : MapUtils.POLYGONS.keySet()) {
+            if (MapUtils.POLYGONS.get(name).contains(pointX, pointY)) {
+                return this.game.getBoard().getTerritories().get(Territory.TerritoryName.valueOf(name).ordinal());
             }
         }
         return null;
     }
-
-    @Override
-    public void paintComponent(java.awt.Graphics g) {
-        super.paintComponent(g);
-
-    }
+    // endregion
 }
-
-/*
-
- */

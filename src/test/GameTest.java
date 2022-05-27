@@ -98,7 +98,7 @@ public class GameTest {
 
     @Test
     public void testWorldConquered() {
-        Game game = new Game(new Board(), new ArrayList<Player>());
+        Game game = new Game(new ArrayList<Player>());
         ArrayList<Continent> continents = game.getBoard().getContinents();
         Player p1 = new Player(ArmyColor.RED, "bob");
         Player p2 = new Player(ArmyColor.BLUE, "chiara");

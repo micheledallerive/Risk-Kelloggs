@@ -1,89 +1,79 @@
 package gui.views;
 
 import gui.EventCallback;
-import gui.FontManager;
+import gui.FontUtils;
 import gui.components.ImageBackgroundPanel;
 import gui.components.TransparentPanel;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import javax.swing.*;
+import javax.swing.BoxLayout;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-
+//TODO: Rename JMainMenu
 /**
  * Class JMainMenu extended from JPanel to create main menu.
+ * 
  * @author dallem@usi.ch
  */
 public class JMainMenu extends ImageBackgroundPanel {
 
-    /*private void updateText(final JLabel label) {
-        final String DEFAULT = "Press any key to start";
-        final String[] dots = new String[]{"", ".", "..", "..."};
-        final String[] spaces = new String[]{"   ", "  ", " " , ""};
-        final int[] dotsCounter = {0};
-        Runnable runnable = () -> {
-            int laps = dotsCounter[0]/dots.length;
-            int indexToShow;
-            if(laps % 2 == 0) {
-                indexToShow = dotsCounter[0]%dots.length;
-            } else {
-                indexToShow = dots.length - dotsCounter[0]%dots.length -1;
-            }
-            label.setText(DEFAULT + dots[indexToShow] + spaces[indexToShow]);
-            dotsCounter[0]++;
-        };
-        ScheduledExecutorService executor =
-                Executors.newScheduledThreadPool(1);
-        executor.scheduleAtFixedRate(runnable, 0, 750, TimeUnit.MILLISECONDS);
-    }*/
+    // region CONSTANTS
+    private static final String TITLE = "Risk Kellogg's";
+    private static final int SIZE_TITLE = 100;
+    private static final String SUBTITLE = "Press a key or click anywhere to start...";
+    private static final int SIZE_SUBTITLE = 40;
+    private static final String BACKGROUND = "src/gui/assets/images/main_menu.jpg";
+    // endregion
 
+    // region CONSTRUCTOR
     /**
      * Constructor.
+     * 
      * @param callback Event for clickable buttons
      */
-    public JMainMenu(EventCallback callback) {
-        super("src/gui/assets/images/main_menu.jpg");
+    public JMainMenu(final EventCallback callback) {
+        super(BACKGROUND);
 
-        GridLayout layout = new GridLayout(4, 1);
+        // set layout: title 1st row, 2nd space, 3rd subtitle, 4th space
+        this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 
-        JPanel titlePanel = new TransparentPanel();
-        titlePanel.setBorder(new EmptyBorder(50, 0, 0, 0));
-        titlePanel.setLayout(new GridBagLayout());
-        JLabel title = new JLabel("Risk Kellogg's");
-        title.setFont(FontManager.getFont().deriveFont(Font.BOLD, 100));
+        // create title panel, and title text, font, color
+        // create subtitle panel, and subtitle text, font, color
+        final JPanel titlePanel = new TransparentPanel();
+        final JPanel labelPanel = new TransparentPanel();
+        titlePanel.setBorder(new EmptyBorder(50, 0, 0, 0)); // add top margin
+        final JLabel title = new JLabel(TITLE);
+        final JLabel label = new JLabel(SUBTITLE);
+        title.setFont(FontUtils.getFont().deriveFont(Font.BOLD, SIZE_TITLE));
+        label.setFont(FontUtils.getFont().deriveFont(Font.PLAIN, SIZE_SUBTITLE));
         title.setForeground(Color.WHITE);
-
-        titlePanel.add(title);
-
-        JPanel labelPanel = new TransparentPanel();
-        labelPanel.setLayout(new GridBagLayout());
-        JLabel label = new JLabel("Press a key or click anywhere to start...");
-        label.setFont(FontManager.getFont().deriveFont(Font.PLAIN, 40));
         label.setForeground(Color.WHITE);
+        titlePanel.add(title);
         labelPanel.add(label);
 
+        // add panels to JFrame
+        this.add(titlePanel);
+        this.add(new TransparentPanel());
+        this.add(labelPanel);
 
-        add(titlePanel);
-        add(new TransparentPanel());
-        add(labelPanel);
-        setLayout(layout);
-
-        addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyPressed(KeyEvent e) {
+        // add events to click or push any key to start the game
+        this.addKeyListener(new KeyAdapter() {
+            @Override public void keyPressed(KeyEvent keyEvent) {
                 callback.onEvent(0);
             }
         });
-
-        addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
+        this.addMouseListener(new MouseAdapter() {
+            @Override public void mouseClicked(MouseEvent mouseEvent) {
                 callback.onEvent(0);
             }
         });
     }
+    // endregion
 }

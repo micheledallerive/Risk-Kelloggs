@@ -1,17 +1,31 @@
 package gui.components;
 
-import gui.EventCallback;
-import gui.FontManager;
+import gui.FontUtils;
 
-import javax.swing.*;
+import java.awt.Dimension;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
+import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
-import java.awt.*;
-import java.awt.event.ActionEvent;
 
+/**
+ * Class to get name of player.
+ * @author dallem@usi.ch
+ */
 public class NameDialog extends MessageDialog {
     private final JTextField nameField;
 
+    /**
+     * Constructor.
+     * @param parent invoking JFrame parent.
+     */
     public NameDialog(JFrame parent) {
         super(parent, "", true, 100);
         setLocationRelativeTo(null);
@@ -30,7 +44,7 @@ public class NameDialog extends MessageDialog {
         namePanel.setLayout(new GridBagLayout());
         nameField = new JTextField(20);
         nameField.setMargin(new Insets(5, 5, 5, 5));
-        nameField.setFont(FontManager.addLetterSpacing(nameField.getFont().deriveFont(18f), .1f));
+        nameField.setFont(FontUtils.addLetterSpacing(nameField.getFont().deriveFont(18f), .1f));
         nameField.addActionListener(this::actionPerformed);
         namePanel.add(nameField);
 
@@ -50,10 +64,18 @@ public class NameDialog extends MessageDialog {
         add(okPanel);
     }
 
-    private void actionPerformed(ActionEvent e) {
+    /**
+     * Procedure - event on action performed.
+     * @param actionEvent Event to handle.
+     */
+    private void actionPerformed(ActionEvent actionEvent) {
         dispose();
     }
 
+    /**
+     * Function - string name from JTextField holding new user names.
+     * @return String name.
+     */
     public String getName() {
         return nameField.getText();
     }
