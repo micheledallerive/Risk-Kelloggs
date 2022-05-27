@@ -262,6 +262,14 @@ public class Game {
     }
 
     /**
+     * Returns the player that starts the game.
+     * @return the player that starts the game.
+     */
+    public Player getPlayerStarting() {
+        return this.playerStarting;
+    }
+
+    /**
      * Sets the current number of turns each player played.
      * @param turnsPlayed the number of turns each player played.
      */

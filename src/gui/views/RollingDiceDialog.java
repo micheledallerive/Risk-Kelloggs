@@ -1,16 +1,16 @@
 package gui.views;
 
+import gui.EventCallback;
 import gui.components.JDie;
 import gui.components.MessageDialog;
 import gui.components.PlayerIconComponent;
 import gui.components.TransparentPanel;
 import model.Game;
+import model.Player;
 
-import java.awt.Font;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.GridLayout;
-import java.awt.Insets;
+import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -20,6 +20,9 @@ import javax.swing.JPanel;
  * @author dallem@usi.ch
  */
 public class RollingDiceDialog extends MessageDialog {
+
+    private Game game;
+
     /**
      * Constructor.
      * @param parent JFrame parent.
@@ -30,9 +33,12 @@ public class RollingDiceDialog extends MessageDialog {
     public RollingDiceDialog(JFrame parent, String windowTitle, boolean modal, Game game) {
         super(parent, windowTitle, modal, 100);
 
+        this.game = game;
+
         setLocationRelativeTo(null);
 
         setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
 
         JPanel titlePanel = new TransparentPanel();
         titlePanel.setLayout(new GridBagLayout());
@@ -69,18 +75,69 @@ public class RollingDiceDialog extends MessageDialog {
             dicePanel.add(new PlayerIconComponent(game.getPlayers().get(2*i + 1), true));
         }
 
-        GridBagConstraints gbc = new GridBagConstraints();
         final int[] maxValue = {0};
-        final int[] maxIndex = {0};
-        for (int i = 1; i < 6; i++) {
-            maxValue[0] = Math.max(maxValue[0], dice[i].getValue());
-            maxIndex[0] = maxValue[0] > dice[i].getValue() ? i : maxIndex[0];
+        final int[] maxPlayerIndex = {0};
+
+        for (int i = 0; i < 6; i++) {
+            int finalI = i;
+            dice[i].addCallback((id) -> {
+                maxValue[0] = Math.max(maxValue[0], dice[finalI].getValue());
+                maxPlayerIndex[0] = maxValue[0] == dice[finalI].getValue() ? finalI : maxPlayerIndex[0];
+            });
+            if (i > 0) {
+                // only roll the AIs dice.
+                dice[i].roll();
+            }
         }
+
+        final boolean[] playerRolled = {false};
+        // roll player die only on click.
+        dice[0].addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                if (!playerRolled[0]) {
+                    dice[0].roll();
+                }
+            }
+        });
+
+
+        JPanel winnerPanel = new TransparentPanel();
+        winnerPanel.setLayout(new GridBagLayout());
+
+        GridBagConstraints constraints = new GridBagConstraints();
+        constraints.gridx = 0;
+        JLabel label = new JLabel("Player: ");
+        label.setVisible(false);
+        winnerPanel.add(label, constraints);
+
+        constraints.gridx = 1;
+        PlayerIconComponent playerIcon = new PlayerIconComponent(game.getPlayers().get(0), false);
+        playerIcon.setVisible(false);
+        winnerPanel.add(playerIcon, constraints);
+
+        dice[0].addCallback((id) -> {
+            playerRolled[0] = true;
+            game.setPlayerStarting(game.getPlayers().get(maxPlayerIndex[0]));
+            //showPlayerStarting(game.getPlayerStarting(), winnerPanel, true);
+            dispose();
+        });
+
 
         gbc.gridy = 0;
         add(titlePanel, gbc);
         gbc.insets = new Insets(50, 0, 0, 0);
         gbc.gridy = 1;
         add(dicePanel, gbc);
+    }
+
+    private void showPlayerStarting(Player player, JPanel panel, boolean visible) {
+
+        for (Component component : panel.getComponents()) {
+            component.setVisible(visible);
+        }
+
+        panel.repaint();
     }
 }

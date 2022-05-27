@@ -1,5 +1,6 @@
 package gui.views;
 
+import gui.EventCallback;
 import gui.MapUtils;
 import gui.components.ImageBackgroundPanel;
 import model.Game;
@@ -8,6 +9,7 @@ import model.Territory;
 import java.awt.Cursor;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 
 /**
  * Class to display the map of risk game.
@@ -22,6 +24,7 @@ public class MapPanel extends ImageBackgroundPanel {
 
     // region FIELDS
     private final Game game;
+    private final ArrayList<EventCallback> callbacks;
     // endregion
 
     // region CONSTRUCTORS
@@ -33,6 +36,7 @@ public class MapPanel extends ImageBackgroundPanel {
     public MapPanel(final Game game) {
         super(MAP_PATH, BRIGHTNESS_DEFAULT);
         this.game = game;
+        this.callbacks = new ArrayList<>();
         this.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(final MouseEvent mouseEvent) {
@@ -45,10 +49,9 @@ public class MapPanel extends ImageBackgroundPanel {
                 int pointY = mouseEvent.getY();
                 pointX = pointX * MapUtils.WIDTH / getWidth();
                 pointY = pointY * MapUtils.HEIGHT / getHeight();
-                Territory territory = getClickedTerritory(pointX, pointY);
-                if (territory != null) {
-                    System.out.println(territory.getName());
-                }
+                int territoryIndex = getClickedTerritory(pointX, pointY);
+                System.out.println("Clicked territory: " + game.getBoard().getTerritories().get(territoryIndex).getName());
+                triggerCallbacks(territoryIndex);
             }
         });
         this.addMouseMotionListener(new MouseAdapter() {
@@ -59,7 +62,7 @@ public class MapPanel extends ImageBackgroundPanel {
                 int pointY = mouseEvent.getY();
                 pointX = pointX * MapUtils.WIDTH / getWidth();
                 pointY = pointY * MapUtils.HEIGHT / getHeight();
-                if (getClickedTerritory(pointX, pointY) != null) {
+                if (getClickedTerritory(pointX, pointY) != -1) {
                     setCursor(new Cursor(Cursor.HAND_CURSOR));
                 } else {
                     setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
@@ -75,15 +78,25 @@ public class MapPanel extends ImageBackgroundPanel {
      * 
      * @param pointX Abscissa of the clicked point.
      * @param pointY Ordinate of the clicked point.
-     * @return Territory object.
+     * @return the index of the territory.
      */
-    public Territory getClickedTerritory(final int pointX, final int pointY) {
+    public int getClickedTerritory(final int pointX, final int pointY) {
         for (final String name : MapUtils.POLYGONS.keySet()) {
             if (MapUtils.POLYGONS.get(name).contains(pointX, pointY)) {
-                return this.game.getBoard().getTerritories().get(Territory.TerritoryName.valueOf(name).ordinal());
+                return Territory.TerritoryName.valueOf(name).ordinal();
             }
         }
-        return null;
+        return -1;
+    }
+
+    public void addCallback(EventCallback callback) {
+        this.callbacks.add(callback);
+    }
+
+    public void triggerCallbacks(int val) {
+        for (EventCallback callback : callbacks) {
+            callback.onEvent(val);
+        }
     }
     // endregion
 }

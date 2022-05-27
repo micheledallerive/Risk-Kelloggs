@@ -5,6 +5,7 @@ import model.Die;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.Timer;
@@ -26,7 +27,8 @@ public class JDie extends JComponent {
     private Timer timer;
     private int animation = 0;
     private int value;
-    private EventCallback callback;
+    private ArrayList<EventCallback> callbacks;
+    private boolean rolling;
     //endregion
 
     //region CONSTRUCTORS
@@ -45,11 +47,13 @@ public class JDie extends JComponent {
      */
     public JDie(final int frameDuration, final int totalDuration) {
         this.setPreferredSize(new Dimension(SIZE, SIZE));
+        this.rolling = false;
+        this.value = 1;
+        this.callbacks = new ArrayList<>();
         this.timer = new Timer(frameDuration, e -> {
-            this.value = (int) (Math.random() * FACES);
             if (this.animation == totalDuration / frameDuration) {
                 this.animation = this.value - 1;
-                this.timer.stop();
+                stop();
             } else {
                 this.animation++;
             }
@@ -81,6 +85,7 @@ public class JDie extends JComponent {
      * Procedure - rolls the dice.
      */
     public void roll() {
+        this.rolling = true;
         this.value = Die.casualRoll();
         this.timer.start();
     }
@@ -90,22 +95,27 @@ public class JDie extends JComponent {
      * @param callback Interface implemented.
      */
     public void addCallback(EventCallback callback) {
-        this.callback = callback;
+        callbacks.add(callback);
     }
 
     /**
      * Procedure - stop the rolling dice.
      */
     public void stop() {
+        this.rolling = false;
         this.timer.stop();
-        if (callback != null) {
-            this.callback.onEvent(0);
+        for (EventCallback callback : callbacks) {
+            callback.onEvent(0);
         }
     }
 
     @Override public void paintComponent(Graphics graphics) {
         super.paintComponent(graphics);
-        graphics.drawImage(images[Die.casualRoll() - 1].getImage(), 0, 0, this);
+        // for some reason the paintComponent is called even in dice that are not rolling
+        // to avoid this i check if it is rolling, only in that case I show a random number.
+        int imageIndex = this.rolling ? Die.casualRoll() - 1 : this.value - 1;
+        imageIndex = Math.max(imageIndex, 0);
+        graphics.drawImage(images[imageIndex].getImage(), 0, 0, this);
     }
     //endregion
 }

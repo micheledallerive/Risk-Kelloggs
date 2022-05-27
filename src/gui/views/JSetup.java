@@ -83,6 +83,16 @@ public class JSetup extends JPanel {
         rollDice.pack();
         rollDice.setLocationRelativeTo(null);
         rollDice.setVisible(true);
+        rollDice.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosed(WindowEvent windowEvent) {
+                startFillingMap();
+            }
+        });
+    }
+
+    private void startFillingMap() {
+        System.out.println("Filling");
     }
     // endregion
 }

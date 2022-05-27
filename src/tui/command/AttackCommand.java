@@ -30,6 +30,8 @@ public class AttackCommand extends Command {
                     "Which territory do you want to attack?",
                     input,
                     (tn) -> fromTerritory.getAdjacent().stream().anyMatch(t -> t.getName() == tn)
+                        && fromTerritory.getAdjacent().stream().filter(t -> t.getName() == tn)
+                            .findFirst().get().getOwner() != player
             );
             Territory attackedTerritory = game.getBoard().getTerritories().get(toAttack.ordinal());
             Player attackedPlayer = attackedTerritory.getOwner();
