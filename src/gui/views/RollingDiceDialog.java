@@ -1,5 +1,6 @@
 package gui.views;
 
+import gui.EventCallback;
 import gui.components.JDie;
 import gui.components.MessageDialog;
 import gui.components.PlayerIconComponent;
@@ -9,6 +10,10 @@ import model.enums.ArmyColor;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class RollingDiceDialog extends MessageDialog {
 
@@ -43,13 +48,45 @@ public class RollingDiceDialog extends MessageDialog {
         JPanel dicePanel = new TransparentPanel();
         dicePanel.setLayout(diceLayout);
 
+        JDie[] dice = new JDie[6];
+        for(int i=0;i<6;i++) {
+            dice[i] = new JDie();
+        }
+
         for(int i = 0; i < 3; i++) {
             dicePanel.add(new PlayerIconComponent(game.getPlayers().get(2*i), false));
-            dicePanel.add(new JDie());
+            dicePanel.add(dice[2*i]);
             dicePanel.add(new TransparentPanel());
-            dicePanel.add(new JDie());
+            dicePanel.add(dice[2*i+1]);
             dicePanel.add(new PlayerIconComponent(game.getPlayers().get(2*i + 1), true));
         }
+
+        final int[] maxValue = {0};
+        final int[] maxIndex = {0};
+        for(int i=1;i<6;i++) {
+            maxValue[0] = Math.max(maxValue[0], dice[i].getValue());
+            maxIndex[0] = maxValue[0] > dice[i].getValue() ? i : maxIndex[0];
+        }
+
+
+        final boolean[] rolled = {false};
+        dice[0].addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                if(rolled[0]) return;
+                rolled[0] = true;
+                dice[0].roll();
+                dice[0].addCallback(new EventCallback() {
+                    @Override
+                    public void onEvent(int id) {
+                        maxValue[0] = Math.max(maxValue[0], dice[0].getValue());
+                        maxIndex[0] = maxValue[0] > dice[0].getValue() ? 0 : maxIndex[0];
+                        game.setPlayerStarting(game.getPlayers().get(maxIndex[0]));
+                    }
+                });
+            }
+        });
 
         gbc.gridy = 0;
         add(titlePanel,gbc);
