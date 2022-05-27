@@ -1,37 +1,54 @@
 package tui.command;
 
+import static tui.Utils.askTerritory;
+import static tui.Utils.consolePause;
+import static tui.Utils.print;
+
 import model.Game;
 import model.Player;
 import model.Territory;
 
 import java.util.Scanner;
 
-import static tui.Utils.*;
-
+/**
+ * The attack command.
+ * @author dallem@usi.ch
+ */
 public class AttackCommand extends Command {
 
+    /**
+     * The default constructor.
+     * @param name the name of the command.
+     * @param game the game.
+     * @param input the input scanner.
+     * @param numInput the number input scanner.
+     */
     public AttackCommand(String name, Game game, Scanner input, Scanner numInput) {
         super(name, game, input, numInput);
     }
 
+    /**
+     * Executes the command.
+     * @return if the player turn is over.
+     */
     @Override
     public boolean execute() {
         Player player = game.getPlayers().get(game.getTurn());
         Territory fromTerritory = game.getBoard().getTerritories().get(
-                askTerritory(
-                        "What territory do you want to attack from?",
-                        input,
-                        (tn) -> player.getTerritories().stream().anyMatch(t -> t.getName() == tn)).ordinal()
+            askTerritory(
+                "What territory do you want to attack from?",
+                input,
+                (tn) -> player.getTerritories().stream().anyMatch(t -> t.getName() == tn)).ordinal()
         );
 
         if (fromTerritory.getName() != Territory.TerritoryName.NONE) {
 
             Territory.TerritoryName toAttack = askTerritory(
-                    "Which territory do you want to attack?",
-                    input,
-                    (tn) -> fromTerritory.getAdjacent().stream().anyMatch(t -> t.getName() == tn)
-                        && fromTerritory.getAdjacent().stream().filter(t -> t.getName() == tn)
-                            .findFirst().get().getOwner() != player
+                "Which territory do you want to attack?",
+                input,
+                (tn) -> fromTerritory.getAdjacent().stream().anyMatch(t -> t.getName() == tn)
+                    && fromTerritory.getAdjacent().stream().filter(t -> t.getName() == tn)
+                        .findFirst().get().getOwner() != player
             );
             Territory attackedTerritory = game.getBoard().getTerritories().get(toAttack.ordinal());
             Player attackedPlayer = attackedTerritory.getOwner();

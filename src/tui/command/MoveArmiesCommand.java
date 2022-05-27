@@ -1,19 +1,34 @@
 package tui.command;
 
+import static tui.Utils.print;
+
 import model.Game;
 import model.Player;
 import model.Territory;
 
 import java.util.Scanner;
 
-import static tui.Utils.print;
-
+/**
+ * Move armies command.
+ * @author dallem@usi.ch
+ */
 public class MoveArmiesCommand extends Command {
 
+    /**
+     * Default constructor.
+     * @param name Command name.
+     * @param game Game instance.
+     * @param input Scanner instance.
+     * @param numInput Number scanner instance.
+     */
     public MoveArmiesCommand(String name, Game game, Scanner input, Scanner numInput) {
         super(name, game, input, numInput);
     }
 
+    /**
+     * Execute the command.
+     * @return if the player turn is over.
+     */
     @Override
     public boolean execute() {
         print("Where do you want to move the armies from?");
