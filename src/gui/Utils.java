@@ -36,9 +36,9 @@ public class Utils {
      * @return Buffered image object.
      */
     public static BufferedImage makeRoundedCorner(final BufferedImage image, final int cornerRadius) {
-        int w = image.getWidth();
-        int h = image.getHeight();
-        BufferedImage output = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+        final int width = image.getWidth();
+        final int height = image.getHeight();
+        BufferedImage output = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
 
         Graphics2D g2 = output.createGraphics();
 
@@ -50,7 +50,7 @@ public class Utils {
         g2.setComposite(AlphaComposite.Src);
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2.setColor(Color.WHITE);
-        g2.fill(new RoundRectangle2D.Float(0, 0, w, h, cornerRadius, cornerRadius));
+        g2.fill(new RoundRectangle2D.Float(0, 0, width, height, cornerRadius, cornerRadius));
 
         // ... then compositing the image on top,
         // using the white shape from above as alpha source
