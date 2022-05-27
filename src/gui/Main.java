@@ -1,38 +1,39 @@
 package gui;
 
 import gui.components.JDie;
-import gui.views.JSetup;
-import gui.views.MapPanel;
-import gui.views.JMainMenu;
 import gui.views.MainWindow;
 import model.Game;
-import model.enums.GameStatus;
 
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.Enumeration;
-import javax.swing.*;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.plaf.FontUIResource;
 
 /**
- * GUI class.
- * 
+ * Main class starting the GUI game.
  * @author moralj@usi.ch, dallem@usi.ch
  */
 public class Main {
-    Game game;
+    private Game game;
 
-    public static void setUIFont(final FontUIResource f) {
+    /**
+     * Procedure - set the global font of the game.
+     * @param fontUIResource FontUIResource object.
+     */
+    public static void setUIFont(final FontUIResource fontUIResource) {
         Enumeration keys = UIManager.getDefaults().keys();
         while (keys.hasMoreElements()) {
             Object key = keys.nextElement();
             Object value = UIManager.get(key);
-            if (value instanceof javax.swing.plaf.FontUIResource)
-                UIManager.put(key, f);
+            if (value instanceof javax.swing.plaf.FontUIResource) {
+                UIManager.put(key, fontUIResource);
+            }
         }
     }
 
+    /**
+     * Procedure - initializations.
+     */
     private void inits() {
         FontManager.init();
         setUIFont(new FontUIResource(FontManager.getFont()));
@@ -40,6 +41,9 @@ public class Main {
         Map.init();
     }
 
+    /**
+     * Constructor.
+     */
     public Main() {
         /* Use an appropriate Look and Feel */
         try {

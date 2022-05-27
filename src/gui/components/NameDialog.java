@@ -1,17 +1,30 @@
 package gui.components;
 
-import gui.EventCallback;
 import gui.FontManager;
 
-import javax.swing.*;
+import java.awt.Dimension;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
+import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
-import java.awt.*;
-import java.awt.event.ActionEvent;
 
+/**
+ * Class to get name of player.
+ */
 public class NameDialog extends MessageDialog {
     private final JTextField nameField;
 
+    /**
+     * Constructor.
+     * @param parent invoking JFrame parent.
+     */
     public NameDialog(JFrame parent) {
         super(parent, "", true, 100);
         setLocationRelativeTo(null);
@@ -50,10 +63,18 @@ public class NameDialog extends MessageDialog {
         add(okPanel);
     }
 
-    private void actionPerformed(ActionEvent e) {
+    /**
+     * Procedure - event on action performed.
+     * @param actionEvent Event to handle.
+     */
+    private void actionPerformed(ActionEvent actionEvent) {
         dispose();
     }
 
+    /**
+     * Function - string name from JTextField holding new user names.
+     * @return String name.
+     */
     public String getName() {
         return nameField.getText();
     }

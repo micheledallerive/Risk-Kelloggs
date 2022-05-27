@@ -2,14 +2,25 @@ package gui;
 
 import model.enums.ArmyColor;
 
-import javax.imageio.ImageIO;
-import java.awt.*;
+import java.awt.AlphaComposite;
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.RenderingHints;
 import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;
-import java.io.File;
 
+/**
+ * Class of Utils methods.
+ * @author dallem@usi.ch
+ */
 public class Utils {
-    public static BufferedImage imageToBufferedImage(Image image) {
+    /**
+     * Convert an Image to a buffered one.
+     * @param image Image to convert.
+     * @return Buffered image object.
+     */
+    public static BufferedImage imageToBufferedImage(final Image image) {
         BufferedImage bufferedImage = new BufferedImage(image.getWidth(null), image.getHeight(null),
                 BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2 = bufferedImage.createGraphics();
@@ -18,7 +29,13 @@ public class Utils {
         return bufferedImage;
     }
 
-    public static BufferedImage makeRoundedCorner(BufferedImage image, int cornerRadius) {
+    /**
+     * Apply roundness to corners image.
+     * @param image Image to round corners.
+     * @param cornerRadius Integer number of corner radius.
+     * @return Buffered image object.
+     */
+    public static BufferedImage makeRoundedCorner(final BufferedImage image, final int cornerRadius) {
         int w = image.getWidth();
         int h = image.getHeight();
         BufferedImage output = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
@@ -45,6 +62,11 @@ public class Utils {
         return output;
     }
 
+    /**
+     * Create a correspondence between armycolor enum and color object.
+     * @param armyColor Enum of armycolor to correspond.
+     * @return Color object.
+     */
     public static Color armyColorToColor(final ArmyColor armyColor) {
         switch (armyColor) {
             case RED:

@@ -7,12 +7,26 @@ import java.util.HashMap;
 import java.util.Scanner;
 import java.util.regex.PatternSyntaxException;
 
+/**
+ * Class map handling initialization of methods to have a direct representation and
+ * correspondence between map image and clickable map territory integrated with the game model.
+ * @author dallem@usi.ch
+ */
 public class Map {
-    public static final HashMap<String, Polygon> POLYGONS = new HashMap<>();
+    //region CONSTANTS
     private static final String FILE_BOUNDS = "src/gui/bounds.dat";
     public static final int WIDTH = 1920;
     public static final int HEIGHT = 1280;
+    //endregion
 
+    //region FIELDS
+    public static final HashMap<String, Polygon> POLYGONS = new HashMap<>();
+    //endregion
+
+    //region METHODS
+    /**
+     * Procedure - get the polygons of the corresponding image map, into a Hashmap for easy check and usage.
+     */
     public static void init() {
         if (!POLYGONS.isEmpty()) {
             return;
@@ -43,4 +57,5 @@ public class Map {
             System.exit(0);
         }
     }
+    //endregion
 }
