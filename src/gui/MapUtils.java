@@ -12,7 +12,7 @@ import java.util.regex.PatternSyntaxException;
  * correspondence between map image and clickable map territory integrated with the game model.
  * @author dallem@usi.ch
  */
-public class Map {
+public class MapUtils {
     //region CONSTANTS
     private static final String FILE_BOUNDS = "src/gui/bounds.dat";
     public static final int WIDTH = 1920;
@@ -23,9 +23,14 @@ public class Map {
     public static final HashMap<String, Polygon> POLYGONS = new HashMap<>();
     //endregion
 
+    private MapUtils() {
+
+    }
+
     //region METHODS
     /**
-     * Procedure - get the polygons of the corresponding image map, into a Hashmap for easy check and usage.
+     * Procedure - get the polygons of the corresponding image map,
+     *  into a Hashmap for easy check and usage.
      */
     public static void init() {
         if (!POLYGONS.isEmpty()) {
@@ -52,7 +57,7 @@ public class Map {
             }
 
         } catch (final FileNotFoundException | IllegalStateException | PatternSyntaxException | NumberFormatException
-                | NegativeArraySizeException | IndexOutOfBoundsException | NullPointerException exception) {
+                | NegativeArraySizeException | IndexOutOfBoundsException exception) {
             exception.printStackTrace();
             System.exit(0);
         }

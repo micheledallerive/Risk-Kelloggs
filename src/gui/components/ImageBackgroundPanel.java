@@ -1,6 +1,6 @@
 package gui.components;
 
-import gui.Utils;
+import gui.ImageUtils;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -56,6 +56,7 @@ public class ImageBackgroundPanel extends TransparentPanel {
      * @param brightness Double number of brightness value.
      */
     public ImageBackgroundPanel(final Image image, final float brightness) {
+        super();
         this.image = image;
         this.roundedImage = null;
         this.brightness = brightness;
@@ -77,7 +78,7 @@ public class ImageBackgroundPanel extends TransparentPanel {
      * @param radius New radius to round each image corner.
      */
     public void setRoundedCorners(final int radius) {
-        this.roundedImage = Utils.makeRoundedCorner(Utils.imageToBufferedImage(image), radius);
+        this.roundedImage = ImageUtils.makeRoundedCorner(ImageUtils.imageToBufferedImage(image), radius);
     }
 
     /**

@@ -14,7 +14,14 @@ import java.awt.image.BufferedImage;
  * Class of Utils methods.
  * @author dallem@usi.ch
  */
-public class Utils {
+public class ImageUtils {
+    /**
+     * Constructor - non istantiable class.
+     */
+    private ImageUtils() {
+
+    }
+
     /**
      * Convert an Image to a buffered one.
      * @param image Image to convert.

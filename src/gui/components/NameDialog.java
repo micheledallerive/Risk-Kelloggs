@@ -1,6 +1,6 @@
 package gui.components;
 
-import gui.FontManager;
+import gui.FontUtils;
 
 import java.awt.Dimension;
 import java.awt.GridBagLayout;
@@ -44,7 +44,7 @@ public class NameDialog extends MessageDialog {
         namePanel.setLayout(new GridBagLayout());
         nameField = new JTextField(20);
         nameField.setMargin(new Insets(5, 5, 5, 5));
-        nameField.setFont(FontManager.addLetterSpacing(nameField.getFont().deriveFont(18f), .1f));
+        nameField.setFont(FontUtils.addLetterSpacing(nameField.getFont().deriveFont(18f), .1f));
         nameField.addActionListener(this::actionPerformed);
         namePanel.add(nameField);
 

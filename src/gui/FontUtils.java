@@ -12,7 +12,7 @@ import java.util.Map;
  * 
  * @author dallem@usi.ch, moralj@usi.ch
  */
-public class FontManager {
+public class FontUtils {
     // region CONSTANTS
     private static final String PATH = "src/gui/assets/fonts/CenturyGothic.ttf";
     private static final String DEFAULT = "Arial";
@@ -23,15 +23,18 @@ public class FontManager {
     private static Font font;
     // endregion
 
-    // region METHODS
+    private FontUtils() {
+        
+    }
 
+    // region METHODS
     /**
      * Procedure - Initialization of Font.
      */
     public static void init() {
         try {
             font = Font.createFont(Font.TRUETYPE_FONT, new File(PATH)).deriveFont(Font.PLAIN, SIZE);
-        } catch (final IllegalArgumentException | NullPointerException | IOException
+        } catch (final IllegalArgumentException | IOException
                 | FontFormatException | SecurityException ex) {
             System.out.println("Error loading font - default applied (Arial, 14pt).");
             ex.printStackTrace();
@@ -60,8 +63,7 @@ public class FontManager {
 
         try {
             attributes.put(TextAttribute.TRACKING, spacing);
-        } catch (final UnsupportedOperationException | ClassCastException
-                | NullPointerException | IllegalArgumentException ex) {
+        } catch (final UnsupportedOperationException | ClassCastException | IllegalArgumentException ex) {
             ex.printStackTrace();
             System.exit(0);
         }

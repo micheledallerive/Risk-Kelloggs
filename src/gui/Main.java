@@ -14,8 +14,6 @@ import javax.swing.plaf.FontUIResource;
  * @author moralj@usi.ch, dallem@usi.ch
  */
 public class Main {
-    private Game game;
-
     /**
      * Procedure - set the global font of the game.
      * @param fontUIResource FontUIResource object.
@@ -25,7 +23,7 @@ public class Main {
         while (keys.hasMoreElements()) {
             Object key = keys.nextElement();
             Object value = UIManager.get(key);
-            if (value instanceof javax.swing.plaf.FontUIResource) {
+            if (value instanceof FontUIResource) {
                 UIManager.put(key, fontUIResource);
             }
         }
@@ -35,10 +33,10 @@ public class Main {
      * Procedure - initializations.
      */
     private void inits() {
-        FontManager.init();
-        setUIFont(new FontUIResource(FontManager.getFont()));
+        FontUtils.init();
+        setUIFont(new FontUIResource(FontUtils.getFont()));
         JDie.init();
-        Map.init();
+        MapUtils.init();
     }
 
     /**
@@ -59,13 +57,12 @@ public class Main {
         UIManager.put("swing.boldMetal", Boolean.FALSE);
 
         inits();
-        this.game = new Game();
 
         // Schedule a job for the event dispatch thread:
         // creating and showing this application's GUI.
         // EventQueue.invokeLater((Runnable) new MainWindow(this.game));
         // javax.swing.SwingUtilities.invokeLater();
-        new MainWindow(this.game);
+        new MainWindow(new Game());
     }
 
 

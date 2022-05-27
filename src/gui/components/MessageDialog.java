@@ -14,8 +14,6 @@ import javax.swing.JFrame;
  */
 public class MessageDialog extends ImageBackgroundDialog {
 
-    JFrame parent;
-
     /**
      * Constructor.
      * @param parent Invoking JFrame parent.
@@ -35,7 +33,6 @@ public class MessageDialog extends ImageBackgroundDialog {
      */
     public MessageDialog(JFrame parent, String title, boolean modal, int radius) {
         super(parent, title, modal, "src/gui/assets/images/dialog_texture.png", 1f, radius);
-        this.parent = parent;
         setResizable(false);
         setUndecorated(true);
         setLocationRelativeTo(parent);

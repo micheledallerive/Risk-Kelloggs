@@ -1,7 +1,7 @@
 package gui.views;
 
 import gui.EventCallback;
-import gui.FontManager;
+import gui.FontUtils;
 import gui.components.ImageBackgroundPanel;
 import gui.components.TransparentPanel;
 
@@ -48,14 +48,14 @@ public class JMainMenu extends ImageBackgroundPanel {
         final JPanel titlePanel = new TransparentPanel();
         titlePanel.setBorder(new EmptyBorder(50, 0, 0, 0)); // add top margin
         final JLabel title = new JLabel(TITLE);
-        title.setFont(FontManager.getFont().deriveFont(Font.BOLD, SIZE_TITLE));
+        title.setFont(FontUtils.getFont().deriveFont(Font.BOLD, SIZE_TITLE));
         title.setForeground(Color.WHITE);
         titlePanel.add(title);
 
         // create subtitle panel, and subtitle text, font, color
         final JPanel labelPanel = new TransparentPanel();
         final JLabel label = new JLabel(SUBTITLE);
-        label.setFont(FontManager.getFont().deriveFont(Font.PLAIN, SIZE_SUBTITLE));
+        label.setFont(FontUtils.getFont().deriveFont(Font.PLAIN, SIZE_SUBTITLE));
         label.setForeground(Color.WHITE);
         labelPanel.add(label);
 

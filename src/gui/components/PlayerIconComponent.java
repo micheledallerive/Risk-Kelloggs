@@ -1,6 +1,6 @@
 package gui.components;
 
-import gui.Utils;
+import gui.ImageUtils;
 import model.Player;
 import model.enums.ArmyColor;
 
@@ -21,7 +21,6 @@ public class PlayerIconComponent extends TransparentPanel {
 
     //region FIELDS
     private ArmyColor color;
-    private String label;
     //endregion
 
     //region CONSTRUCTORS
@@ -34,7 +33,7 @@ public class PlayerIconComponent extends TransparentPanel {
     public PlayerIconComponent(Player player, boolean reversed) {
         super();
         this.color = player.getColor();
-        this.label = player.isAI() ? "AI" : "You";
+        String label = player.isAI() ? "AI" : "You";
 
         GridLayout layout = new GridLayout(1, 2);
         layout.setHgap(5);
@@ -52,7 +51,7 @@ public class PlayerIconComponent extends TransparentPanel {
             @Override
             protected void paintComponent(final Graphics graphics) {
                 super.paintComponent(graphics);
-                graphics.setColor(Utils.armyColorToColor(color));
+                graphics.setColor(ImageUtils.armyColorToColor(color));
                 graphics.fillOval(0,0,getPreferredSize().width, getPreferredSize().height);
             }
         };
@@ -69,12 +68,6 @@ public class PlayerIconComponent extends TransparentPanel {
         if (reversed) {
             add(circlePanel);
         }
-    }
-    //endregion
-
-    //region METHODS
-    @Override public void paintComponent(final Graphics graphics) {
-        super.paintComponent(graphics);
     }
     //endregion
 }

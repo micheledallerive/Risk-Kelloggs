@@ -1,12 +1,11 @@
 package gui.views;
 
-import gui.Map;
+import gui.MapUtils;
 import gui.components.ImageBackgroundPanel;
 import model.Game;
 import model.Territory;
 
 import java.awt.Cursor;
-import java.awt.Graphics;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -44,8 +43,8 @@ public class MapPanel extends ImageBackgroundPanel {
 
                 int pointX = mouseEvent.getX();
                 int pointY = mouseEvent.getY();
-                pointX = pointX * Map.WIDTH / getWidth();
-                pointY = pointY * Map.HEIGHT / getHeight();
+                pointX = pointX * MapUtils.WIDTH / getWidth();
+                pointY = pointY * MapUtils.HEIGHT / getHeight();
                 Territory territory = getClickedTerritory(pointX, pointY);
                 if (territory != null) {
                     System.out.println(territory.getName());
@@ -58,8 +57,8 @@ public class MapPanel extends ImageBackgroundPanel {
                 super.mouseMoved(mouseEvent);
                 int pointX = mouseEvent.getX();
                 int pointY = mouseEvent.getY();
-                pointX = pointX * Map.WIDTH / getWidth();
-                pointY = pointY * Map.HEIGHT / getHeight();
+                pointX = pointX * MapUtils.WIDTH / getWidth();
+                pointY = pointY * MapUtils.HEIGHT / getHeight();
                 if (getClickedTerritory(pointX, pointY) != null) {
                     setCursor(new Cursor(Cursor.HAND_CURSOR));
                 } else {
@@ -79,17 +78,12 @@ public class MapPanel extends ImageBackgroundPanel {
      * @return Territory object.
      */
     public Territory getClickedTerritory(final int pointX, final int pointY) {
-        for (final String name : Map.POLYGONS.keySet()) {
-            if (Map.POLYGONS.get(name).contains(pointX, pointY)) {
+        for (final String name : MapUtils.POLYGONS.keySet()) {
+            if (MapUtils.POLYGONS.get(name).contains(pointX, pointY)) {
                 return this.game.getBoard().getTerritories().get(Territory.TerritoryName.valueOf(name).ordinal());
             }
         }
         return null;
-    }
-
-    @Override public void paintComponent(final Graphics graphics) {
-        super.paintComponent(graphics);
-
     }
     // endregion
 }
