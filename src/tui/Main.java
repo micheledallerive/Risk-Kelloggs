@@ -21,6 +21,10 @@ import model.Territory.TerritoryName;
 import model.callback.Callback;
 import model.callback.GameCallback;
 import model.enums.GameStatus;
+import tui.command.AttackCommand;
+import tui.command.Command;
+import tui.command.EndTurnCommand;
+import tui.command.MoveArmiesCommand;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -39,17 +43,23 @@ public class Main {
     private Scanner input;
     private Scanner numInput;
 
+    private ArrayList<Command> commands;
+
     /**
      * Creates a new TUI game.
      */
     public Main() {
-        init();
         this.input = new Scanner(System.in);
         this.numInput = new Scanner(System.in);
+        init();
     }
 
     private void init() {
         this.game = new Game();
+        this.commands = new ArrayList<>();
+        commands.add(new AttackCommand("Attack a territory", game, input, numInput));
+        commands.add(new MoveArmiesCommand("Move armies between territories", game, input, numInput));
+        commands.add(new EndTurnCommand("End turn", game, input, numInput));
     }
 
     /**
@@ -219,24 +229,11 @@ public class Main {
                 printMap(game);
                 print();
                 printOptions(
-                        "Attack a territory",
-                        "Move armies between territories",
-                        "End turn"
+                        commands.stream().map(Command::getName).collect(Collectors.toList())
                 );
                 int choice = numInput.nextInt();
-                switch (choice) {
-                    case 1:
-                        playingAttack();
-                        break;
-                    case 2:
-                        playingMove();
-                        break;
-                    case 3:
-                        endTurn = true;
-                        break;
-                    default:
-                        break;
-                }
+                Command chosen = commands.get(choice - 1);
+                endTurn = chosen.execute();
             }
             if (player.getTerritories().size() > numOfTerritories) {
                 print("You conquered "
@@ -301,69 +298,6 @@ public class Main {
             placeArmies(false);
         }
 
-    }
-
-    private void playingAttack() {
-        Player player = game.getPlayers().get(game.getTurn());
-        Territory fromTerritory = game.getBoard().getTerritories().get(
-                askTerritory(
-                    "What territory do you want to attack from?",
-                    input,
-                    (tn) -> player.getTerritories().stream().anyMatch(t -> t.getName() == tn)).ordinal()
-        );
-
-        if (fromTerritory.getName() != TerritoryName.NONE) {
-
-            TerritoryName toAttack = askTerritory(
-                "Which territory do you want to attack?",
-                input,
-                (tn) -> fromTerritory.getAdjacent().stream().anyMatch(t -> t.getName() == tn)
-            );
-            Territory attackedTerritory = game.getBoard().getTerritories().get(toAttack.ordinal());
-            Player attackedPlayer = attackedTerritory.getOwner();
-            boolean canAttack = false;
-            canAttack = fromTerritory.getArmiesCount() > 1;
-            if (canAttack && attackedTerritory.getOwner() != player) {
-                int attackerMaxArmies = Math.min(fromTerritory.getArmiesCount() - 1, 3);
-                print("How many armies do you want to use to attack (1 - "
-                        + attackerMaxArmies + ")");
-                int attackerArmies = numInput.nextInt();
-                attackerArmies = Math.min(attackerArmies, attackerMaxArmies);
-                int defenderArmies = attackedTerritory.getArmiesCount();
-                int[] losses = player.attack(fromTerritory, attackedTerritory, attackerArmies);
-                print(player.getName() + " lost " + losses[0] + " armies");
-                print(attackedPlayer
-                        + " lost " + losses[1] + " armies");
-                if (losses[1] == defenderArmies) {
-                    print("You conquered " + attackedTerritory.getName().toString() + "!");
-                }
-            } else {
-                print("You can't attack that territory...");
-            }
-        }
-        consolePause(input);
-    }
-
-    private void playingMove() {
-        print("Where do you want to move the armies from?");
-
-        String fromStr = input.nextLine();
-        Territory fromTerritory = game.getBoard().getTerritories().get(
-                TerritoryName.valueOf(fromStr.toUpperCase()).ordinal()
-        );
-
-        print("Where do you want to move the armies to?");
-
-        String toStr = input.nextLine();
-        Territory toTerritory = game.getBoard().getTerritories().get(
-                TerritoryName.valueOf(toStr.toUpperCase()).ordinal()
-        );
-
-        print("How many armies do you want to move? (1 - "
-            + (fromTerritory.getArmiesCount() - 1) + ")");
-        byte amount = (byte)numInput.nextInt();
-        Player player = game.getPlayers().get(game.getTurn());
-        player.moveArmies(amount, fromTerritory, toTerritory);
     }
 
     /**

@@ -52,6 +52,14 @@ public class Utils {
     }
 
     /**
+     * Auxiliary function to print a multiple choice menu.
+     * @param options The array list of optional arguments to print.
+     */
+    public static void printOptions(List<String> options) {
+        printOptions(options.toArray(new String[0]));
+    }
+
+    /**
      * Auxiliary function that prints information about Risk.
      */
     public static void printInfo() {
