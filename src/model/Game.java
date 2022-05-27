@@ -97,11 +97,8 @@ public class Game {
                 for (int i = 0; i < 140 + 40; i++) {
                     colorArmies.add(new Army(ArmyType.INFANTRY, color, null));
                 }
-
                 this.allArmies.put(color, colorArmies);
-
                 giveArmiesToPlayer(player, numInfantry);
-
             }
         }
     }
@@ -343,14 +340,6 @@ public class Game {
      */
     public void addListener(final StatusListener sl) {
         this.statusListeners.add(sl);
-    }
-
-    /**
-     * Procedure - remove status listeners to its listeners arraylist.
-     * @param sl StatusListener interface implemented.
-     */
-    public void removeListener(final StatusListener sl) {
-        this.statusListeners.remove(sl);
     }
 
     /**

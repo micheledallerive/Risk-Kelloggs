@@ -45,18 +45,17 @@ public class JMainMenu extends ImageBackgroundPanel {
         this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 
         // create title panel, and title text, font, color
+        // create subtitle panel, and subtitle text, font, color
         final JPanel titlePanel = new TransparentPanel();
+        final JPanel labelPanel = new TransparentPanel();
         titlePanel.setBorder(new EmptyBorder(50, 0, 0, 0)); // add top margin
         final JLabel title = new JLabel(TITLE);
-        title.setFont(FontUtils.getFont().deriveFont(Font.BOLD, SIZE_TITLE));
-        title.setForeground(Color.WHITE);
-        titlePanel.add(title);
-
-        // create subtitle panel, and subtitle text, font, color
-        final JPanel labelPanel = new TransparentPanel();
         final JLabel label = new JLabel(SUBTITLE);
+        title.setFont(FontUtils.getFont().deriveFont(Font.BOLD, SIZE_TITLE));
         label.setFont(FontUtils.getFont().deriveFont(Font.PLAIN, SIZE_SUBTITLE));
+        title.setForeground(Color.WHITE);
         label.setForeground(Color.WHITE);
+        titlePanel.add(title);
         labelPanel.add(label);
 
         // add panels to JFrame

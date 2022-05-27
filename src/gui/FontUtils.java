@@ -24,7 +24,7 @@ public class FontUtils {
     // endregion
 
     private FontUtils() {
-        
+
     }
 
     // region METHODS
