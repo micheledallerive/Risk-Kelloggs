@@ -4,6 +4,7 @@ import gui.components.JDie;
 import gui.views.JSetup;
 import gui.views.MapPanel;
 import gui.views.JMainMenu;
+import gui.views.MainWindow;
 import model.Game;
 import model.enums.GameStatus;
 
@@ -60,7 +61,9 @@ public class Main {
 
         //Schedule a job for the event dispatch thread:
         //creating and showing this application's GUI.
-        javax.swing.SwingUtilities.invokeLater(this::createAndShowGUI);
+        //EventQueue.invokeLater((Runnable) new MainWindow(this.game));
+        //javax.swing.SwingUtilities.invokeLater();
+        new MainWindow(this.game);
     }
 
     /**
@@ -108,47 +111,11 @@ public class Main {
      * Procedure - setup the gui elements.
      * @param frame The frame of the game.
      */
-    public void setup(JFrame frame) {
+    public void setup(final JFrame frame) {
         initCards(frame);
     }
 
-    /**
-     * Create the GUI and show it.  For thread safety,
-     * this method should be invoked from the
-     * event dispatch thread.
-     */
-    private void createAndShowGUI() {
-        //Create and set up the window.
-        JFrame frame = new JFrame("Risk");
-        JMenuBar menubar = new JMenuBar();
-        JMenu menu = new JMenu("Options");
-        JMenuItem item1 = new JMenuItem("Save");
-        JMenuItem item2 = new JMenuItem("Load");
-        JMenuItem item3 = new JMenuItem("Quit");
-        item1.setEnabled(this.game.getStatus().ordinal() > GameStatus.MENU.ordinal());
-        item3.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                frame.dispose();
-            }
-        });
-        menu.add(item1);
-        menu.add(item2);
-        menu.add(item3);
-        menubar.add(menu);
-        frame.setJMenuBar(menubar);
 
-        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        frame.setResizable(false);
-        frame.setIconImage(new ImageIcon("./img/icon.png").getImage());
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        setup(frame);
-
-        //Display the window.
-        frame.pack();
-        frame.setVisible(true);
-    }
 
     /**
      * Procedure - Main method.

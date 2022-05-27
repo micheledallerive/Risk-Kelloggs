@@ -42,7 +42,7 @@ public class Utils {
 
         return output;
     }
-    public static Color armyColorToColor(ArmyColor armyColor) {
+    public static Color armyColorToColor(final ArmyColor armyColor) {
         switch (armyColor) {
             case RED:
                 return Color.RED;

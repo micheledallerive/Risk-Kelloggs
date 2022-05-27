@@ -17,6 +17,9 @@ import java.util.HashMap;
  */
 public class Game {
     //region FIELDS
+    // events: Observer, Listeners design pattern
+    private final ArrayList<StatusListener> statusListeners;
+
     private final Board board;
     private final ArrayList<Player> players;
     private int turn;
@@ -25,7 +28,6 @@ public class Game {
     private HashMap<ArmyColor, ArrayList<Army>> allArmies;
     private int turnsPlayed;
     private Player playerStarting;
-
     //endregion
 
     //region CONSTRUCTORS
@@ -33,29 +35,23 @@ public class Game {
      * Create a new empty game.
      */
     public Game() {
-        this(null, new ArrayList<Player>());
+        this(new ArrayList<Player>());
     }
+
 
     /**
      * Create a new game.
-     * @param players The players in the game.
-     */
-    public Game(ArrayList<Player> players) {
-        this(null, players);
-    }
-
-    /**
-     * Create a new game.
-     * @param board The board of the game.
      * @param players The players of the game.
      */
-    public Game(Board board, ArrayList<Player> players) {
+    public Game(final ArrayList<Player> players) {
         Territory.init();
         Continent.init();
         RandomUtil.init();
         Die.init();
 
-        this.board = board == null ? new Board() : board;
+        this.statusListeners = new ArrayList<>();
+
+        this.board = new Board();
         this.players = players;
         this.turn = 0;
         this.status = GameStatus.MENU;
@@ -68,6 +64,7 @@ public class Game {
     }
     //endregion
 
+    //region METHODS
     /**
      * Initializes the deck of card creating all the cards that it contains.
      */
@@ -214,7 +211,7 @@ public class Game {
      * @param names the names of the players
      */
     public void initializePlayers(int total, int users, String[] names) {
-        ArrayList<Player> toAddPlayers = Player.generatePlayersRandomly((byte)total,(byte)users,names);
+        ArrayList<Player> toAddPlayers = Player.generatePlayersRandomly((byte)total, (byte)users, names);
         this.players.addAll(toAddPlayers);
     }
 
@@ -232,6 +229,7 @@ public class Game {
      */
     public void setStatus(GameStatus status) {
         this.status = status;
+        this.fireStatusChanged();
     }
 
     /**
@@ -288,7 +286,7 @@ public class Game {
      * Goes to the next status of the game.
      */
     public void nextStatus() {
-        this.status = GameStatus.values()[this.status.ordinal() + 1];
+        this.setStatus(GameStatus.values()[this.status.ordinal() + 1]);
     }
 
     /**
@@ -335,4 +333,21 @@ public class Game {
         }
         callback.onGameExit();
     }
+    //endregion
+
+    //region EVENTS
+    public void addListener(final StatusListener sl) {
+        this.statusListeners.add(sl);
+    }
+
+    public void removeListener(final StatusListener sl) {
+        this.statusListeners.remove(sl);
+    }
+
+    public void fireStatusChanged() {
+        for (final StatusListener sc : this.statusListeners) {
+            sc.changed(this.status);
+        }
+    }
+    //endregion
 }

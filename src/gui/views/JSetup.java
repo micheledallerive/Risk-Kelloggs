@@ -13,36 +13,52 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
+/**
+ * Class JPanel to set up after main menu, the player's name before the start of the game.
+ * @author dallem@usi.ch
+ */
 public class JSetup extends JPanel {
-
+    //region FIELDS
     private Game game;
     private JFrame parent;
+    //endregion
 
-    public JSetup(Game game, JFrame parent) {
+    //region CONSTRUCTORS
+
+    /**
+     * Constructor.
+     * @param game
+     * @param parent
+     */
+    public JSetup(final Game game, final JFrame parent) {
         super();
         this.game = game;
         this.parent = parent;
 
         setLayout(new BorderLayout());
 
-        addComponentListener(new ComponentAdapter() {
-            @Override
-            public void componentShown(ComponentEvent e) {
+        this.addComponentListener(new ComponentAdapter() {
+            @Override public void componentShown(ComponentEvent e) {
                 super.componentShown(e);
                 askForName();
             }
         });
 
-        MapPanel map = new MapPanel(game);
-        add(map, BorderLayout.CENTER);
+        final MapPanel map = new MapPanel(game);
+        this.add(map, BorderLayout.CENTER);
         map.requestFocus();
     }
+    //endregion
 
+    //region METHODS
+
+    /**
+     * Procedure - handle name ask form.
+     */
     private void askForName() {
         NameDialog nameDialog = new NameDialog(parent);
         nameDialog.addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosed(WindowEvent e) {
+            @Override public void windowClosed(WindowEvent e) {
                 super.windowClosed(e);
 
                 String name = nameDialog.getName();
@@ -50,7 +66,6 @@ public class JSetup extends JPanel {
                     name = "Player";
                 }
                 game.initializePlayers(6, 1, new String[]{name});
-
                 chooseStartingPlayer();
             }
         });
@@ -59,12 +74,14 @@ public class JSetup extends JPanel {
         nameDialog.setVisible(true);
     }
 
+    /**
+     * Procedure - handle starting player random choice.
+     */
     private void chooseStartingPlayer() {
-        RollingDiceDialog rollDice = new RollingDiceDialog(parent, "", true, game);
+        final RollingDiceDialog rollDice = new RollingDiceDialog(parent, "", true, game);
         rollDice.pack();
         rollDice.setLocationRelativeTo(null);
         rollDice.setVisible(true);
     }
-
-
+    //endregion
 }
