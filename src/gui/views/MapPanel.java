@@ -39,27 +39,30 @@ public class MapPanel extends ImageBackgroundPanel {
             @Override
             public void mouseClicked(final MouseEvent mouseEvent) {
                 super.mouseClicked(mouseEvent);
-                if (mouseEvent.getButton() != MouseEvent.BUTTON1) {
+                if (mouseEvent.getButton() != MouseEvent.BUTTON1 || !isEnabled()) {
                     return;
                 }
 
-                int pointX = mouseEvent.getX();
-                int pointY = mouseEvent.getY();
-                pointX = pointX * MapUtils.WIDTH / getWidth();
-                pointY = pointY * MapUtils.HEIGHT / getHeight();
+                int pointX = MapUtils.transformX(mouseEvent.getX(), getWidth());
+                int pointY = MapUtils.transformY(mouseEvent.getY(), getHeight());
+                System.out.println("Clicked on " + pointX + "," + pointY);
                 int territoryIndex = getClickedTerritory(pointX, pointY);
-                System.out.println("Clicked territory: " + game.getBoard().getTerritories().get(territoryIndex).getName());
+                System.out.println("Territory index: " + game.getBoard().getTerritories().get(territoryIndex).getName());
                 triggerCallbacks(territoryIndex);
+            }
+
+            @Override
+            public void mouseMoved(MouseEvent e) {
+                super.mouseMoved(e);
+                System.out.println("Mouse moved");
             }
         });
         this.addMouseMotionListener(new MouseAdapter() {
             @Override
             public void mouseMoved(final MouseEvent mouseEvent) {
                 super.mouseMoved(mouseEvent);
-                int pointX = mouseEvent.getX();
-                int pointY = mouseEvent.getY();
-                pointX = pointX * MapUtils.WIDTH / getWidth();
-                pointY = pointY * MapUtils.HEIGHT / getHeight();
+                int pointX = MapUtils.transformX(mouseEvent.getX(), getWidth());
+                int pointY = MapUtils.transformY(mouseEvent.getY(), getHeight());
                 if (getClickedTerritory(pointX, pointY) != -1) {
                     setCursor(new Cursor(Cursor.HAND_CURSOR));
                 } else {

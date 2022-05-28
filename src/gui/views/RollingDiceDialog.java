@@ -8,14 +8,7 @@ import gui.components.TransparentPanel;
 import model.Game;
 import model.Player;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Font;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.GridLayout;
-import java.awt.Insets;
+import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.JFrame;
@@ -45,7 +38,10 @@ public class RollingDiceDialog extends MessageDialog {
         setLocationRelativeTo(null);
 
         setLayout(new GridBagLayout());
-
+        PlayerIconComponent c = new PlayerIconComponent(game.getPlayers().get(0));
+        //c.setPreferredSize(new Dimension(100, 100));
+        add(c);
+/*
         JPanel titlePanel = new TransparentPanel();
         titlePanel.setLayout(new GridBagLayout());
         GridBagConstraints gridbagcons = new GridBagConstraints();
@@ -74,11 +70,11 @@ public class RollingDiceDialog extends MessageDialog {
         }
 
         for (int i = 0; i < 3; i++) {
-            dicePanel.add(new PlayerIconComponent(game.getPlayers().get(2 * i), false));
+            dicePanel.add(new PlayerIconComponent(game.getPlayers().get(2 * i)));
             dicePanel.add(dice[2 * i]);
             dicePanel.add(new TransparentPanel());
             dicePanel.add(dice[2 * i + 1]);
-            dicePanel.add(new PlayerIconComponent(game.getPlayers().get(2 * i + 1), true));
+            dicePanel.add(new PlayerIconComponent(game.getPlayers().get(2 * i + 1)));
         }
 
         final int[] maxValue = {0};
@@ -119,7 +115,7 @@ public class RollingDiceDialog extends MessageDialog {
         winnerPanel.add(label, constraints);
 
         constraints.gridx = 1;
-        PlayerIconComponent playerIcon = new PlayerIconComponent(game.getPlayers().get(0), false);
+        PlayerIconComponent playerIcon = new PlayerIconComponent(game.getPlayers().get(0));
         playerIcon.setVisible(false);
         winnerPanel.add(playerIcon, constraints);
 
@@ -136,7 +132,7 @@ public class RollingDiceDialog extends MessageDialog {
         add(titlePanel, gbc);
         gbc.insets = new Insets(50, 0, 0, 0);
         gbc.gridy = 1;
-        add(dicePanel, gbc);
+        add(dicePanel, gbc);*/
     }
 
     private void showPlayerStarting(Player player, JPanel panel, boolean visible) {

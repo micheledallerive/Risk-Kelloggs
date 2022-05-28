@@ -12,10 +12,6 @@ import java.util.stream.Collectors;
  * @author dallem@usi.ch
  */
 public class AI extends Player {
-    //region FIELDS
-    private static ArrayList<AI> listAI = new ArrayList<>();
-    //endregion
-
     //region CONSTRUCTORS
     /**
      * Constructor.
@@ -29,7 +25,7 @@ public class AI extends Player {
      * @param color The color of the army
      */
     public AI(final ArmyColor color) {
-        super(color, "AI" + (AI.listAI.size() + 1));
+        super(color, "AI");
     }
     //endregion
 

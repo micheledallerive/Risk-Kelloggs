@@ -1,16 +1,20 @@
 package model.enums;
 
 /**
- * The color of the dice.
+ * The color of the die.
  * @author moralj@usi.ch
  */
 public enum DieColor {
     /**
-     * The dice is red, meaning it is used to attack.
+     * The die is red, meaning it is used to attack.
      */
     RED,
     /**
-     * The dice is blue, meaning it is used to defend.
+     * The die is blue, meaning it is used to defend.
      */
-    BLUE
+    BLUE,
+    /**
+     * The die is white, meaning it is used as a neutral die.
+     */
+    WHITE
 }

@@ -1,5 +1,6 @@
 package gui;
 
+import javax.swing.*;
 import java.awt.Polygon;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -61,6 +62,14 @@ public class MapUtils {
             exception.printStackTrace();
             System.exit(0);
         }
+    }
+
+    public static int transformX(int x, int width) {
+        return (int) ((x * (MapUtils.WIDTH * 1.125) / width) );
+    }
+
+    public static int transformY(int y, int height) {
+        return (y * MapUtils.HEIGHT / height);
     }
     //endregion
 }

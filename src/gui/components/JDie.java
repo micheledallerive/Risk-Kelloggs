@@ -2,10 +2,12 @@ package gui.components;
 
 import gui.EventCallback;
 import model.Die;
+import model.enums.DieColor;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.util.ArrayList;
+import java.util.HashMap;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.Timer;
@@ -16,19 +18,20 @@ import javax.swing.Timer;
  */
 public class JDie extends JComponent {
     //region CONSTANTS
-    private static final String PATH = "src/gui/assets/images/die/white/";
+    private static final String PATH = "src/gui/assets/images/die/";
     private static final String EXT = ".png";
     private static final byte SIZE = 64;
     private static final byte FACES = 6;
     //endregion
 
     //region FIELDS
-    private static final ImageIcon[] images = new ImageIcon[6];
+    private static final HashMap<DieColor, ImageIcon[]> images = new HashMap<>();
     private Timer timer;
     private int animation = 0;
     private int value;
     private ArrayList<EventCallback> callbacks;
     private boolean rolling;
+    private DieColor color;
     //endregion
 
     //region CONSTRUCTORS
@@ -37,7 +40,14 @@ public class JDie extends JComponent {
      * Constructor - default empty.
      */
     public JDie() {
-        this(250, 5000);
+        this(DieColor.WHITE);
+    }
+
+    /**
+     * Constructor - just the color of the die.
+     */
+    public JDie(DieColor color) {
+        this(color, 250, 4000);
     }
 
     /**
@@ -45,10 +55,11 @@ public class JDie extends JComponent {
      * @param frameDuration Duration in milliseconds of Timer.
      * @param totalDuration Total amount of milliseconds to roll.
      */
-    public JDie(final int frameDuration, final int totalDuration) {
+    public JDie(final DieColor color, final int frameDuration, final int totalDuration) {
         this.setPreferredSize(new Dimension(SIZE, SIZE));
         this.rolling = false;
         this.value = 1;
+        this.color = color;
         this.callbacks = new ArrayList<>();
         this.timer = new Timer(frameDuration, e -> {
             if (this.animation == totalDuration / frameDuration) {
@@ -68,8 +79,12 @@ public class JDie extends JComponent {
      * Procedure - initialization of images.
      */
     public static final void init() {
-        for (int i = 0; i < FACES; i++) {
-            images[i] = new ImageIcon(PATH + (i + 1) + EXT);
+        for (DieColor color : DieColor.values()) {
+            images.put(color, new ImageIcon[FACES]);
+            for (int i = 0; i < FACES; i++) {
+                images.get(color)[i] = new ImageIcon(
+                        PATH + color.toString() + "/" + (i + 1) + EXT);
+            }
         }
     }
 
@@ -115,7 +130,7 @@ public class JDie extends JComponent {
         // to avoid this i check if it is rolling, only in that case I show a random number.
         int imageIndex = this.rolling ? Die.casualRoll() - 1 : this.value - 1;
         imageIndex = Math.max(imageIndex, 0);
-        graphics.drawImage(images[imageIndex].getImage(), 0, 0, this);
+        graphics.drawImage(images.get(color)[imageIndex].getImage(), 0, 0, getWidth(), getHeight(), this);
     }
     //endregion
 }

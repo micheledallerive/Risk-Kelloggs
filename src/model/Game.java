@@ -19,6 +19,7 @@ public class Game {
     //region FIELDS
     // events: Observer, Listeners design pattern
     private final ArrayList<StatusListener> statusListeners;
+    private final ArrayList<TurnListener> turnListeners;
 
     private final Board board;
     private final ArrayList<Player> players;
@@ -50,6 +51,7 @@ public class Game {
         Die.init();
 
         this.statusListeners = new ArrayList<>();
+        this.turnListeners = new ArrayList<>();
 
         this.board = new Board();
         this.players = players;
@@ -242,6 +244,7 @@ public class Game {
      * @param turn the turn to set as the current one.
      */
     public void setTurn(int turn) {
+        fireTurnChanged();
         this.turn = turn;
     }
 
@@ -281,6 +284,7 @@ public class Game {
      * Updates the current turn to the next player.
      */
     public void nextTurn() {
+        fireTurnChanged();
         this.turn = (this.turn + 1) % this.players.size();
         if (this.players.get(this.turn) == this.playerStarting) {
             this.turnsPlayed++;
@@ -356,6 +360,23 @@ public class Game {
     public void fireStatusChanged() {
         for (final StatusListener sc : this.statusListeners) {
             sc.changed(this.status);
+        }
+    }
+
+    /**
+     * Procedure - add turn listener
+     * @param tl TurnListener interface implemented.
+     */
+    public void addListener(final TurnListener tl) {
+        this.turnListeners.add(tl);
+    }
+
+    /**
+     * Procedure - notify all registered listener whenever game turn change.
+     */
+    public void fireTurnChanged() {
+        for (final TurnListener sc : this.turnListeners) {
+            sc.turnChanged(getTurn());
         }
     }
     //endregion

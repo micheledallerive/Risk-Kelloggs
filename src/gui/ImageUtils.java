@@ -1,7 +1,9 @@
 package gui;
 
+import model.Player;
 import model.enums.ArmyColor;
 
+import javax.swing.*;
 import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -20,6 +22,10 @@ public class ImageUtils {
      */
     private ImageUtils() {
 
+    }
+
+    public static Image getImage(final String path) {
+        return new ImageIcon(path).getImage();
     }
 
     /**
@@ -91,5 +97,21 @@ public class ImageUtils {
             default:
                 return Color.WHITE;
         }
+    }
+
+    public static Color chooseForegroundColor(ArmyColor color) {
+        Color rgb = armyColorToColor(color);
+        int red = rgb.getRed();
+        int green = rgb.getGreen();
+        int blue = rgb.getBlue();
+        return (red*0.299 + green*0.587 + blue*0.114) > 100 ? Color.BLACK : Color.WHITE;
+    }
+
+    public static Image getPlayerIcon(Player player) {
+        String path = "src/gui/assets/images/icon/";
+        path += player.isAI() ? "ai" : "player";
+        path += ".png";
+
+        return new ImageIcon(path).getImage();
     }
 }

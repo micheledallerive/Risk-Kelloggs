@@ -4,13 +4,8 @@ import gui.ImageUtils;
 import model.Player;
 import model.enums.ArmyColor;
 
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.GridBagLayout;
-import java.awt.GridLayout;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
+import java.awt.*;
+import javax.swing.*;
 
 
 /**
@@ -19,55 +14,61 @@ import javax.swing.JPanel;
  */
 public class PlayerIconComponent extends TransparentPanel {
 
-    //region FIELDS
-    private ArmyColor color;
-    //endregion
-
     //region CONSTRUCTORS
+
+    private Player player;
 
     /**
      * Constructor.
      * @param player Player representing this component.
-     * @param reversed Boolean stating if this component is facing down.
      */
-    public PlayerIconComponent(Player player, boolean reversed) {
+    public PlayerIconComponent(Player player) {
         super();
-        this.color = player.getColor();
-        String label = player.isAI() ? "AI" : "You";
+        this.player = player;
+        setLayout(new GridBagLayout());
+        setBorder(BorderFactory.createEmptyBorder(0,20,0,20));
 
-        GridLayout layout = new GridLayout(1, 2);
-        layout.setHgap(5);
-        setLayout(layout);
+        GridBagConstraints constraints = new GridBagConstraints();
 
-        JLabel jlabel = new JLabel(label);
-        jlabel.setFont(jlabel.getFont().deriveFont(Font.BOLD, 16f));
+        constraints.anchor = GridBagConstraints.LINE_START;
+        constraints.gridx = 0;
+        constraints.gridy = 0;
+        constraints.ipadx = 15;
 
-        JPanel jlabelPanel = new TransparentPanel();
-        jlabelPanel.setLayout(new GridBagLayout());
-        jlabelPanel.add(jlabel);
+        JLabel playerName = new JLabel(player.getName());
+        playerName.setFont(playerName.getFont().deriveFont(Font.BOLD, 24));
+        playerName.setForeground(ImageUtils.chooseForegroundColor(player.getColor()));
+        add(playerName, constraints);
 
-        int circleHeight = 64 - jlabel.getFont().getSize() - 10;
-        JPanel circle = new TransparentPanel() {
+        constraints.gridx = 1;
+        constraints.gridy = 0;
+        constraints.ipadx = 0;
+
+        JLabel icon = new JLabel(new ImageIcon(ImageUtils.getPlayerIcon(player)));
+
+        JPanel iconCircle = new TransparentPanel(){
             @Override
-            protected void paintComponent(final Graphics graphics) {
-                super.paintComponent(graphics);
-                graphics.setColor(ImageUtils.armyColorToColor(color));
-                graphics.fillOval(0,0,getPreferredSize().width, getPreferredSize().height);
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                g.setColor(Color.WHITE);
+                g.fillOval(0, 0, getWidth(), getHeight());
             }
         };
-        circle.setPreferredSize(new Dimension(circleHeight,circleHeight));
+        iconCircle.setBorder(BorderFactory.createEmptyBorder(3,3,3,3));
+        iconCircle.setLayout(new GridBagLayout());
+        iconCircle.add(icon, constraints);
 
-        JPanel circlePanel = new TransparentPanel();
-        circlePanel.setLayout(new GridBagLayout());
-        circlePanel.add(circle);
-
-        if (!reversed) {
-            add(circlePanel);
-        }
-        add(jlabelPanel);
-        if (reversed) {
-            add(circlePanel);
-        }
+        add(iconCircle, constraints);
     }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        g.setColor(ImageUtils.armyColorToColor(player.getColor()));
+        int width = getComponents()[1].getX() + getComponents()[1].getWidth() / 2;
+        g.fillRoundRect(0,0, width, getHeight(),30,30);
+        g.fillRect(10,0, width-10,getHeight());
+    }
+
     //endregion
 }

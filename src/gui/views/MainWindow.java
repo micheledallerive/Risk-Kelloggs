@@ -100,7 +100,7 @@ public class MainWindow extends JFrame {
                 game.nextStatus();
             }
         });
-        final JPanel playCard = new JSetup(game, this);
+        final JSetup playCard = new JSetup(game, this);
 
         // Create the panel that contains the "cards".
         this.cards = new JPanel(new CardLayout()); // create card layout for panels
