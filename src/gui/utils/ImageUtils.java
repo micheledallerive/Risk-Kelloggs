@@ -1,4 +1,4 @@
-package gui;
+package gui.utils;
 
 import model.Player;
 import model.enums.ArmyColor;

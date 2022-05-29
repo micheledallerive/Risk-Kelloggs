@@ -39,6 +39,7 @@ public class Game implements Serializable {
     //endregion
 
     //region CONSTRUCTORS
+
     /**
      * Create a new empty game.
      */
@@ -73,11 +74,29 @@ public class Game implements Serializable {
 
     //region GETTERS AND SETTERS
     /**
+     * Add back an army to the all armies map.
+     * @param color The color of the army.
+     * @param army The army to add.
+     */
+    public void addArmy(ArmyColor color, Army army) {
+        ArrayList<Army> armies = this.allArmies.get(color);
+        armies.add(army);
+    }
+
+    /**
      * Returns the list of players of the game.
      * @return the list of players of the game.
      */
     public ArrayList<Player> getPlayers() {
         return this.players;
+    }
+
+    /**
+     * Adds a player to the list of players.
+     * @param player the player to add
+     */
+    public void addPlayer(Player player) {
+        this.players.add(player);
     }
 
     /**
@@ -153,10 +172,25 @@ public class Game implements Serializable {
         this.turn = turn;
         fireTurnChanged();
     }
+
+    /**
+     * Sets the current turn to the player.
+     *
+     * @param player the player to set as the current one.
+     */
+    public void setTurn(Player player) {
+        int playerIndex = 0;
+        for (int i = 0; i < this.players.size(); i++) {
+            if (this.players.get(i).getColor() == player.getColor()) {
+                playerIndex = i;
+                break;
+            }
+        }
+        setTurn(playerIndex);
+    }
     //endregion
 
     //region METHODS
-
     /**
      * Save game object into file.
      */
@@ -207,16 +241,6 @@ public class Game implements Serializable {
                 this.giveArmiesToPlayer(player, numInfantry);
             }
         }
-    }
-
-    /**
-     * Add back an army to the all armies map.
-     * @param color The color of the army.
-     * @param army The army to add.
-     */
-    public void addArmy(ArmyColor color, Army army) {
-        ArrayList<Army> armies = this.allArmies.get(color);
-        armies.add(army);
     }
 
     /**
@@ -284,14 +308,6 @@ public class Game implements Serializable {
     }
 
     /**
-     * Adds a player to the list of players.
-     * @param player the player to add
-     */
-    public void addPlayer(Player player) {
-        this.players.add(player);
-    }
-
-    /**
      * Initializes randomly created players.
      * @param total the total number of players
      * @param users the number of actual players (not AIs)
@@ -306,11 +322,11 @@ public class Game implements Serializable {
      * Updates the current turn to the next player.
      */
     public void nextTurn() {
-        fireTurnChanged();
         this.turn = (this.turn + 1) % this.players.size();
         if (this.players.get(this.turn) == this.playerStarting) {
             this.turnsPlayed++;
         }
+        fireTurnChanged();
     }
 
     /**
@@ -340,7 +356,7 @@ public class Game implements Serializable {
      */
     public void play(GameCallback callback) {
         while (this.status != GameStatus.EXIT) {
-            boolean result = false;
+            boolean result;
             switch (this.status) {
                 case MENU:
                     result = callback.onMainMenu();

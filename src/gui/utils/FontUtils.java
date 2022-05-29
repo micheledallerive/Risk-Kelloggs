@@ -1,4 +1,4 @@
-package gui;
+package gui.utils;
 
 import java.awt.Font;
 import java.awt.FontFormatException;

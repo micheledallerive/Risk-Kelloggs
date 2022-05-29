@@ -1,6 +1,8 @@
 package gui;
 
 import gui.components.JDie;
+import gui.utils.FontUtils;
+import gui.utils.MapUtils;
 import gui.views.MainWindow;
 import model.Game;
 
@@ -19,7 +21,7 @@ public class Main {
      * @param fontUIResource FontUIResource object.
      */
     public static void setUIFont(final FontUIResource fontUIResource) {
-        Enumeration keys = UIManager.getDefaults().keys();
+        Enumeration<Object> keys = UIManager.getDefaults().keys();
         while (keys.hasMoreElements()) {
             Object key = keys.nextElement();
             Object value = UIManager.get(key);
