@@ -1,16 +1,22 @@
 package model;
 
-import model.Territory.TerritoryName;
-import model.enums.ContinentName;
-
+import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Scanner;
 
 /**
  * Describes the board of the game containing the map of the world.
- * @author dallem@usi.ch
+ * @author moralj@usi.ch, dallem@usi.ch
  */
 public class Board {
+    //region CONSTANTS
+    public static final String PATH_ADJ = "src/model/data/adjacency.txt";
+    //endregion
+
     //region FIELDS
+    public final HashMap<Integer, ArrayList<Integer>> adjacency;
+    private final HashMap<String, Integer> mapTerritoryToIdx;
     private final ArrayList<Territory> territories;
     private final ArrayList<Continent> continents;
     //endregion
@@ -20,79 +26,69 @@ public class Board {
      * Constructor.
      */
     public Board() {
+        this.adjacency = new HashMap<>();
+        this.mapTerritoryToIdx = new HashMap<>();
         this.territories = new ArrayList<>();
         this.continents = new ArrayList<>();
-        this.initTerritories();
-        this.initContinents();
+        this.initMap();
     }
     //endregion
 
     //region GETTERS AND SETTERS
-    /**
-     * Return the territories of the board.
-     * @return The territories of the board.
-     */
     public ArrayList<Territory> getTerritories() {
-        return territories;
+        return this.territories;
     }
 
-    /**
-     * Return the continents of the board.
-     * @return The continents of the board.
-     */
     public ArrayList<Continent> getContinents() {
-        return continents;
+        return this.continents;
+    }
+
+    public int getTerritoryIdx(final String name) {
+        return this.mapTerritoryToIdx.get(name);
+    }
+
+    public HashMap<Integer, ArrayList<Integer>> getAdjacency() {
+        return this.adjacency;
     }
     //endregion
 
     //region METHODS
-    /**
-     * Initializes the territories of the board.
-     */
-    private void initTerritories() {
-        // get all territories but "NONE" enum value
-        for (final TerritoryName territoryName : TerritoryName.values()) {
-            if (territoryName != TerritoryName.NONE) {
-                this.territories.add(new Territory(territoryName));
-            }
-        }
+    private void initMap() {
+        try {
+            final Scanner scanContinents = new Scanner(new File(Continent.PATH_CONTINENTS));
+            final Scanner scanBonus = new Scanner(new File(Continent.PATH_BONUS));
+            final Scanner scanTerritories = new Scanner(new File(Territory.PATH_TERRITORIES));
 
-        // foreach territory get the name, indexed it and make its adjacent list
-        for (final Territory territory : this.territories) {
-            final TerritoryName name = territory.getName();
-            final byte territoryIndex = (byte) name.ordinal();
-            final ArrayList<Territory> adjacent = new ArrayList<>();
-            // Territory.adjacency contains all the TerritoryName adjacent to the given territory
-            for (final TerritoryName adjacentName : Territory.adjacency.get(territoryIndex)) {
-                final int adjacentIndex = adjacentName.ordinal();
-                adjacent.add(this.territories.get(adjacentIndex));
-            }
-            territory.setAdjacent(adjacent);
-        }
-    }
-
-    /**
-     * Initializes the continents of the board.
-     */
-    private void initContinents() {
-        // foreach continent
-        for (final ContinentName continentName : ContinentName.values()) {
-            final int continentIndex = continentName.ordinal();
-            final int continentValue = Continent.EXTRA_VALUES[continentIndex]; // get number of territories in continent
-            final ArrayList<Territory> continentTerritories = new ArrayList<>();
-
-            // foreach territory in a continent, add it to this current continent object
-            for (final TerritoryName territoryName : Continent.TERRITORIES.get(continentIndex)) {
-                final Territory territory = this.territories.get(territoryName.ordinal());
-                continentTerritories.add(territory);
+            // create every continent
+            while (scanContinents.hasNextLine() && scanBonus.hasNextLine()) {
+                final String continentName = scanContinents.nextLine();
+                final int bonus = Integer.parseInt(scanBonus.nextLine());
+                final ArrayList<Territory> continentTerritories = new ArrayList<>();
+                // foreach continent, get its territories
+                final String[] splitTerritories = scanTerritories.nextLine().split(",");
+                for (final String territoryName : splitTerritories) {
+                    final Territory tmp = new Territory(territoryName);
+                    this.territories.add(tmp);
+                    this.mapTerritoryToIdx.put(territoryName, this.territories.size() - 1);
+                    continentTerritories.add(tmp);
+                }
+                this.continents.add(new Continent(continentName, continentTerritories, bonus));
             }
 
-            // compose the continent
-            this.continents.add(new Continent(
-                continentName,
-                continentTerritories,
-                continentValue
-            ));
+            // get adjacency
+            final Scanner scanAdj = new Scanner(new File(PATH_ADJ));
+            for (final Territory terr : this.territories) {
+                // foreach territory
+                final String[] splitAdj = scanAdj.nextLine().split(",");
+                final ArrayList<Integer> adjCurrent = new ArrayList<>();
+                for (final String adjName : splitAdj) {
+                    // get its adjacent
+                    adjCurrent.add(this.getTerritoryIdx(adjName));
+                }
+                this.adjacency.put(this.getTerritoryIdx(terr.getName()), adjCurrent);
+            }
+        } catch (Exception exception) {
+            exception.printStackTrace();
         }
     }
     //endregion

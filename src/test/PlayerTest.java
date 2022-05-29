@@ -47,8 +47,6 @@ public class PlayerTest {
     @Test
     public void testPlayerArmies() {
         Game game = new Game();
-        Territory.init();
-        Continent.init();
 
         Player player = new Player(ArmyColor.RED, "eskere");
         Player test1 = new Player(ArmyColor.BLUE, "test1");

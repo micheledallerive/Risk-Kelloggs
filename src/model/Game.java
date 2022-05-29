@@ -1,34 +1,41 @@
 package model;
 
-import model.Territory.TerritoryName;
 import model.callback.GameCallback;
 import model.enums.ArmyColor;
 import model.enums.ArmyType;
 import model.enums.CardType;
 import model.enums.GameStatus;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 
 /**
  * Represents the game itself.
- * @author dallem@usi.ch
+ * @author dallem@usi.ch, moralj@usi.ch
  */
-public class Game {
+public class Game implements Serializable {
+    //region CONSTANTS
+    public static final String PATH = "src/model/data/save.txt";
+    //endregion
+
     //region FIELDS
     // events: Observer, Listeners design pattern
     private final ArrayList<StatusListener> statusListeners;
     private final ArrayList<TurnListener> turnListeners;
 
-    private final Board board;
-    private final ArrayList<Player> players;
-    private int turn;
-    private GameStatus status;
-    private ArrayList<Card> cardsDeck;
     private HashMap<ArmyColor, ArrayList<Army>> allArmies;
-    private int turnsPlayed;
+    private final ArrayList<Player> players;
+    private final ArrayList<Card> cardsDeck;
+    private final Board board;
+    private GameStatus status;
     private Player playerStarting;
+    private int turnsPlayed;
+    private int turn;
     //endregion
 
     //region CONSTRUCTORS
@@ -36,7 +43,7 @@ public class Game {
      * Create a new empty game.
      */
     public Game() {
-        this(new ArrayList<Player>());
+        this(new ArrayList<>());
     }
 
 
@@ -45,40 +52,137 @@ public class Game {
      * @param players The players of the game.
      */
     public Game(final ArrayList<Player> players) {
-        Territory.init();
-        Continent.init();
         RandomUtil.init();
         Die.init();
 
         this.statusListeners = new ArrayList<>();
         this.turnListeners = new ArrayList<>();
 
-        this.board = new Board();
-        this.players = players;
-        this.turn = 0;
-        this.status = GameStatus.MENU;
-        this.cardsDeck = new ArrayList<>();
         this.allArmies = new HashMap<>();
-        this.turnsPlayed = 0;
+        this.players = players;
+        this.cardsDeck = new ArrayList<>();
+        this.board = new Board();
+        this.status = GameStatus.MENU;
         this.playerStarting = null;
+        this.turnsPlayed = 0;
+        this.turn = 0;
 
         this.initCards();
     }
     //endregion
 
+    //region GETTERS AND SETTERS
+    /**
+     * Returns the list of players of the game.
+     * @return the list of players of the game.
+     */
+    public ArrayList<Player> getPlayers() {
+        return this.players;
+    }
+
+    /**
+     * Returns the board of the current game.
+     * @return the board of the game.
+     */
+    public Board getBoard() {
+        return this.board;
+    }
+
+    /**
+     * Returns the current state of the game.
+     * @return the GameStatus
+     */
+    public GameStatus getStatus() {
+        return this.status;
+    }
+
+    /**
+     * Sets the current state of the game.
+     * @param status the new status of the game
+     */
+    public void setStatus(GameStatus status) {
+        this.status = status;
+        this.fireStatusChanged();
+    }
+
+    /**
+     * Returns the player that starts the game.
+     * @return the player that starts the game.
+     */
+    public Player getPlayerStarting() {
+        return this.playerStarting;
+    }
+
+    /**
+     * Sets the player that starts the game.
+     * @param player the player that starts the game.
+     */
+    public void setPlayerStarting(final Player player) {
+        this.playerStarting = player;
+    }
+
+    /**
+     * Returns the current number of turns each player played.
+     * @return the current number of turns each player played.
+     */
+    public int getTurnsPlayed() {
+        return this.turnsPlayed;
+    }
+
+    /**
+     * Sets the current number of turns each player played.
+     * @param turnsPlayed the number of turns each player played.
+     */
+    public void setTurnsPlayed(int turnsPlayed) {
+        this.turnsPlayed = turnsPlayed;
+    }
+
+    /**
+     * Returns the current turn.
+     * @return the current turn
+     */
+    public final int getTurn() {
+        return this.turn;
+    }
+
+    /**
+     * Sets the current turn.
+     * @param turn the turn to set as the current one.
+     */
+    public final void setTurn(int turn) {
+        this.turn = turn;
+        fireTurnChanged();
+    }
+    //endregion
+
     //region METHODS
+
+    /**
+     * Save game object into file.
+     */
+    public void save() {
+        try {
+            FileOutputStream fos = new FileOutputStream(PATH);
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+            oos.writeObject(this);
+            oos.close();
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+    }
+
     /**
      * Initializes the deck of card creating all the cards that it contains.
      */
     private void initCards() {
-        int territoriesCount = TerritoryName.values().length;
-        for (int i = 0; i < territoriesCount; i++) {
-            TerritoryName territoryName = TerritoryName.values()[i];
+        ArrayList<Territory> territories = this.board.getTerritories();
+        for (int i = 0; i < territories.size(); i++) {
+            String territoryName = territories.get(i).getName();
             CardType type = CardType.values()[i % 3];
             this.cardsDeck.add(new Card(type, territoryName));
         }
-        this.cardsDeck.add(new Card(CardType.WILD, TerritoryName.NONE));
-        this.cardsDeck.add(new Card(CardType.WILD, TerritoryName.NONE));
+        this.cardsDeck.add(new Card(CardType.WILD, null));
+        this.cardsDeck.add(new Card(CardType.WILD, null));
         Collections.shuffle(this.cardsDeck);
     }
 
@@ -86,12 +190,12 @@ public class Game {
      * Procedure - Initializes the armies for each player at the start of the game.
      */
     public void initArmies() {
-        int numPlayers = this.players.size();
+        final int numPlayers = this.players.size();
         if (numPlayers >= 3 && numPlayers <= 6) {
-            int numInfantry = 35 - (numPlayers - 3) * 5;
-            for (Player player : this.players) {
-                ArmyColor color = player.getColor();
-                ArrayList<Army> colorArmies = new ArrayList<>();
+            final int numInfantry = 35 - (numPlayers - 3) * 5;
+            for (final Player player : this.players) {
+                final ArmyColor color = player.getColor();
+                final ArrayList<Army> colorArmies = new ArrayList<>();
 
                 // Since we are only using INFANTRY instead of using also CAVALRY and ARTILLERY,
                 // the total amount of INFANTRY is 40 (the normal value) + 12 (CAVALRY) * 5 (the value)
@@ -100,7 +204,7 @@ public class Game {
                     colorArmies.add(new Army(ArmyType.INFANTRY, color, null));
                 }
                 this.allArmies.put(color, colorArmies);
-                giveArmiesToPlayer(player, numInfantry);
+                this.giveArmiesToPlayer(player, numInfantry);
             }
         }
     }
@@ -180,22 +284,6 @@ public class Game {
     }
 
     /**
-     * Returns the board of the current game.
-     * @return the board of the game.
-     */
-    public Board getBoard() {
-        return this.board;
-    }
-
-    /**
-     * Returns the list of players of the game.
-     * @return the list of players of the game.
-     */
-    public ArrayList<Player> getPlayers() {
-        return this.players;
-    }
-
-    /**
      * Adds a player to the list of players.
      * @param player the player to add
      */
@@ -212,72 +300,6 @@ public class Game {
     public void initializePlayers(int total, int users, String[] names) {
         ArrayList<Player> toAddPlayers = Player.generatePlayersRandomly((byte)total, (byte)users, names);
         this.players.addAll(toAddPlayers);
-    }
-
-    /**
-     * Returns the current state of the game.
-     * @return the GameStatus
-     */
-    public GameStatus getStatus() {
-        return this.status;
-    }
-
-    /**
-     * Sets the current state of the game.
-     * @param status the new status of the game
-     */
-    public void setStatus(GameStatus status) {
-        this.status = status;
-        this.fireStatusChanged();
-    }
-
-    /**
-     * Returns the current turn.
-     * @return the current turn
-     */
-    public int getTurn() {
-        return this.turn;
-    }
-
-    /**
-     * Sets the current turn.
-     * @param turn the turn to set as the current one.
-     */
-    public void setTurn(int turn) {
-        fireTurnChanged();
-        this.turn = turn;
-    }
-
-    /**
-     * Returns the current number of turns each player played.
-     * @return the current number of turns each player played.
-     */
-    public int getTurnsPlayed() {
-        return this.turnsPlayed;
-    }
-
-    /**
-     * Sets the player that starts the game.
-     * @param player the player that starts the game.
-     */
-    public void setPlayerStarting(Player player) {
-        this.playerStarting = player;
-    }
-
-    /**
-     * Returns the player that starts the game.
-     * @return the player that starts the game.
-     */
-    public Player getPlayerStarting() {
-        return this.playerStarting;
-    }
-
-    /**
-     * Sets the current number of turns each player played.
-     * @param turnsPlayed the number of turns each player played.
-     */
-    public void setTurnsPlayed(int turnsPlayed) {
-        this.turnsPlayed = turnsPlayed;
     }
 
     /**
@@ -345,13 +367,20 @@ public class Game {
     //endregion
 
     //region EVENTS
-
     /**
      * Procedure - add status listener to its listeners arraylist.
      * @param sl StatusListener interface implemented.
      */
     public void addListener(final StatusListener sl) {
         this.statusListeners.add(sl);
+    }
+
+    /**
+     * Procedure - add turn listener
+     * @param tl TurnListener interface implemented.
+     */
+    public void addListener(final TurnListener tl) {
+        this.turnListeners.add(tl);
     }
 
     /**
@@ -364,19 +393,11 @@ public class Game {
     }
 
     /**
-     * Procedure - add turn listener
-     * @param tl TurnListener interface implemented.
-     */
-    public void addListener(final TurnListener tl) {
-        this.turnListeners.add(tl);
-    }
-
-    /**
      * Procedure - notify all registered listener whenever game turn change.
      */
     public void fireTurnChanged() {
         for (final TurnListener sc : this.turnListeners) {
-            sc.turnChanged(getTurn());
+            sc.turnChanged(this.getTurn());
         }
     }
     //endregion

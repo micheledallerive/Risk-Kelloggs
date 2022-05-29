@@ -5,7 +5,6 @@ import model.Game;
 import model.Player;
 import model.Territory;
 import model.enums.ArmyColor;
-import model.enums.ContinentName;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -16,21 +15,20 @@ import static org.junit.Assert.*;
  * This class tests the functionality of the class Player
  */
 public class ContinentTest {
-
-    @Test
+    /*@Test
     public void testInit() {
         Continent.init();
         assertEquals(6, Continent.TERRITORIES.size());
-        assertEquals(6, Continent.EXTRA_VALUES.length);
-    }
+        assertEquals(6, Continent.BONUS_VALUES.length);
+    }*/
 
     @Test
     public void testConstructorGetterSetter() {
         new Game();
-        Continent europe = new Continent(ContinentName.EUROPE, new ArrayList<Territory>(), 0);
-        assertEquals(ContinentName.EUROPE, europe.getName());
+        Continent europe = new Continent("EUROPE", new ArrayList<Territory>(), 0);
+        assertEquals("EUROPE", europe.getName());
         assertNull(europe.getOwner());
-        assertEquals(0, europe.getCountries().size());
+        assertEquals(0, europe.getTerritories().size());
         assertEquals(0, europe.getValue());
         assertFalse(europe.isOccupied());
     }
@@ -39,7 +37,7 @@ public class ContinentTest {
     public void testIsOccupied() {
         Game g = new Game();
         ArrayList<Territory> asiaTerritories = g.getBoard().getContinents().get(3).getTerritories();
-        Continent asia = new Continent(ContinentName.ASIA, asiaTerritories, 5);
+        Continent asia = new Continent("ASIA", asiaTerritories, 5);
         assertFalse(asia.isOccupied());
         assertEquals(5, asia.getValue());
 

@@ -1,10 +1,6 @@
 package model;
 
-import model.Territory.TerritoryName;
 import model.enums.CardType;
-
-//import java.util.Arrays;
-//import java.util.List;
 
 /**
  * Describes a card with territory and figure.
@@ -12,16 +8,8 @@ import model.enums.CardType;
  */
 public class Card {
     //region FIELDS
-    /* public static List<List<CardType>> combinations = Arrays.asList(
-            Arrays.asList(CardType.ARTILLERY, CardType.ARTILLERY, CardType.ARTILLERY),
-            Arrays.asList(CardType.CAVALRY, CardType.CAVALRY, CardType.CAVALRY),
-            Arrays.asList(CardType.INFANTRY, CardType.INFANTRY, CardType.INFANTRY),
-            Arrays.asList(CardType.ARTILLERY, CardType.CAVALRY, CardType.INFANTRY),
-            Arrays.asList(CardType.ARTILLERY, CardType.ARTILLERY, CardType.WILD)
-    ); // find usage to generate cards */
-
     private final CardType type;
-    private final TerritoryName territory;
+    private final String territory;
     //endregion
 
     //region CONSTRUCTOR
@@ -31,7 +19,7 @@ public class Card {
      *             in the bottom (infantry, cavalry, artillery, wild).
      * @param territory The territory represented in the top of the card.
      */
-    public Card(final CardType type, final TerritoryName territory) {
+    public Card(final CardType type, final String territory) {
         this.type = type;
         this.territory = territory;
     }
@@ -50,7 +38,7 @@ public class Card {
      * Returns the territory of the card.
      * @return The territory of the card.
      */
-    public TerritoryName getTerritory() {
+    public String getTerritory() {
         return this.territory;
     }
     //endregion
@@ -150,7 +138,7 @@ public class Card {
         return "Card: ("
                 + this.getType().name()
                 + " - "
-                + this.getTerritory().name()
+                + this.getTerritory()
                 + ")";
     }
     //endregion

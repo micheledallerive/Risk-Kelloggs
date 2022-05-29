@@ -4,10 +4,13 @@ import static tui.Utils.askTerritory;
 import static tui.Utils.consolePause;
 import static tui.Utils.print;
 
+import model.Board;
 import model.Game;
 import model.Player;
 import model.Territory;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Scanner;
 
 /**
@@ -33,24 +36,31 @@ public class AttackCommand extends Command {
      */
     @Override
     public boolean execute() {
+        Board board = game.getBoard();
+        ArrayList<Territory> territories = board.getTerritories();
+
         Player player = game.getPlayers().get(game.getTurn());
-        Territory fromTerritory = game.getBoard().getTerritories().get(
-            askTerritory(
+        String fromTerritoryStr = askTerritory(
                 "What territory do you want to attack from?",
                 input,
-                (tn) -> player.getTerritories().stream().anyMatch(t -> t.getName() == tn)).ordinal()
-        );
+                (tn) -> player.getTerritories().stream().anyMatch(t -> t.getName().equals(tn)),
+                board);
+        Territory fromTerritory = territories.get(board.getTerritoryIdx(fromTerritoryStr));
 
-        if (fromTerritory.getName() != Territory.TerritoryName.NONE) {
+        if (fromTerritory.getName() != null) {
+            HashMap<Integer, ArrayList<Integer>> adjacency = board.getAdjacency();
 
-            Territory.TerritoryName toAttack = askTerritory(
+            String toAttack = askTerritory(
                 "Which territory do you want to attack?",
                 input,
-                (tn) -> fromTerritory.getAdjacent().stream().anyMatch(t -> t.getName() == tn)
-                    && fromTerritory.getAdjacent().stream().filter(t -> t.getName() == tn)
-                        .findFirst().get().getOwner() != player
+                (tn) -> adjacency.get(board.getTerritoryIdx(fromTerritory.getName()))
+                        .stream().anyMatch(t -> t == board.getTerritoryIdx(tn))
+                        && territories.get(board.getAdjacency().get(board.getTerritoryIdx(fromTerritory.getName()))
+                        .stream().filter(t -> t == board.getTerritoryIdx(tn))
+                        .findFirst().get()).getOwner() != player,
+                    board
             );
-            Territory attackedTerritory = game.getBoard().getTerritories().get(toAttack.ordinal());
+            Territory attackedTerritory = territories.get(board.getTerritoryIdx(toAttack));
             Player attackedPlayer = attackedTerritory.getOwner();
             boolean canAttack = false;
             canAttack = fromTerritory.getArmiesCount() > 1;
@@ -72,6 +82,7 @@ public class AttackCommand extends Command {
                 print("You can't attack that territory...");
             }
         }
+
         consolePause(input);
         return false;
     }

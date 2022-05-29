@@ -35,16 +35,14 @@ public class MoveArmiesCommand extends Command {
         print("Where do you want to move the armies from?");
 
         String fromStr = input.nextLine();
-        Territory fromTerritory = game.getBoard().getTerritories().get(
-                Territory.TerritoryName.valueOf(fromStr.toUpperCase(Locale.US)).ordinal()
-        );
+        int fromTerritoryIndex = game.getBoard().getTerritoryIdx(fromStr);
+        Territory fromTerritory = game.getBoard().getTerritories().get(fromTerritoryIndex);
 
         print("Where do you want to move the armies to?");
 
         String toStr = input.nextLine();
-        Territory toTerritory = game.getBoard().getTerritories().get(
-                Territory.TerritoryName.valueOf(toStr.toUpperCase()).ordinal()
-        );
+        int toIndex = game.getBoard().getTerritoryIdx(toStr);
+        Territory toTerritory = game.getBoard().getTerritories().get(toIndex);
 
         print("How many armies do you want to move? (1 - "
                 + (fromTerritory.getArmiesCount() - 1) + ")");

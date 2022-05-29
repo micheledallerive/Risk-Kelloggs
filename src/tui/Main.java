@@ -17,7 +17,6 @@ import model.Die;
 import model.Game;
 import model.Player;
 import model.Territory;
-import model.Territory.TerritoryName;
 import model.callback.Callback;
 import model.callback.GameCallback;
 import model.enums.GameStatus;
@@ -149,7 +148,6 @@ public class Main {
             }
             finishedTerritories = game.getBoard().getTerritories()
                             .stream().filter(t -> t.getOwner() == null).count() == 0;
-            //System.out.println(finishedTerritories);
             game.nextTurn();
         }
 
@@ -164,9 +162,12 @@ public class Main {
         Player currentPlayer = game.getPlayers().get(game.getTurn());
 
 
-        TerritoryName chosenName = askTerritory("Enter the territory where you want to place your armies: ",
-                input, (tn) -> ((freeTerritories && Territory.getTerritory(game, tn).getOwner() == null)
-                        || (!freeTerritories && Territory.getTerritory(game, tn).getOwner() == currentPlayer)));
+        String chosenName = askTerritory(
+                "Enter the territory where you want to place your armies: ",
+                input,
+                (tn) -> ((freeTerritories && game.getBoard().getTerritories().get(game.getBoard().getTerritoryIdx(tn)).getOwner() == null)
+                        || (!freeTerritories && game.getBoard().getTerritories().get(game.getBoard().getTerritoryIdx(tn)).getOwner() == currentPlayer)),
+                game.getBoard());
 
         int armies = 1;
         if (!freeTerritories) {
@@ -175,7 +176,7 @@ public class Main {
                     numInput, 1, currentPlayer.getFreeArmies().size(), null);
         }
 
-        Territory territory = game.getBoard().getTerritories().get(chosenName.ordinal());
+        Territory territory = game.getBoard().getTerritories().get(game.getBoard().getTerritoryIdx(chosenName));
         if ((territory.getOwner() == currentPlayer && !freeTerritories)
                 || territory.getOwner() == null) {
             currentPlayer.placeArmies(territory, armies);
@@ -189,7 +190,7 @@ public class Main {
         Player player = game.getPlayers().get(game.getTurn());
         int numOfTerritories = player.getTerritories().size();
         if (player.isAI()) {
-            ((AI)player).attack(new Callback() {
+            ((AI)player).attack(game.getBoard(), new Callback() {
                 @Override
                 public void onPlayerAttacked(Player attacker, Player attacked,
                                              Territory fromTerritory, Territory attackedTerritory) {

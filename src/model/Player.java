@@ -22,22 +22,65 @@ public class Player {
     //endregion
 
     //region FIELDS
-    private final String playerName;
-    private final ArmyColor color;
     private final ArrayList<Card> cards;
     private final ArrayList<Army> armies;
+    private final String playerName;
+    private final ArmyColor color;
     //endregion
 
+    //region CONSTRUCTOR
     /**
      * Creates a new player.
      * @param color The color of the army of the player.
      * @param playerName The name of the player.
      */
     public Player(final ArmyColor color, final String playerName) {
-        this.playerName = playerName;
-        this.color = color;
         this.cards = new ArrayList<>();
         this.armies = new ArrayList<>();
+        this.playerName = playerName;
+        this.color = color;
+    }
+    //endregion
+
+    //region GETTERS AND SETTERS
+    /**
+     * Give player's cards.
+     * @return player's cards.
+     */
+    public ArrayList<Card> getCards() {
+        return this.cards;
+    }
+
+    /**
+     * Add a card to the player cards.
+     * @param card the card to add.
+     */
+    public void addCard(final Card card) {
+        this.cards.add(card);
+    }
+
+    /**
+     * Give player's army list.
+     * @return player's armies.
+     */
+    public ArrayList<Army> getArmies() {
+        return this.armies;
+    }
+
+    /**
+     * Add an army to the player's armies.
+     * @param army The army to be added to the arraylist collections.
+     */
+    public void addArmy(final Army army) {
+        this.armies.add(army);
+    }
+
+    /**
+     * Remove an army from player's armies.
+     * @param army The army to be removed from the arraylist collection.
+     */
+    public void removeArmy(final Army army) {
+        this.armies.remove(army);
     }
 
     /**
@@ -54,22 +97,6 @@ public class Player {
      */
     public ArmyColor getColor() {
         return this.color;
-    }
-
-    /**
-     * Give player's cards.
-     * @return player's cards.
-     */
-    public ArrayList<Card> getCards() {
-        return this.cards;
-    }
-
-    /**
-     * Give player's army list.
-     * @return player's armies.
-     */
-    public ArrayList<Army> getArmies() {
-        return this.armies;
     }
     //endregion
 
@@ -288,30 +315,6 @@ public class Player {
     }
 
     /**
-     * Add an army to the player's armies.
-     * @param army The army to be added to the arraylist collections.
-     */
-    public void addArmy(final Army army) {
-        this.armies.add(army);
-    }
-
-    /**
-     * Remove an army from player's armies.
-     * @param army The army to be removed from the arraylist collection.
-     */
-    public void removeArmy(final Army army) {
-        this.armies.remove(army);
-    }
-
-    /**
-     * Add a card to the player cards.
-     * @param card the card to add.
-     */
-    public void addCard(final Card card) {
-        this.cards.add(card);
-    }
-
-    /**
      * Moves the given amount of armies from a territory to another.
      * @param num the number of armies to move.
      * @param from the territory where to remove the armies.
@@ -327,11 +330,10 @@ public class Player {
             iterator.remove();
         }
     }
-    //endregion
-
 
     @Override
     public String toString() {
         return isAI() ? this.color.toString() : this.playerName;
     }
+    //endregion
 }

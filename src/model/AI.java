@@ -32,22 +32,30 @@ public class AI extends Player {
     //region METHODS
     /**
      * Attacks a player.
-     * @param callback the callback to be colled in the Main function
+     * @param callback the callback to be called in the Main function
      *                 (either TUI or GUI) in order to let the player do
      *                 something when they are attacked by an AI.
      */
-    public void attack(Callback callback) {
+    public void attack(Board board, Callback callback) {
+        // from AI territories, get the ones that have more than 1 army
         List<Territory> available = this.getTerritories()
                 .stream()
                 .filter((territory) -> territory.getArmiesCount() > 1)
                 .collect(Collectors.toList());
-        if (available.size() == 0) {
-            return;
-        }
-        Territory from = available.get(RandomUtil.random.nextInt(available.size()));
-        Territory attackedTerritory = from.getAdjacent().get(
+
+        // if all territories haven't more than one army, AI can't attack
+        if (available.size() == 0) { return; }
+
+        // otherwise, choose a random territory from the list,
+        // get the nearby territories and randomly choose one to attack
+        Territory from = available.get(RandomUtil.random.nextInt(available.size()));    // from where to attack
+        int fromIndex = board.getTerritoryIdx(from.getName());
+        int indexAttackNearby = RandomUtil.random.nextInt(board.getAdjacency().get(fromIndex).size());
+        int attackedTerritoryIndex = board.getAdjacency().get(fromIndex).get(indexAttackNearby);
+        Territory attackedTerritory = board.getTerritories().get(attackedTerritoryIndex);
+        /*String attackedTerritory = from.getAdjacent().get(
                 RandomUtil.random.nextInt(from.getAdjacent().size())
-        );
+        );*/
         Player attackedPlayer = attackedTerritory.getOwner();
         if (attackedPlayer.isAI()) {
             callback.onAIAttacked(this, attackedPlayer,

@@ -24,6 +24,7 @@ public class MapPanel extends ImageBackgroundPanel {
 
     // region FIELDS
     private final ArrayList<EventCallback> callbacks;
+    private final Game game;
     // endregion
 
     // region CONSTRUCTORS
@@ -35,6 +36,7 @@ public class MapPanel extends ImageBackgroundPanel {
     public MapPanel(final Game game) {
         super(MAP_PATH, BRIGHTNESS_DEFAULT);
         this.callbacks = new ArrayList<>();
+        this.game = game;
         this.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(final MouseEvent mouseEvent) {
@@ -84,7 +86,7 @@ public class MapPanel extends ImageBackgroundPanel {
     public int getClickedTerritory(final int pointX, final int pointY) {
         for (final String name : MapUtils.POLYGONS.keySet()) {
             if (MapUtils.POLYGONS.get(name).contains(pointX, pointY)) {
-                return Territory.TerritoryName.valueOf(name).ordinal();
+                return game.getBoard().getTerritoryIdx(name);
             }
         }
         return -1;

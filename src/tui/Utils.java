@@ -1,9 +1,8 @@
 package tui;
 
+import model.Board;
 import model.Continent;
 import model.Game;
-import model.Territory;
-import model.Territory.TerritoryName;
 import model.enums.ArmyColor;
 
 import java.util.Arrays;
@@ -171,10 +170,10 @@ public class Utils {
      * @param validator a function that checks if the input is valid.
      * @return the TerritoryName.
      */
-    public static TerritoryName askTerritory(String message, Scanner input,
-                                                       Function<TerritoryName, Boolean> validator) {
+    public static String askTerritory(String message, Scanner input,
+                                                       Function<String, Boolean> validator, Board board) {
         String territory;
-        TerritoryName territoryName;
+        String territoryName;
         boolean valid = false;
         int counter = 0;
         do {
@@ -184,9 +183,9 @@ public class Utils {
             print(message);
             territory = input.nextLine().toUpperCase().replaceAll(" ", "_");
             String finalToAttack = territory;
-            valid = Arrays.stream(TerritoryName.values()).anyMatch((n) -> n.name().equals(finalToAttack))
-                && (validator == null || validator.apply(TerritoryName.valueOf(territory)));
-            territoryName = TerritoryName.valueOf(territory);
+            valid = board.getTerritories().stream().anyMatch((n) -> n.getName().equals(finalToAttack))
+                && (validator == null || validator.apply(territory));
+            territoryName = territory;
             counter++;
         }
         while (!valid);

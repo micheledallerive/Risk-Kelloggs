@@ -47,8 +47,6 @@ public class GameTest {
 
     @Test
     public void testGiveBonus() {
-        Territory.init();
-        Continent.init();
         Game game = new Game();
         Player p1 = new Player(ArmyColor.RED, "bob");
         Player p2 = new Player(ArmyColor.BLUE, "chiara");
@@ -115,7 +113,6 @@ public class GameTest {
 
     @Test
     public void testPlay() {
-        Territory.init();
         Game game = new Game();
         int[] time = new int[]{0};
         game.play(new GameCallback() {

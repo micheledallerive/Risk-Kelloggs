@@ -4,7 +4,6 @@ import model.Army;
 import model.Territory;
 import model.enums.ArmyColor;
 import model.enums.ArmyType;
-import model.Territory.TerritoryName;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -23,18 +22,18 @@ public class ArmyTest {
         assertEquals(ArmyColor.BLACK, army1.getColor());
         assertNull(army1.getTerritory());
 
-        Territory territory = new Territory(TerritoryName.ALASKA);
+        Territory territory = new Territory("ALASKA");
         Army army2 = new Army(ArmyType.INFANTRY, ArmyColor.BLUE, territory);
         assertEquals(ArmyType.INFANTRY, army2.getType());
         assertEquals(ArmyColor.BLUE, army2.getColor());
         assertEquals(territory, army2.getTerritory());
-        assertEquals(TerritoryName.ALASKA, army2.getTerritory().getName());
+        assertEquals("ALASKA", army2.getTerritory().getName());
     }
 
     @Test
     public void testMoveTo() {
-        Territory t1 = new Territory(TerritoryName.ALASKA);
-        Territory t2 = new Territory(TerritoryName.ALBERTA);
+        Territory t1 = new Territory("ALASKA");
+        Territory t2 = new Territory("ALBERTA");
         Army army1 = new Army(ArmyType.INFANTRY, ArmyColor.RED, t1);
         assertEquals(t1, army1.getTerritory());
         army1.setTerritory(t2);
@@ -44,7 +43,7 @@ public class ArmyTest {
     @Test
     public void testToString() {
         Army army = new Army(ArmyType.INFANTRY, ArmyColor.BLACK, null);
-        Army army2 = new Army(ArmyType.INFANTRY, ArmyColor.BLACK, new Territory(TerritoryName.ALASKA));
+        Army army2 = new Army(ArmyType.INFANTRY, ArmyColor.BLACK, new Territory("ALASKA"));
         assertTrue(army.toString().contains("no territory"));
         assertTrue(army2.toString().toLowerCase().contains("alaska"));
     }

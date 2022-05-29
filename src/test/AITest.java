@@ -36,31 +36,31 @@ public class AITest {
         game.addPlayer(black);
         game.addPlayer(player);
 
-        Territory.init();
         game.initArmies();
 
         blue.placeArmies(game.getBoard().getTerritories().get(0), 10);
         blue.placeArmies(game.getBoard().getTerritories().get(10), 1);
-        //red.placeArmies(game.getBoard().getTerritories().get(0).getAdjacent().get(1), 10);
-        player.placeArmies(game.getBoard().getTerritories().get(0).getAdjacent().get(0), 10);
+        player.placeArmies(game.getBoard().getTerritories().get(game.getBoard().getAdjacency().get(0).get(0)), 10);
 
-        for (Territory territory : game.getBoard().getTerritories().get(0).getAdjacent()){
+        // foreach territory adjacent to the first territory in list
+        for (final int index : game.getBoard().getAdjacency().get(0)){
+            Territory territory = game.getBoard().getTerritories().get(index);
             if (territory.getOwner() == null) {
                 red.placeArmies(territory, 2);
                 //System.out.println(territory.getName().toString() + " : " + territory.getOwner());
             }
         }
 
-        final boolean[] playerAttacked = {false};
+        final boolean[] playerAttacked = { false };
         while(!playerAttacked[0] && game.getBoard().getTerritories().get(0).getOwner() == blue) {
-            blue.attack(new Callback() {
+            blue.attack(game.getBoard(), new Callback() {
                 @Override
                 public void onPlayerAttacked(Player attacker, Player attacked, Territory fromTerritory, Territory attackedTerritory) {
                     assertEquals(attacker, blue);
                     assertEquals(attacked, player);
                     assertEquals(fromTerritory.getOwner(), blue);
                     assertEquals(attackedTerritory.getOwner(), player);
-                    playerAttacked[0] =true;
+                    playerAttacked[0] = true;
                 }
                 @Override
                 public void onAIAttacked(Player attacker, Player attacked, Territory fromTerritory, Territory attackedTerritory) {
@@ -89,7 +89,6 @@ public class AITest {
         game.addPlayer(black);
         game.addPlayer(player);
 
-        Territory.init();
         game.initArmies();
 
         blue.placeArmy(game, true);
