@@ -39,7 +39,6 @@ public class MapPanel extends ImageBackgroundPanel {
         super(MAP_PATH, BRIGHTNESS_DEFAULT);
         this.game = game;
         this.callbacks = new ArrayList<>();
-        this.game = game;
         this.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(final MouseEvent mouseEvent) {

@@ -219,7 +219,7 @@ public class JGame extends JLayeredPane {
     private void playing(Timer timer, EventCallback callback) {
         Player currentPlayer = game.getPlayers().get(game.getTurn());
         if (currentPlayer.isAI()) {
-            ((AI) currentPlayer).attack(new Callback() {
+            ((AI) currentPlayer).attack(game.getBoard(), new Callback() {
                 @Override
                 public void onPlayerAttacked(Player attacker, Player attacked, Territory fromTerritory, Territory attackedTerritory) {
                     System.out.println("Player is getting attacked by " + attacker);

@@ -87,7 +87,6 @@ public class GameTest {
     @Test
     public void testCards() {
         Game game = new Game();
-        assertNotNull(game.getRandomCard());
         for (int i = 0; i < 44; i++) { // 42 territory card + 2 wild cards
             assertNotNull(game.getRandomCard());
         }
