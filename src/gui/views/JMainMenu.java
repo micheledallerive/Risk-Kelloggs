@@ -1,7 +1,7 @@
 package gui.views;
 
 import gui.EventCallback;
-import gui.FontUtils;
+import gui.utils.FontUtils;
 import gui.components.ImageBackgroundPanel;
 import gui.components.TransparentPanel;
 

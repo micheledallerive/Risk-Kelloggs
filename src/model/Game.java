@@ -25,18 +25,19 @@ public class Game {
     private final ArrayList<Player> players;
     private int turn;
     private GameStatus status;
-    private ArrayList<Card> cardsDeck;
-    private HashMap<ArmyColor, ArrayList<Army>> allArmies;
+    private final ArrayList<Card> cardsDeck;
+    private final HashMap<ArmyColor, ArrayList<Army>> allArmies;
     private int turnsPlayed;
     private Player playerStarting;
     //endregion
 
     //region CONSTRUCTORS
+
     /**
      * Create a new empty game.
      */
     public Game() {
-        this(new ArrayList<Player>());
+        this(new ArrayList<>());
     }
 
 
@@ -241,15 +242,33 @@ public class Game {
 
     /**
      * Sets the current turn.
+     *
      * @param turn the turn to set as the current one.
      */
     public void setTurn(int turn) {
-        fireTurnChanged();
         this.turn = turn;
+        fireTurnChanged();
+    }
+
+    /**
+     * Sets the current turn to the player.
+     *
+     * @param player the player to set as the current one.
+     */
+    public void setTurn(Player player) {
+        int playerIndex = 0;
+        for (int i = 0; i < this.players.size(); i++) {
+            if (this.players.get(i).getColor() == player.getColor()) {
+                playerIndex = i;
+                break;
+            }
+        }
+        setTurn(playerIndex);
     }
 
     /**
      * Returns the current number of turns each player played.
+     *
      * @return the current number of turns each player played.
      */
     public int getTurnsPlayed() {
@@ -284,11 +303,11 @@ public class Game {
      * Updates the current turn to the next player.
      */
     public void nextTurn() {
-        fireTurnChanged();
         this.turn = (this.turn + 1) % this.players.size();
         if (this.players.get(this.turn) == this.playerStarting) {
             this.turnsPlayed++;
         }
+        fireTurnChanged();
     }
 
     /**
@@ -318,7 +337,7 @@ public class Game {
      */
     public void play(GameCallback callback) {
         while (this.status != GameStatus.EXIT) {
-            boolean result = false;
+            boolean result;
             switch (this.status) {
                 case MENU:
                     result = callback.onMainMenu();

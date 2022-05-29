@@ -1,6 +1,6 @@
 package gui.components;
 
-import gui.FontUtils;
+import gui.utils.FontUtils;
 
 import java.awt.Dimension;
 import java.awt.GridBagLayout;
@@ -17,9 +17,10 @@ import javax.swing.border.EmptyBorder;
 
 /**
  * Class to get name of player.
+ *
  * @author dallem@usi.ch
  */
-public class NameDialog extends MessageDialog {
+public class NameDialog extends BaseDialog {
     private final JTextField nameField;
 
     /**

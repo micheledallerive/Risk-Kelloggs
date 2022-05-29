@@ -1,12 +1,14 @@
 package gui.views;
 
 import gui.EventCallback;
-import gui.MapUtils;
+import gui.utils.FontUtils;
+import gui.utils.ImageUtils;
+import gui.utils.MapUtils;
 import gui.components.ImageBackgroundPanel;
 import model.Game;
 import model.Territory;
 
-import java.awt.Cursor;
+import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -24,6 +26,7 @@ public class MapPanel extends ImageBackgroundPanel {
 
     // region FIELDS
     private final ArrayList<EventCallback> callbacks;
+    private final Game game;
     // endregion
 
     // region CONSTRUCTORS
@@ -34,6 +37,7 @@ public class MapPanel extends ImageBackgroundPanel {
      */
     public MapPanel(final Game game) {
         super(MAP_PATH, BRIGHTNESS_DEFAULT);
+        this.game = game;
         this.callbacks = new ArrayList<>();
         this.addMouseListener(new MouseAdapter() {
             @Override
@@ -43,30 +47,26 @@ public class MapPanel extends ImageBackgroundPanel {
                     return;
                 }
 
-                int pointX = MapUtils.transformX(mouseEvent.getX(), getWidth());
-                int pointY = MapUtils.transformY(mouseEvent.getY(), getHeight());
-                System.out.println("Clicked on " + pointX + "," + pointY);
+                int pointX = MapUtils.viewToMapX(mouseEvent.getX(), getWidth());
+                int pointY = MapUtils.viewToMapY(mouseEvent.getY(), getHeight());
                 int territoryIndex = getClickedTerritory(pointX, pointY);
-                System.out.println("Territory index: " + game.getBoard().getTerritories().get(territoryIndex).getName());
-                triggerCallbacks(territoryIndex);
-            }
-
-            @Override
-            public void mouseMoved(MouseEvent e) {
-                super.mouseMoved(e);
-                System.out.println("Mouse moved");
+                triggerCallbacks(territoryIndex, mouseEvent.getX(), mouseEvent.getY());
             }
         });
         this.addMouseMotionListener(new MouseAdapter() {
             @Override
             public void mouseMoved(final MouseEvent mouseEvent) {
                 super.mouseMoved(mouseEvent);
-                int pointX = MapUtils.transformX(mouseEvent.getX(), getWidth());
-                int pointY = MapUtils.transformY(mouseEvent.getY(), getHeight());
+                int pointX = MapUtils.viewToMapX(mouseEvent.getX(), getWidth());
+                int pointY = MapUtils.viewToMapY(mouseEvent.getY(), getHeight());
                 if (getClickedTerritory(pointX, pointY) != -1) {
-                    setCursor(new Cursor(Cursor.HAND_CURSOR));
+                    if (getCursor().getType() != Cursor.HAND_CURSOR) {
+                        setCursor(new Cursor(Cursor.HAND_CURSOR));
+                    }
                 } else {
-                    setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+                    if (getCursor().getType() != Cursor.DEFAULT_CURSOR) {
+                        setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+                    }
                 }
             }
         });
@@ -100,12 +100,47 @@ public class MapPanel extends ImageBackgroundPanel {
 
     /**
      * Function - trigger all the callbacks.
+     *
      * @param val Value to pass to the callbacks.
      */
-    public void triggerCallbacks(int val) {
+    public void triggerCallbacks(int val, Object... args) {
         for (EventCallback callback : callbacks) {
-            callback.onEvent(val);
+            callback.onEvent(val, args);
         }
     }
+
+    @Override
+    public void setEnabled(boolean enabled) {
+        super.setEnabled(enabled);
+        setBrightness(enabled ? 1f : .5f);
+    }
+
+    @Override
+    public void paintComponent(Graphics graphics) {
+        super.paintComponent(graphics);
+        final int RADIUS = 30;
+        for (Territory territory : game.getBoard().getTerritories()) {
+            if (territory.getOwner() == null || territory.getArmiesCount() == 0) {
+                continue;
+            }
+            Polygon polygon = MapUtils.POLYGONS.get(territory.getName().toString());
+            Point centroid = MapUtils.getCentroid(polygon);
+            centroid.x = MapUtils.mapToViewX(centroid.x, getWidth());
+            centroid.y = MapUtils.mapToViewY(centroid.y, getHeight());
+            graphics.setColor(ImageUtils.armyColorToColor(territory.getOwner().getColor()));
+            graphics.fillOval(centroid.x - RADIUS, centroid.y - RADIUS, RADIUS * 2, RADIUS * 2);
+
+            // write the number of armies inside the oval
+            graphics.setColor(ImageUtils.chooseForegroundColor(territory.getOwner().getColor()));
+            graphics.setFont(FontUtils.getFont().deriveFont(Font.BOLD, 20));
+
+            String number = String.valueOf(territory.getArmiesCount());
+            FontMetrics fm = graphics.getFontMetrics();
+            int x = (int) (centroid.x - (fm.stringWidth(number) * .5) + 1);
+            int y = (fm.getAscent() + (centroid.y - (fm.getAscent() + fm.getDescent()) / 2));
+            graphics.drawString(number, x, y);
+        }
+    }
+
     // endregion
 }

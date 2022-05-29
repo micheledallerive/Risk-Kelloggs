@@ -1,7 +1,6 @@
-package gui;
+package gui.utils;
 
-import javax.swing.*;
-import java.awt.Polygon;
+import java.awt.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.HashMap;
@@ -64,12 +63,60 @@ public class MapUtils {
         }
     }
 
-    public static int transformX(int x, int width) {
-        return (int) ((x * (MapUtils.WIDTH * 1.125) / width) );
+    public static int viewToMapX(int x, int width) {
+        return (int) ((x * (MapUtils.WIDTH * 1.125) / width));
     }
 
-    public static int transformY(int y, int height) {
+    public static int viewToMapY(int y, int height) {
         return (y * MapUtils.HEIGHT / height);
+    }
+
+    public static int mapToViewX(int x, int width) {
+        return (int) ((x * (width * 0.8888) / MapUtils.WIDTH));
+    }
+
+    public static int mapToViewY(int y, int height) {
+        return (y * height / MapUtils.HEIGHT);
+    }
+
+    /**
+     * Calculates the signed area of the polygon
+     *
+     * @param polygon the polygon
+     */
+    public static double signedArea(Polygon polygon) {
+        int[] x = polygon.xpoints;
+        int[] y = polygon.ypoints;
+        int n = polygon.npoints;
+        double area = 0;
+        for (int i = 0; i < n; i++) {
+            area += (x[i] * y[(i + 1) % n] - x[(i + 1) % n] * y[i]);
+        }
+        return area / 2;
+    }
+
+    /**
+     * Calculates the centroid of the given polygon.
+     *
+     * @param polygon the polygon to calculate the centroid of.
+     */
+    public static Point getCentroid(final Polygon polygon) {
+        // calculate the area of the polygon
+        final double area = signedArea(polygon);
+        // calculate the centroid
+        int[] x = polygon.xpoints;
+        int[] y = polygon.ypoints;
+        int n = polygon.npoints;
+        double cx = 0;
+        double cy = 0;
+        for (int i = 0; i < n; i++) {
+            final double tmp = x[i] * y[(i + 1) % n] - x[(i + 1) % n] * y[i];
+            cx += (x[i] + x[(i + 1) % n]) * tmp;
+            cy += (y[i] + y[(i + 1) % n]) * tmp;
+        }
+        cx /= (6 * area);
+        cy /= (6 * area);
+        return new Point((int) cx, (int) cy);
     }
     //endregion
 }

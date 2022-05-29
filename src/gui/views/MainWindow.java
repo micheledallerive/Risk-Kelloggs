@@ -63,9 +63,10 @@ public class MainWindow extends JFrame {
     // region METHODS
     /**
      * Function - configure the menu bar.
+     *
      * @return JMenuBar swing object
      */
-    private final JMenuBar menuBarConfiguration() {
+    private JMenuBar menuBarConfiguration() {
         JMenu menu = new JMenu("Options");
         JMenuItem item1 = new JMenuItem("Save");
         JMenuItem item2 = new JMenuItem("Load");
@@ -84,23 +85,15 @@ public class MainWindow extends JFrame {
      */
     private void initCards() {
         // show different game panel based on game status changing
-        game.addListener(new StatusListener() {
-            @Override
-            public void changed(final GameStatus status) {
-                CardLayout cl = (CardLayout) (cards.getLayout());
-                cl.show(cards, status.toString());
-                cards.getComponents()[0].requestFocus();
-            }
+        game.addListener((StatusListener) status -> {
+            CardLayout cl = (CardLayout) (cards.getLayout());
+            cl.show(cards, status.toString());
+            cards.getComponents()[0].requestFocus();
         });
 
         // Create the "cards" (panels for each game status)
-        final JPanel mainMenuCard = new JMainMenu(new EventCallback() {
-            @Override
-            public void onEvent(int id) {
-                game.nextStatus();
-            }
-        });
-        final JSetup playCard = new JSetup(game, this);
+        final JPanel mainMenuCard = new JMainMenu((id, args) -> game.nextStatus());
+        final JGame playCard = new JGame(game, this);
 
         // Create the panel that contains the "cards".
         this.cards = new JPanel(new CardLayout()); // create card layout for panels

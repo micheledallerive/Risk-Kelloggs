@@ -1,24 +1,18 @@
 package gui.components;
 
-import gui.ImageUtils;
+import gui.EventCallback;
 import model.Game;
-import model.Player;
 import model.TurnListener;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.geom.Rectangle2D;
-import java.awt.geom.RoundRectangle2D;
-import java.util.TimerTask;
 
 public class PlayersDisplayer extends TransparentPanel {
-    private Game game;
-    private JLabel[] pointers;
-    private JDie[] dice;
+    private final Game game;
+    private final JLabel[] pointers;
+    private final JDie[] dice;
 
     public PlayersDisplayer(Game game) {
         super();
@@ -62,13 +56,14 @@ public class PlayersDisplayer extends TransparentPanel {
         });
     }
 
-    public void chooseStartingPlayer() {
+    public void chooseStartingPlayer(EventCallback eventCallback) {
         for (JDie die : dice) {
             die.setVisible(true);
         }
         for (int i = 1; i < dice.length; i++) {
             dice[i].roll();
         }
+
         dice[0].addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -76,5 +71,24 @@ public class PlayersDisplayer extends TransparentPanel {
                 dice[0].roll();
             }
         });
+        dice[0].addCallback((id, args) -> {
+            int maxIndex = 0;
+            for (int i = 0; i < dice.length; i++) {
+                if (dice[i].getValue() > dice[maxIndex].getValue()) {
+                    maxIndex = i;
+                }
+            }
+
+            game.setPlayerStarting(game.getPlayers().get(maxIndex));
+            game.setTurn(maxIndex);
+
+            eventCallback.onEvent(0);
+        });
+    }
+
+    public void hideDice() {
+        for (JDie die : dice) {
+            die.setVisible(false);
+        }
     }
 }

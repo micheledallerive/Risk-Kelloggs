@@ -1,6 +1,6 @@
 package gui.components;
 
-import gui.ImageUtils;
+import gui.utils.ImageUtils;
 
 import java.awt.Color;
 import java.awt.Graphics;

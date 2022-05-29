@@ -1,8 +1,7 @@
 package gui.components;
 
-import gui.ImageUtils;
+import gui.utils.ImageUtils;
 import model.Player;
-import model.enums.ArmyColor;
 
 import java.awt.*;
 import javax.swing.*;
@@ -16,7 +15,7 @@ public class PlayerIconComponent extends TransparentPanel {
 
     //region CONSTRUCTORS
 
-    private Player player;
+    private final Player player;
 
     /**
      * Constructor.
@@ -65,9 +64,8 @@ public class PlayerIconComponent extends TransparentPanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         g.setColor(ImageUtils.armyColorToColor(player.getColor()));
-        int width = getComponents()[1].getX() + getComponents()[1].getWidth() / 2;
-        g.fillRoundRect(0,0, width, getHeight(),30,30);
-        g.fillRect(10,0, width-10,getHeight());
+        int width = getComponents()[1].getX() + getComponents()[1].getWidth();
+        g.fillRoundRect(0, 0, width, getHeight(), getHeight(), getHeight());
     }
 
     //endregion
