@@ -92,10 +92,29 @@ public class MapPanel extends ImageBackgroundPanel {
 
     /**
      * Function - add a callback to the list of callbacks.
+     *
      * @param callback Callback to add.
      */
     public void addCallback(EventCallback callback) {
         this.callbacks.add(callback);
+    }
+
+    /**
+     * Function - removes a callback from the list of callbacks.
+     *
+     * @param callback Callback to remove.
+     */
+    public void removeCallback(EventCallback callback) {
+        this.callbacks.remove(callback);
+    }
+
+    /**
+     * Function - returns the callbacks list.
+     *
+     * @return the callbacks list.
+     */
+    public ArrayList<EventCallback> getCallbacks() {
+        return this.callbacks;
     }
 
     /**
@@ -115,9 +134,34 @@ public class MapPanel extends ImageBackgroundPanel {
         setBrightness(enabled ? 1f : .5f);
     }
 
+    Territory attackingFrom = null;
+    Territory attackingTo = null;
+
+    public void setAttackingFrom(Territory territory) {
+        this.attackingFrom = territory;
+    }
+
+    public Territory getAttackingFrom() {
+        return this.attackingFrom;
+    }
+
+    public void setAttackingTo(Territory territory) {
+        this.attackingTo = territory;
+    }
+
+    public Territory getAttackingTo() {
+        return this.attackingTo;
+    }
+
+    public void clearAttacking() {
+        this.attackingFrom = null;
+        this.attackingTo = null;
+    }
+
     @Override
-    public void paintComponent(Graphics graphics) {
-        super.paintComponent(graphics);
+    public void paintComponent(Graphics graphcs) {
+        super.paintComponent(graphcs);
+        Graphics2D graphics = (Graphics2D) graphcs;
         final int RADIUS = 30;
         for (Territory territory : game.getBoard().getTerritories()) {
             if (territory.getOwner() == null || territory.getArmiesCount() == 0) {
@@ -134,12 +178,31 @@ public class MapPanel extends ImageBackgroundPanel {
             graphics.setColor(ImageUtils.chooseForegroundColor(territory.getOwner().getColor()));
             graphics.setFont(FontUtils.getFont().deriveFont(Font.BOLD, 20));
 
+            graphics.setStroke(new BasicStroke(2));
+            graphics.drawOval(centroid.x - RADIUS, centroid.y - RADIUS, RADIUS * 2 - 1, RADIUS * 2 - 1);
+
             String number = String.valueOf(territory.getArmiesCount());
             FontMetrics fm = graphics.getFontMetrics();
             int x = (int) (centroid.x - (fm.stringWidth(number) * .5) + 1);
             int y = (fm.getAscent() + (centroid.y - (fm.getAscent() + fm.getDescent()) / 2));
             graphics.drawString(number, x, y);
         }
+
+        Point mouse = MouseInfo.getPointerInfo().getLocation();
+
+        drawArrow(graphics, 50, 50, mouse.x, mouse.y, 20, 50);
+    }
+
+    private void drawArrow(Graphics g, int x0, int y0, int x1,
+                           int y1, int headLength, int headAngle) {
+        double offs = headAngle * Math.PI / 180.0;
+        double angle = Math.atan2(y0 - y1, x0 - x1);
+        int[] xs = {x1 + (int) (headLength * Math.cos(angle + offs)), x1,
+                x1 + (int) (headLength * Math.cos(angle - offs))};
+        int[] ys = {y1 + (int) (headLength * Math.sin(angle + offs)), y1,
+                y1 + (int) (headLength * Math.sin(angle - offs))};
+        g.drawLine(x0, y0, x1, y1);
+        g.drawPolyline(xs, ys, 3);
     }
 
     // endregion

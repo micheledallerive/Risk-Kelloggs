@@ -9,6 +9,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.RenderingHints;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;
 
@@ -43,8 +44,29 @@ public class ImageUtils {
     }
 
     /**
+     * scale image
+     *
+     * @param sbi       image to scale
+     * @param imageType type of image
+     * @param dWidth    width of destination image
+     * @param dHeight   height of destination image
+     * @return scaled image
+     */
+    public static BufferedImage scale(BufferedImage sbi, int imageType, int dWidth, int dHeight) {
+        BufferedImage dbi = null;
+        if (sbi != null) {
+            dbi = new BufferedImage(dWidth, dHeight, imageType);
+            Graphics2D g = dbi.createGraphics();
+            AffineTransform at = AffineTransform.getScaleInstance(((float) dWidth) / sbi.getWidth(), ((float) dHeight) / sbi.getHeight());
+            g.drawRenderedImage(sbi, at);
+        }
+        return dbi;
+    }
+
+    /**
      * Apply roundness to corners image.
-     * @param image Image to round corners.
+     *
+     * @param image        Image to round corners.
      * @param cornerRadius Integer number of corner radius.
      * @return Buffered image object.
      */

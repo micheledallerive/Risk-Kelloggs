@@ -1,18 +1,18 @@
 package gui.views;
 
 import gui.EventCallback;
-import gui.components.JRoundButton;
-import gui.components.MessageDialog;
-import gui.components.NameDialog;
-import gui.components.PlayersDisplayer;
-import gui.utils.PopupUtils;
+import gui.components.*;
+import gui.utils.MapUtils;
 import model.AI;
 import model.Game;
 import model.Player;
 import model.Territory;
+import model.callback.Callback;
+import model.enums.GameStatus;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.util.function.Function;
 import javax.swing.*;
 
 /**
@@ -115,11 +115,10 @@ public class JGame extends JLayeredPane {
         constraints.gridx = 0;
         constraints.gridy = 0;
         constraints.anchor = GridBagConstraints.NORTHWEST;
-        constraints.insets = new Insets(10, 10, 0, 0);
+        constraints.insets = new Insets(20, 20, 0, 0);
         final JRoundButton pauseButton = new JRoundButton();
         pauseButton.setIcon(new ImageIcon("src/gui/assets/images/pause.png"));
         pauseButton.setPreferredSize(new Dimension(50, 50));
-        pauseButton.setSize(pauseButton.getPreferredSize());
         uiPane.add(pauseButton, constraints);
 
         constraints.gridx = 1;
@@ -128,6 +127,9 @@ public class JGame extends JLayeredPane {
         final PlayersDisplayer playersDisplayer = new PlayersDisplayer(game);
         this.playersDisplayer = playersDisplayer;
         uiPane.add(playersDisplayer, constraints);
+
+        uiPane.addMouseMotionListener(map.getMouseMotionListeners()[0]);
+        uiPane.addMouseListener(map.getMouseListeners()[0]);
 
         uiPane.setEnabled(false);
         add(uiPane, JLayeredPane.PALETTE_LAYER);
@@ -147,7 +149,7 @@ public class JGame extends JLayeredPane {
                     public void windowClosed(WindowEvent e) {
                         super.windowClosed(e);
                         playersDisplayer.hideDice();
-                        gameSetup();
+                        startGame();
                     }
                 });
                 message.pack();
@@ -157,58 +159,86 @@ public class JGame extends JLayeredPane {
         });
     }
 
-    private void gameSetup() {
+    private void startGame() {
         final boolean DEBUG = true;
-        Timer timer = new Timer(DEBUG ? 500 : 1000, null);
-        timer.addActionListener(e -> {
-            boolean someoneHasFreeArmies = game.getPlayers().stream().anyMatch(p -> !p.getFreeArmies().isEmpty());
-            if (!someoneHasFreeArmies) {
-                timer.stop();
-                game.setTurn(game.getPlayerStarting());
-            }
-            boolean everythingOccupied = game.getBoard().getTerritories().stream().noneMatch(t -> t.getOwner() == null);
-            Player currentPlayer = game.getPlayers().get(game.getTurn());
-            if (currentPlayer.isAI()) {
-                ((AI) currentPlayer).placeArmy(game, !everythingOccupied);
-                game.nextTurn();
-            } else {
-                timer.stop();
-            }
-            map.repaint();
-        });
-        timer.start();
-
-        EventCallback setupCallback = (id, args) -> {
-            int clickX = (int) args[0];
-            int clickY = (int) args[1];
-
-            if (id == -1) return;
-
-            if (game.getPlayers().get(game.getTurn()).isAI()) return;
-
-            Territory territory = game.getBoard().getTerritories().get(id);
-            Player player = game.getPlayers().get(game.getTurn());
-
-            if (player.getFreeArmies().isEmpty()) return;
-
-            boolean everythingOccupied = game.getBoard().getTerritories().stream().noneMatch(t -> t.getOwner() == null);
-            if (territory.getOwner() != null) {
-                if (territory.getOwner() == player && !everythingOccupied) {
-                    PopupUtils.showPopup(parent, "You have to place armies on free territories!", clickX, clickY);
-                    return;
-                }
-                if (territory.getOwner() != player) {
-                    PopupUtils.showPopup(parent, "You can't place armies on enemy territories!", clickX, clickY);
-                    return;
-                }
-            }
-            player.placeArmies(territory, 1);
+        Timer timer = new Timer(DEBUG ? 250 : 1000, null);
+        // ai interaction
+        final Function<Void, Void> nextTurn = aVoid -> {
             game.nextTurn();
             timer.start();
             map.repaint();
+            return null;
         };
+
+        final EventCallback setupCallback = MapUtils.setupCallback(game, nextTurn, parent);
+        //final EventCallback playingCallback = MapUtils.playCallback(game, nextTurn, parent);
+
+        // handles user
         map.addCallback(setupCallback);
 
+        // TODO FINISH THIS DONT FIX
+        // handles ai
+        timer.addActionListener(e -> {
+            if (game.getStatus() == GameStatus.SETUP) {
+                setup(timer, setupCallback);
+            } else if (game.getStatus() == GameStatus.PLAYING) {
+//                if (!map.getCallbacks().contains(playingCallback)) {
+//                    map.addCallback(playingCallback);
+//                }
+//                playing(timer, playingCallback);
+            }
+        });
+
+        timer.start();
+    }
+
+    private void setup(Timer timer, EventCallback callback) {
+        boolean someoneHasFreeArmies = game.getPlayers().stream().anyMatch(p -> !p.getFreeArmies().isEmpty());
+        if (!someoneHasFreeArmies) {
+            timer.stop();
+            game.setTurn(game.getPlayerStarting());
+            map.removeCallback(callback);
+
+            game.nextStatus();
+        }
+        boolean everythingOccupied = game.getBoard().getTerritories().stream().noneMatch(t -> t.getOwner() == null);
+        Player currentPlayer = game.getPlayers().get(game.getTurn());
+        if (currentPlayer.getFreeArmies().isEmpty()) {
+            game.nextTurn();
+            return;
+        }
+        if (currentPlayer.isAI()) {
+            ((AI) currentPlayer).placeArmy(game, !everythingOccupied);
+            game.nextTurn();
+        } else {
+            timer.stop();
+        }
+        map.repaint();
+    }
+
+    private void playing(Timer timer, EventCallback callback) {
+        Player currentPlayer = game.getPlayers().get(game.getTurn());
+        if (currentPlayer.isAI()) {
+            ((AI) currentPlayer).attack(new Callback() {
+                @Override
+                public void onPlayerAttacked(Player attacker, Player attacked, Territory fromTerritory, Territory attackedTerritory) {
+                    System.out.println("Player is getting attacked by " + attacker);
+                    currentPlayer.attack(fromTerritory, attackedTerritory,
+                            Math.min(fromTerritory.getArmiesCount(), 3), Math.min(attackedTerritory.getArmiesCount(), 2));
+                    game.nextTurn();
+                }
+
+                @Override
+                public void onAIAttacked(Player attacker, Player attacked, Territory fromTerritory, Territory attackedTerritory) {
+                    System.out.println(attacker + " is attacking " + attacked);
+                    currentPlayer.attack(fromTerritory, attackedTerritory,
+                            Math.min(fromTerritory.getArmiesCount(), 3), Math.min(attackedTerritory.getArmiesCount(), 2));
+                    game.nextTurn();
+                }
+            });
+        } else {
+            timer.stop();
+        }
     }
     // endregion
 }

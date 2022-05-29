@@ -5,11 +5,14 @@ import java.awt.*;
 
 public class JRoundButton extends ImageBackgroundPanel {
 
+    private static final int MARGIN = 7;
+
     public JRoundButton() {
-        super("src/gui/assets/images/dialog_texture.png", 0.3f);
+        super("src/gui/assets/images/dialog_texture.png", 1f);
+        setCursor(new Cursor(Cursor.HAND_CURSOR));
         setLayout(new BorderLayout());
         setOpaque(false);
-        setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        setBorder(BorderFactory.createEmptyBorder(MARGIN, MARGIN, MARGIN, MARGIN));
     }
 
     public JRoundButton(String text) {
@@ -27,7 +30,7 @@ public class JRoundButton extends ImageBackgroundPanel {
 
     public void setIcon(ImageIcon icon) {
         JLabel label = new JLabel(icon);
-        label.setPreferredSize(getPreferredSize());
+        label.setPreferredSize(new Dimension(getPreferredSize().width - 2 * MARGIN, getPreferredSize().height - 2 * MARGIN));
         add(label, BorderLayout.CENTER);
         revalidate();
         repaint();
@@ -36,8 +39,20 @@ public class JRoundButton extends ImageBackgroundPanel {
     @Override
     public void setPreferredSize(Dimension preferredSize) {
         super.setPreferredSize(preferredSize);
-        setRoundedCorners(Math.min(preferredSize.width, preferredSize.height) / 2);
+        setRoundedCorners(100);
+        System.out.println("Preferred size");
         revalidate();
         repaint();
+    }
+
+    @Override
+    public void paintComponent(Graphics graphics) {
+        super.paintComponent(graphics);
+        Graphics2D g2 = (Graphics2D) graphics;
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+                RenderingHints.VALUE_ANTIALIAS_ON);
+        g2.setStroke(new BasicStroke(2));
+        g2.setColor(Color.BLACK);
+        g2.drawOval(0, 0, getWidth() - 1, getHeight() - 1);
     }
 }
