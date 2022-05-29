@@ -50,6 +50,14 @@ public class Board {
     public HashMap<Integer, ArrayList<Integer>> getAdjacency() {
         return this.adjacency;
     }
+
+    public ArrayList<Territory> getAdjacent(Territory territory) {
+        ArrayList<Territory> adjacent = new ArrayList<>();
+        for (int idx : this.adjacency.get(getTerritoryIdx(territory.getName()))) {
+            adjacent.add(this.territories.get(idx));
+        }
+        return adjacent;
+    }
     //endregion
 
     //region METHODS

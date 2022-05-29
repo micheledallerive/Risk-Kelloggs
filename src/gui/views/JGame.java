@@ -170,36 +170,31 @@ public class JGame extends JLayeredPane {
             return null;
         };
 
-        final EventCallback setupCallback = MapUtils.setupCallback(game, nextTurn, parent);
+        final EventCallback playingCallback = MapUtils.playingCallback(game, map, nextTurn, parent);
         //final EventCallback playingCallback = MapUtils.playCallback(game, nextTurn, parent);
 
         // handles user
-        map.addCallback(setupCallback);
+        map.addCallback(playingCallback);
 
         // TODO FINISH THIS DONT FIX
         // handles ai
         timer.addActionListener(e -> {
             if (game.getStatus() == GameStatus.SETUP) {
-                setup(timer, setupCallback);
+                setup(timer);
             } else if (game.getStatus() == GameStatus.PLAYING) {
-//                if (!map.getCallbacks().contains(playingCallback)) {
-//                    map.addCallback(playingCallback);
-//                }
-//                playing(timer, playingCallback);
+                playing(timer);
             }
         });
 
         timer.start();
     }
 
-    private void setup(Timer timer, EventCallback callback) {
+    private void setup(Timer timer) {
         boolean someoneHasFreeArmies = game.getPlayers().stream().anyMatch(p -> !p.getFreeArmies().isEmpty());
         if (!someoneHasFreeArmies) {
-            timer.stop();
             game.setTurn(game.getPlayerStarting());
-            map.removeCallback(callback);
-
             game.nextStatus();
+            return;
         }
         boolean everythingOccupied = game.getBoard().getTerritories().stream().noneMatch(t -> t.getOwner() == null);
         Player currentPlayer = game.getPlayers().get(game.getTurn());
@@ -216,7 +211,7 @@ public class JGame extends JLayeredPane {
         map.repaint();
     }
 
-    private void playing(Timer timer, EventCallback callback) {
+    private void playing(Timer timer) {
         Player currentPlayer = game.getPlayers().get(game.getTurn());
         if (currentPlayer.isAI()) {
             ((AI) currentPlayer).attack(game.getBoard(), new Callback() {

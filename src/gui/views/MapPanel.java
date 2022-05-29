@@ -59,7 +59,10 @@ public class MapPanel extends ImageBackgroundPanel {
                 super.mouseMoved(mouseEvent);
                 int pointX = MapUtils.viewToMapX(mouseEvent.getX(), getWidth());
                 int pointY = MapUtils.viewToMapY(mouseEvent.getY(), getHeight());
-                if (getClickedTerritory(pointX, pointY) != -1) {
+                if (getAttackingFrom() != null) {
+                    setCursor(new Cursor(Cursor.CROSSHAIR_CURSOR));
+                    repaint();
+                } else if (getClickedTerritory(pointX, pointY) != -1) {
                     if (getCursor().getType() != Cursor.HAND_CURSOR) {
                         setCursor(new Cursor(Cursor.HAND_CURSOR));
                     }
@@ -167,6 +170,11 @@ public class MapPanel extends ImageBackgroundPanel {
             if (territory.getOwner() == null || territory.getArmiesCount() == 0) {
                 continue;
             }
+            if (attackingFrom != null
+                    && (!game.getBoard().getAdjacent(attackingFrom).contains(territory)
+                    || attackingFrom.getOwner() == territory.getOwner())) {
+                continue;
+            }
             Polygon polygon = MapUtils.POLYGONS.get(territory.getName().toString());
             Point centroid = MapUtils.getCentroid(polygon);
             centroid.x = MapUtils.mapToViewX(centroid.x, getWidth());
@@ -190,7 +198,13 @@ public class MapPanel extends ImageBackgroundPanel {
 
         Point mouse = MouseInfo.getPointerInfo().getLocation();
 
-        drawArrow(graphics, 50, 50, mouse.x, mouse.y, 20, 50);
+        if (getAttackingFrom() != null) {
+            Point centroid = MapUtils.getCentroid(MapUtils.POLYGONS.get(getAttackingFrom().getName().toString()));
+            centroid.x = MapUtils.mapToViewX(centroid.x, getWidth());
+            centroid.y = MapUtils.mapToViewY(centroid.y, getHeight());
+            //graphics.drawLine(centroid.x, centroid.y, mouse.x, mouse.y);
+            drawArrow(graphics, centroid.x, centroid.y, MapUtils.viewToMapX(mouse.x, getWidth()), MapUtils.viewToMapY(mouse.y, getHeight()), 20, 50);
+        }
     }
 
     private void drawArrow(Graphics g, int x0, int y0, int x1,
