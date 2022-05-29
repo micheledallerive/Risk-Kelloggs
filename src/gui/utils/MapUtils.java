@@ -1,10 +1,21 @@
 package gui.utils;
 
+import gui.EventCallback;
+import gui.components.QuantityDialog;
+import gui.views.MapPanel;
+import model.Game;
+import model.Player;
+import model.Territory;
+
+import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.Scanner;
+import java.util.function.Function;
 import java.util.regex.PatternSyntaxException;
 
 /**
@@ -117,6 +128,88 @@ public class MapUtils {
         cx /= (6 * area);
         cy /= (6 * area);
         return new Point((int) cx, (int) cy);
+    }
+
+    public static EventCallback setupCallback(Game game,
+                                              Function<Void, Void> nextTurn,
+                                              JFrame parent) {
+        return (id, args) -> {
+
+            int clickX = (int) args[0];
+            int clickY = (int) args[1];
+
+            Territory territory = game.getBoard().getTerritories().get(id);
+            Player player = game.getPlayers().get(game.getTurn());
+
+            if (id == -1
+                    || game.getPlayers().get(game.getTurn()).isAI()
+                    || player.getFreeArmies().isEmpty()) {
+                nextTurn.apply(null);
+                return;
+            }
+
+            boolean everythingOccupied = game.getBoard().getTerritories().stream().noneMatch(t -> t.getOwner() == null);
+            if (territory.getOwner() != null) {
+                if (territory.getOwner() == player && !everythingOccupied) {
+                    PopupUtils.showPopup(parent, "You have to place armies on free territories!", clickX, clickY);
+                    return;
+                }
+                if (territory.getOwner() != player) {
+                    PopupUtils.showPopup(parent, "You can't place armies on enemy territories!", clickX, clickY);
+                    return;
+                }
+            }
+            if (everythingOccupied) {
+                QuantityDialog quantityDialog = new QuantityDialog(parent, 1, player.getFreeArmies().size());
+                quantityDialog.addWindowListener(new WindowAdapter() {
+                    @Override
+                    public void windowClosed(WindowEvent e) {
+                        super.windowClosed(e);
+                        int quantity = quantityDialog.getSelectedQuantity();
+                        if (quantity > 0) {
+                            player.placeArmies(territory, quantity);
+                            nextTurn.apply(null);
+                        }
+                    }
+                });
+                quantityDialog.pack();
+                quantityDialog.setLocationRelativeTo(null);
+                quantityDialog.setVisible(true);
+            } else {
+                player.placeArmies(territory, 1);
+                nextTurn.apply(null);
+            }
+        };
+    }
+
+    // DONT FIX STILL EDITING
+    public static EventCallback playingCallback(Game game,
+                                                Function<Void, Void> nextTurn,
+                                                MapPanel map,
+                                                JFrame parent,
+                                                int time) {
+        return (id, args) -> {
+            int clickX = (int) args[0];
+            int clickY = (int) args[1];
+            Territory territory = game.getBoard().getTerritories().get(id);
+            Player player = game.getPlayers().get(game.getTurn());
+            // im choosing which territory attack _from_
+            if (map.getAttackingFrom() == null) {
+                if (territory.getOwner() != player) {
+                    PopupUtils.showPopup(parent, "You can't attack from enemy territories!", clickX, clickY);
+                    return;
+                }
+                if (territory.getArmiesCount() < 2) {
+                    PopupUtils.showPopup(parent, "You can't attack with less than 2 armies!", clickX, clickY);
+                }
+                map.setAttackingFrom(territory);
+            } else {
+                // im choosing which territory attack _to_
+                if (territory.getOwner() == player) {
+                    PopupUtils.showPopup(parent, "You can't attack your own territories!", clickX, clickY);
+                }
+            }
+        };
     }
     //endregion
 }
