@@ -1,15 +1,21 @@
 package test;
 
-import model.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
+import model.Army;
+import model.Card;
+import model.Game;
+import model.Player;
+import model.Territory;
 import model.enums.ArmyColor;
-
-import static org.junit.Assert.*;
-
 import model.enums.ArmyType;
 import model.enums.CardType;
-import org.junit.Test;
 
 import java.util.ArrayList;
+
+import org.junit.Test;
 
 /**
  * This class tests the functionality of the class Player
@@ -18,7 +24,7 @@ public class PlayerTest {
 
     @Test
     public void testConstructor() {
-        Player player1  = new Player(ArmyColor.BLACK, "bob");
+        Player player1 = new Player(ArmyColor.BLACK, "bob");
         assertEquals(player1.getArmies().size(), 0);
         //assertEquals(player2.getTerritories().size(), 0);
         assertEquals(0, player1.getCards().size());
@@ -75,14 +81,14 @@ public class PlayerTest {
         assertEquals(4, armiesGained);
 
         // test all the combinations
-        assertEquals(12, player.playCardsCombination(new Card[]{ // 10 + 2
-                new Card(CardType.ARTILLERY, game.getBoard().getTerritories().get(0).getName()),
-                new Card(CardType.INFANTRY, null),
-                new Card(CardType.CAVALRY, null)}));
-        assertEquals(14, player.playCardsCombination(new Card[]{
-                new Card(CardType.ARTILLERY, game.getBoard().getTerritories().get(0).getName()),
-                new Card(CardType.INFANTRY, game.getBoard().getTerritories().get(0).getName()),
-                new Card(CardType.WILD, null)}));
+        assertEquals(12, player.playCardsCombination(new Card[] { // 10 + 2
+            new Card(CardType.ARTILLERY, game.getBoard().getTerritories().get(0).getName()),
+            new Card(CardType.INFANTRY, null),
+            new Card(CardType.CAVALRY, null)}));
+        assertEquals(14, player.playCardsCombination(new Card[] {
+            new Card(CardType.ARTILLERY, game.getBoard().getTerritories().get(0).getName()),
+            new Card(CardType.INFANTRY, game.getBoard().getTerritories().get(0).getName()),
+            new Card(CardType.WILD, null)}));
 
         game.giveArmiesToPlayer(player, armiesGained);
     }
@@ -130,7 +136,7 @@ public class PlayerTest {
         assertEquals(5, territory.getArmiesCount());
         assertEquals(bob, territory.getOwner());
         assertEquals(bob.getArmies().size() - 5,
-                bob.getFreeArmies().size());
+            bob.getFreeArmies().size());
 
         bob.placeArmies(territory, bob.getFreeArmies().size());
         assertEquals(0, bob.getFreeArmies().size());
@@ -166,10 +172,10 @@ public class PlayerTest {
         assertEquals(bob, territory.getOwner());
 
         assertEquals(bob.getArmies().size() - 4,
-                bob.getFreeArmies().size());
+            bob.getFreeArmies().size());
         int oldArmiesSize = bob.getArmies().size();
         int oldFreeArmiesSize = bob.getFreeArmies().size();
-        bob.addArmy(new Army(ArmyType.INFANTRY, bob.getColor(),null));
+        bob.addArmy(new Army(ArmyType.INFANTRY, bob.getColor(), null));
         assertEquals(bob.getFreeArmies().size(), oldFreeArmiesSize + 1);
         assertEquals(bob.getArmies().size(), oldArmiesSize + 1);
     }
@@ -194,7 +200,7 @@ public class PlayerTest {
 
         bob.placeArmies(territory, 10);
         bob.placeArmies(other, 10);
-        bob.moveArmies((byte)5, territory, other);
+        bob.moveArmies((byte) 5, territory, other);
         assertEquals(5, territory.getArmiesCount());
         assertEquals(15, other.getArmiesCount());
         bob.removeArmy(territory.getArmies().get(0));
@@ -208,9 +214,9 @@ public class PlayerTest {
     public void testGeneratePlayersRandomly() {
         Game game = new Game();
         ArrayList<Player> players =
-                Player.generatePlayersRandomly(
-                        (byte) 6, (byte) 1,
-                        new String[] {"test"});
+            Player.generatePlayersRandomly(
+                (byte) 6, (byte) 1,
+                new String[] {"test"});
         for (Player player : players) {
             game.addPlayer(player);
         }
@@ -219,9 +225,9 @@ public class PlayerTest {
 
         game = new Game();
         ArrayList<Player> players1 =
-                Player.generatePlayersRandomly(
-                        (byte) 6, (byte) 0,
-                        new String[] {"test"});
+            Player.generatePlayersRandomly(
+                (byte) 6, (byte) 0,
+                new String[] {"test"});
         for (Player player : players1) {
             game.addPlayer(player);
         }
@@ -230,7 +236,7 @@ public class PlayerTest {
 
         game = new Game();
         ArrayList<Player> players2 =
-                Player.generatePlayersRandomly((byte) 6);
+            Player.generatePlayersRandomly((byte) 6);
         for (Player player : players2) {
             game.addPlayer(player);
         }
@@ -253,7 +259,7 @@ public class PlayerTest {
 
         game.initArmies();
 
-        for(Territory t : game.getBoard().getContinents().get(0).getTerritories()) {
+        for (Territory t : game.getBoard().getContinents().get(0).getTerritories()) {
             t.setOwner(p1);
         }
         assertEquals(1, p1.getContinents(game).size());

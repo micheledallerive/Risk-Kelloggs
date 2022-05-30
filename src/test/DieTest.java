@@ -1,14 +1,15 @@
 package test;
 
+import static org.junit.Assert.assertEquals;
+
 import model.Die;
-
-import static org.junit.Assert.*;
-
 import model.enums.DieColor;
+
 import org.junit.Test;
 
 /**
  * This class tests the functionality of the class Dice
+ *
  * @author moralj@usi.ch
  */
 public class DieTest {

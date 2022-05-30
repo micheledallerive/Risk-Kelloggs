@@ -2,6 +2,7 @@ package model.enums;
 
 /**
  * The GameStatus describes the current state of the game.
+ *
  * @author dallem@usi.ch
  */
 public enum GameStatus {

@@ -6,6 +6,7 @@ import java.util.Scanner;
 
 /**
  * Abstract class for the Command Pattern.
+ *
  * @author dallem@usi.ch
  */
 public abstract class Command {
@@ -16,9 +17,10 @@ public abstract class Command {
 
     /**
      * Default constructor.
-     * @param name the name of the command
-     * @param game the game instance
-     * @param input the input scanner
+     *
+     * @param name     the name of the command
+     * @param game     the game instance
+     * @param input    the input scanner
      * @param numInput the number input scanner
      */
     public Command(String name, Game game, Scanner input, Scanner numInput) {
@@ -30,6 +32,7 @@ public abstract class Command {
 
     /**
      * Get the name of the command.
+     *
      * @return the name of the command
      */
     public String getName() {
@@ -38,6 +41,7 @@ public abstract class Command {
 
     /**
      * Execute the command.
+     *
      * @return the result of the command
      */
     public abstract boolean execute();

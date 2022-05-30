@@ -9,7 +9,7 @@ import java.util.Map;
 
 /**
  * Class specialized to provide the game font.
- * 
+ *
  * @author dallem@usi.ch, moralj@usi.ch
  */
 public class FontUtils {
@@ -28,6 +28,7 @@ public class FontUtils {
     }
 
     // region METHODS
+
     /**
      * Procedure - Initialization of Font.
      */
@@ -35,7 +36,7 @@ public class FontUtils {
         try {
             font = Font.createFont(Font.TRUETYPE_FONT, new File(PATH)).deriveFont(Font.PLAIN, SIZE);
         } catch (final IllegalArgumentException | IOException
-                | FontFormatException | SecurityException ex) {
+                       | FontFormatException | SecurityException ex) {
             System.out.println("Error loading font - default applied (Arial, 14pt).");
             ex.printStackTrace();
             font = new Font(DEFAULT, Font.PLAIN, SIZE);
@@ -44,7 +45,7 @@ public class FontUtils {
 
     /**
      * getter of font field.
-     * 
+     *
      * @return font field object.
      */
     public static Font getFont() {
@@ -53,7 +54,7 @@ public class FontUtils {
 
     /**
      * Function - add the spacing in the font.
-     * 
+     *
      * @param font    object Font to add spacing to.
      * @param spacing float number specifying the spacing.
      * @return Font object with spacing.

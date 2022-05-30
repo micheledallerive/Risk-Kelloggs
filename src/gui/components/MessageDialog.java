@@ -1,13 +1,17 @@
 package gui.components;
 
-import javax.swing.*;
-import java.awt.*;
-import java.util.ArrayList;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
 
 public class MessageDialog extends BaseDialog {
 
     public MessageDialog(JFrame parent, String message) {
-        this(parent, new String[]{message}, "", 20f, "OK");
+        this(parent, new String[] {message}, "", 20f, "OK");
     }
 
     public MessageDialog(JFrame parent, String[] messages) {

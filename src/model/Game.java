@@ -6,7 +6,6 @@ import model.enums.ArmyType;
 import model.enums.CardType;
 import model.enums.GameStatus;
 
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
@@ -16,6 +15,7 @@ import java.util.HashMap;
 
 /**
  * Represents the game itself.
+ *
  * @author dallem@usi.ch, moralj@usi.ch
  */
 public class Game implements Serializable {
@@ -50,6 +50,7 @@ public class Game implements Serializable {
 
     /**
      * Create a new game.
+     *
      * @param players The players of the game.
      */
     public Game(final ArrayList<Player> players) {
@@ -73,10 +74,12 @@ public class Game implements Serializable {
     //endregion
 
     //region GETTERS AND SETTERS
+
     /**
      * Add back an army to the all armies map.
+     *
      * @param color The color of the army.
-     * @param army The army to add.
+     * @param army  The army to add.
      */
     public void addArmy(ArmyColor color, Army army) {
         ArrayList<Army> armies = this.allArmies.get(color);
@@ -85,6 +88,7 @@ public class Game implements Serializable {
 
     /**
      * Returns the list of players of the game.
+     *
      * @return the list of players of the game.
      */
     public ArrayList<Player> getPlayers() {
@@ -93,6 +97,7 @@ public class Game implements Serializable {
 
     /**
      * Adds a player to the list of players.
+     *
      * @param player the player to add
      */
     public void addPlayer(Player player) {
@@ -101,6 +106,7 @@ public class Game implements Serializable {
 
     /**
      * Returns the board of the current game.
+     *
      * @return the board of the game.
      */
     public Board getBoard() {
@@ -109,6 +115,7 @@ public class Game implements Serializable {
 
     /**
      * Returns the current state of the game.
+     *
      * @return the GameStatus
      */
     public GameStatus getStatus() {
@@ -117,6 +124,7 @@ public class Game implements Serializable {
 
     /**
      * Sets the current state of the game.
+     *
      * @param status the new status of the game
      */
     public void setStatus(GameStatus status) {
@@ -126,6 +134,7 @@ public class Game implements Serializable {
 
     /**
      * Returns the player that starts the game.
+     *
      * @return the player that starts the game.
      */
     public Player getPlayerStarting() {
@@ -134,6 +143,7 @@ public class Game implements Serializable {
 
     /**
      * Sets the player that starts the game.
+     *
      * @param player the player that starts the game.
      */
     public void setPlayerStarting(final Player player) {
@@ -142,6 +152,7 @@ public class Game implements Serializable {
 
     /**
      * Returns the current number of turns each player played.
+     *
      * @return the current number of turns each player played.
      */
     public int getTurnsPlayed() {
@@ -150,6 +161,7 @@ public class Game implements Serializable {
 
     /**
      * Sets the current number of turns each player played.
+     *
      * @param turnsPlayed the number of turns each player played.
      */
     public void setTurnsPlayed(int turnsPlayed) {
@@ -158,6 +170,7 @@ public class Game implements Serializable {
 
     /**
      * Returns the current turn.
+     *
      * @return the current turn
      */
     public final int getTurn() {
@@ -166,6 +179,7 @@ public class Game implements Serializable {
 
     /**
      * Sets the current turn.
+     *
      * @param turn the turn to set as the current one.
      */
     public final void setTurn(int turn) {
@@ -191,6 +205,7 @@ public class Game implements Serializable {
     //endregion
 
     //region METHODS
+
     /**
      * Save game object into file.
      */
@@ -245,8 +260,9 @@ public class Game implements Serializable {
 
     /**
      * Moves the chosen amount of armies from the total armies to the armies owned by the player.
+     *
      * @param player the player to give armies to
-     * @param num the amount of armies
+     * @param num    the amount of armies
      */
     public void giveArmiesToPlayer(Player player, int num) {
         player.getArmies().addAll(this.allArmies.get(player.getColor()).subList(0, num));
@@ -255,6 +271,7 @@ public class Game implements Serializable {
 
     /**
      * Get a random card from the deck and remove it.
+     *
      * @return the card that was randomly picked.
      */
     public Card getRandomCard() {
@@ -270,7 +287,8 @@ public class Game implements Serializable {
     /**
      * Gives the turn bonus to the player and returns the value of armies gained
      * divided by reason (for UI purposes).
-     * @param player the player to give the bonus to
+     *
+     * @param player                the player to give the bonus to
      * @param indexCardsCombination cards combination the player wants to play (-1 to not play)
      * @return Integer array representing bonus
      */
@@ -288,7 +306,7 @@ public class Game implements Serializable {
         for (Continent continent : this.getBoard().getContinents()) {
             //System.out.println(continent.getName().toString());
             if (continent.getOwner() != null
-                    && continent.getOwner().getColor() == player.getColor()) {
+                && continent.getOwner().getColor() == player.getColor()) {
                 bonus[1] += continent.getValue();
             }
         }
@@ -296,7 +314,7 @@ public class Game implements Serializable {
         if (indexCardsCombination != -1) {
             // cards bonus
             int combinationArmies = player.playCardsCombination(
-                    player.getCardCombinations().get(indexCardsCombination)
+                player.getCardCombinations().get(indexCardsCombination)
             );
             bonus[2] = combinationArmies;
         }
@@ -309,12 +327,13 @@ public class Game implements Serializable {
 
     /**
      * Initializes randomly created players.
+     *
      * @param total the total number of players
      * @param users the number of actual players (not AIs)
      * @param names the names of the players
      */
     public void initializePlayers(int total, int users, String[] names) {
-        ArrayList<Player> toAddPlayers = Player.generatePlayersRandomly((byte)total, (byte)users, names);
+        ArrayList<Player> toAddPlayers = Player.generatePlayersRandomly((byte) total, (byte) users, names);
         this.players.addAll(toAddPlayers);
     }
 
@@ -338,6 +357,7 @@ public class Game implements Serializable {
 
     /**
      * Checks if the whole world has been conquered by only one person.
+     *
      * @return true if the whole world is owned by a single person.
      */
     public boolean isWorldConquered() {
@@ -352,6 +372,7 @@ public class Game implements Serializable {
 
     /**
      * Starts the game handling the different states.
+     *
      * @param callback The event to call with respect to game status.
      */
     public void play(GameCallback callback) {
@@ -383,8 +404,10 @@ public class Game implements Serializable {
     //endregion
 
     //region EVENTS
+
     /**
      * Procedure - add status listener to its listeners arraylist.
+     *
      * @param sl StatusListener interface implemented.
      */
     public void addListener(final StatusListener sl) {
@@ -393,6 +416,7 @@ public class Game implements Serializable {
 
     /**
      * Procedure - add turn listener.
+     *
      * @param tl TurnListener interface implemented.
      */
     public void addListener(final TurnListener tl) {

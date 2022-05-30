@@ -4,10 +4,15 @@ import gui.EventCallback;
 import model.Game;
 import model.TurnListener;
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 
 /**
  * Displays the players in the game.
@@ -49,7 +54,7 @@ public class PlayersDisplayer extends TransparentPanel {
 
             constraints.gridx++;
             constraints.anchor = GridBagConstraints.WEST;
-            constraints.insets = new Insets(0,0,0,20);
+            constraints.insets = new Insets(0, 0, 0, 20);
             JLabel pointerIcon = new JLabel(new ImageIcon("src/gui/assets/images/pointer.png"));
             pointerIcon.setPreferredSize(new Dimension(30, 30));
             pointerIcon.setVisible(false);

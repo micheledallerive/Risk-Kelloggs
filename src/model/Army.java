@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 /**
  * Describes a single piece of army, using its type (i.e. the shape) and the color.
+ *
  * @author dallem@usi.ch, moralj@usi.ch
  */
 public class Army {
@@ -21,6 +22,7 @@ public class Army {
     //endregion
 
     //region CONSTRUCTORS
+
     /**
      * Creates a new default army piece (black infantry piece).
      */
@@ -30,8 +32,9 @@ public class Army {
 
     /**
      * Creates a new army piece.
-     * @param type The type of the army piece
-     * @param color The color of the army piece
+     *
+     * @param type      The type of the army piece
+     * @param color     The color of the army piece
      * @param territory The territory of the army
      */
     public Army(final ArmyType type, final ArmyColor color, final Territory territory) {
@@ -42,8 +45,10 @@ public class Army {
     //endregion
 
     //region GETTERS AND SETTERS
+
     /**
      * Returns the cumulative value of an array of armies.
+     *
      * @param armies the array of armies
      * @return the cumulative value
      */
@@ -57,6 +62,7 @@ public class Army {
 
     /**
      * Returns the type of the army.
+     *
      * @return The type of the army.
      */
     public ArmyType getType() {
@@ -65,6 +71,7 @@ public class Army {
 
     /**
      * Returns the color of the army.
+     *
      * @return The color of the army.
      */
     public ArmyColor getColor() {
@@ -73,6 +80,7 @@ public class Army {
 
     /**
      * Returns the territory the army is placed on.
+     *
      * @return The territory of the army
      */
     public Territory getTerritory() {
@@ -81,6 +89,7 @@ public class Army {
 
     /**
      * Sets the territory of the army.
+     *
      * @param territory The territory of the army
      */
     public void setTerritory(Territory territory) {
@@ -89,11 +98,13 @@ public class Army {
     //endregion
 
     //region METHODS
+
     /**
      * Returns the value of the army in "Infantry units".
      * Type Infantry -> Value 1
      * Type Cavalry -> Value 5
      * Type Artillery -> Value 10
+     *
      * @return the value of the type of army
      */
     public int calculateValue() {
@@ -111,17 +122,18 @@ public class Army {
 
     /**
      * Function - string representation of the object.
+     *
      * @return String representation
      */
     @Override
     public String toString() {
         String territoryString =
-                this.territory != null
-                        ? this.territory.getName().toString()
-                        : "no territory";
+            this.territory != null
+                ? this.territory.getName().toString()
+                : "no territory";
         return "Army: Type= " + this.type.toString()
-                + "\tColor= " + this.color.toString()
-                + "\tTerritory= " + territoryString;
+            + "\tColor= " + this.color.toString()
+            + "\tTerritory= " + territoryString;
     }
     //endregion
 }

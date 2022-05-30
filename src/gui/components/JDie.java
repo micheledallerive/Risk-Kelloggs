@@ -14,6 +14,7 @@ import javax.swing.Timer;
 
 /**
  * Class Die graphical representation.
+ *
  * @author dallem@usi.ch, moralj@usi.ch
  */
 public class JDie extends JComponent {
@@ -52,6 +53,7 @@ public class JDie extends JComponent {
 
     /**
      * Constructor - full optional.
+     *
      * @param frameDuration Duration in milliseconds of Timer.
      * @param totalDuration Total amount of milliseconds to roll.
      */
@@ -83,13 +85,14 @@ public class JDie extends JComponent {
             images.put(color, new ImageIcon[FACES]);
             for (int i = 0; i < FACES; i++) {
                 images.get(color)[i] = new ImageIcon(
-                        PATH + color.toString() + "/" + (i + 1) + EXT);
+                    PATH + color.toString() + "/" + (i + 1) + EXT);
             }
         }
     }
 
     /**
      * getter of int value of face represented.
+     *
      * @return integer value.
      */
     public int getValue() {
@@ -107,6 +110,7 @@ public class JDie extends JComponent {
 
     /**
      * Procedure - add callback.
+     *
      * @param callback Interface implemented.
      */
     public void addCallback(EventCallback callback) {
@@ -124,7 +128,8 @@ public class JDie extends JComponent {
         }
     }
 
-    @Override public void paintComponent(Graphics graphics) {
+    @Override
+    public void paintComponent(Graphics graphics) {
         super.paintComponent(graphics);
         // for some reason the paintComponent is called even in dice that are not rolling
         // to avoid this i check if it is rolling, only in that case I show a random number.

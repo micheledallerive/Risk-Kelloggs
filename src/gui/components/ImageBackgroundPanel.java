@@ -2,14 +2,18 @@ package gui.components;
 
 import gui.utils.ImageUtils;
 
-import java.awt.*;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import javax.swing.ImageIcon;
 
 /**
  * Class for panel with background image.
+ *
  * @author dallem@usi.ch
  */
 public class ImageBackgroundPanel extends TransparentPanel {
@@ -30,6 +34,7 @@ public class ImageBackgroundPanel extends TransparentPanel {
 
     /**
      * Constructor.
+     *
      * @param image Image object of panel background.
      */
     public ImageBackgroundPanel(final Image image) {
@@ -38,6 +43,7 @@ public class ImageBackgroundPanel extends TransparentPanel {
 
     /**
      * Constructor.
+     *
      * @param path String of image path.
      */
     public ImageBackgroundPanel(final String path) {
@@ -46,7 +52,8 @@ public class ImageBackgroundPanel extends TransparentPanel {
 
     /**
      * Constructor.
-     * @param path String of image path.
+     *
+     * @param path       String of image path.
      * @param brightness Double number of brightness value.
      */
     public ImageBackgroundPanel(final String path, final float brightness) {
@@ -72,6 +79,7 @@ public class ImageBackgroundPanel extends TransparentPanel {
 
     /**
      * setter of brightness field.
+     *
      * @param brightness New float value for brightness.
      */
     public void setBrightness(final float brightness) {
@@ -86,9 +94,9 @@ public class ImageBackgroundPanel extends TransparentPanel {
     public void setRoundedCorners(final int radius) {
         if (dimension != null && dimension.width > 0 && dimension.height > 0) {
             this.roundedImage = ImageUtils.scale(
-                    ImageUtils.imageToBufferedImage(this.image),
-                    BufferedImage.TYPE_INT_ARGB,
-                    dimension.width, dimension.height);
+                ImageUtils.imageToBufferedImage(this.image),
+                BufferedImage.TYPE_INT_ARGB,
+                dimension.width, dimension.height);
         } else {
             this.roundedImage = image;
         }
@@ -116,7 +124,7 @@ public class ImageBackgroundPanel extends TransparentPanel {
 
         Graphics2D graphics = (Graphics2D) gr;
         graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-                RenderingHints.VALUE_ANTIALIAS_ON);
+            RenderingHints.VALUE_ANTIALIAS_ON);
         Image toDraw = roundedImage != null ? roundedImage : image;
         graphics.drawImage(toDraw, 0, 0, getWidth(), getHeight(), this);
 

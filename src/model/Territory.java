@@ -1,13 +1,10 @@
 package model;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Scanner;
 
 /**
  * Describes a Territory in the Risk map.
+ *
  * @author dallem@usi.ch, moralj@usi.ch
  */
 public class Territory {
@@ -21,8 +18,10 @@ public class Territory {
     //endregion
 
     //region CONSTRUCTORS
+
     /**
      * Creates a new territory and initializes it.
+     *
      * @param name the name of the territory
      */
     public Territory(final String name) {
@@ -32,8 +31,10 @@ public class Territory {
     //endregion
 
     //region GETTERS AND SETTERS
+
     /**
      * Returns the player that owns the territory.
+     *
      * @return the player that owns the territory
      */
     public final Player getOwner() {
@@ -42,6 +43,7 @@ public class Territory {
 
     /**
      * Returns the name of the territory.
+     *
      * @return the territory name.
      */
     public final String getName() {
@@ -50,6 +52,7 @@ public class Territory {
 
     /**
      * Sets the owner of the territory.
+     *
      * @param newOwner the player that owns the territory
      */
     public final void setOwner(final Player newOwner) {
@@ -58,8 +61,10 @@ public class Territory {
     //endregion
 
     //region METHODS
+
     /**
      * Checks if the current territory is occupied by a player.
+     *
      * @return returns true if some player owns the territory
      */
     public boolean isOccupied() {
@@ -68,6 +73,7 @@ public class Territory {
 
     /**
      * Returns the armies that are placed in the territory.
+     *
      * @return the armies placed in the territory.
      */
     public ArrayList<Army> getArmies() {
@@ -85,6 +91,7 @@ public class Territory {
 
     /**
      * Returns the number of armies in the territory.
+     *
      * @return the number of armies in this territory
      */
     public int getArmiesCount() {

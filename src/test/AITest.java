@@ -1,14 +1,16 @@
 package test;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 import model.AI;
 import model.Game;
 import model.Player;
 import model.Territory;
 import model.callback.Callback;
 import model.enums.ArmyColor;
-import org.junit.Test;
 
-import static org.junit.Assert.*;
+import org.junit.Test;
 
 public class AITest {
 
@@ -43,7 +45,7 @@ public class AITest {
         player.placeArmies(game.getBoard().getTerritories().get(game.getBoard().getAdjacency().get(0).get(0)), 10);
 
         // foreach territory adjacent to the first territory in list
-        for (final int index : game.getBoard().getAdjacency().get(0)){
+        for (final int index : game.getBoard().getAdjacency().get(0)) {
             Territory territory = game.getBoard().getTerritories().get(index);
             if (territory.getOwner() == null) {
                 red.placeArmies(territory, 2);
@@ -51,20 +53,23 @@ public class AITest {
             }
         }
 
-        final boolean[] playerAttacked = { false };
-        while(!playerAttacked[0] && game.getBoard().getTerritories().get(0).getOwner() == blue) {
+        final boolean[] playerAttacked = {false};
+        while (!playerAttacked[0] && game.getBoard().getTerritories().get(0).getOwner() == blue) {
             blue.attack(game.getBoard(), new Callback() {
                 @Override
-                public void onPlayerAttacked(Player attacker, Player attacked, Territory fromTerritory, Territory attackedTerritory) {
+                public void onPlayerAttacked(Player attacker, Player attacked, Territory fromTerritory,
+                                             Territory attackedTerritory) {
                     assertEquals(attacker, blue);
                     assertEquals(attacked, player);
                     assertEquals(fromTerritory.getOwner(), blue);
                     assertEquals(attackedTerritory.getOwner(), player);
                     playerAttacked[0] = true;
                 }
+
                 @Override
-                public void onAIAttacked(Player attacker, Player attacked, Territory fromTerritory, Territory attackedTerritory) {
-                    if (fromTerritory.getOwner()!=blue || attackedTerritory.getOwner() == null) {
+                public void onAIAttacked(Player attacker, Player attacked, Territory fromTerritory,
+                                         Territory attackedTerritory) {
+                    if (fromTerritory.getOwner() != blue || attackedTerritory.getOwner() == null) {
                         return;
                     }
                     assertEquals(attacker, blue);
@@ -95,7 +100,7 @@ public class AITest {
         assertEquals(1, blue.getArmies().size() - blue.getFreeArmies().size());
         assertEquals(1, blue.getTerritories().size());
 
-        for (Territory territory : game.getBoard().getTerritories()){
+        for (Territory territory : game.getBoard().getTerritories()) {
             if (territory.getOwner() == null) {
                 red.placeArmies(territory, 1);
             }

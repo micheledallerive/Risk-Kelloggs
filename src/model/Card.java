@@ -4,6 +4,7 @@ import model.enums.CardType;
 
 /**
  * Describes a card with territory and figure.
+ *
  * @author dallem@usi.ch
  */
 public class Card {
@@ -13,10 +14,12 @@ public class Card {
     //endregion
 
     //region CONSTRUCTOR
+
     /**
      * Create a new card.
-     * @param type The type of the card that is represented
-     *             in the bottom (infantry, cavalry, artillery, wild).
+     *
+     * @param type      The type of the card that is represented
+     *                  in the bottom (infantry, cavalry, artillery, wild).
      * @param territory The territory represented in the top of the card.
      */
     public Card(final CardType type, final String territory) {
@@ -26,8 +29,10 @@ public class Card {
     //endregion
 
     //region GETTERS AND SETTERS
+
     /**
      * Returns the type of the card.
+     *
      * @return The type of the card
      */
     public CardType getType() {
@@ -36,6 +41,7 @@ public class Card {
 
     /**
      * Returns the territory of the card.
+     *
      * @return The territory of the card.
      */
     public String getTerritory() {
@@ -47,6 +53,7 @@ public class Card {
 
     /**
      * Checks if the trio of cards is a valid trio to get a bonus.
+     *
      * @param c1 the first card
      * @param c2 the second card
      * @param c3 the third card
@@ -58,6 +65,7 @@ public class Card {
 
     /**
      * Returns what type of trio it is.
+     *
      * @param cards the trio of cards
      * @return the type of the trio: 1 if same type, 2 if different, 3 if wild
      */
@@ -72,6 +80,7 @@ public class Card {
 
     /**
      * Checks if the three cards have the same type.
+     *
      * @param c1 the first card
      * @param c2 the second card
      * @param c3 the third card
@@ -83,6 +92,7 @@ public class Card {
 
     /**
      * Checks if the three cards have different type.
+     *
      * @param c1 the first card
      * @param c2 the second card
      * @param c3 the third card
@@ -90,13 +100,14 @@ public class Card {
      */
     private static boolean differentTypes(final Card c1, final Card c2, final Card c3) {
         return c1.type != c2.type
-                && c1.type != c3.type
-                && c2.type != c3.type
-                && !wildTrio(c1, c2, c3);
+            && c1.type != c3.type
+            && c2.type != c3.type
+            && !wildTrio(c1, c2, c3);
     }
 
     /**
      * Checks if the trio of cards is a valid trio containing a wild card.
+     *
      * @param c1 the first card
      * @param c2 the second card
      * @param c3 the third card
@@ -114,6 +125,7 @@ public class Card {
 
     /**
      * Returns the value of the card combination.
+     *
      * @param cards the trio of cards
      * @return the value of the card combination
      */
@@ -131,15 +143,16 @@ public class Card {
 
     /**
      * Function - gives representation of the card as String.
+     *
      * @return The String with card data info.
      */
     @Override
     public String toString() {
         return "Card: ("
-                + this.getType().name()
-                + " - "
-                + this.getTerritory()
-                + ")";
+            + this.getType().name()
+            + " - "
+            + this.getTerritory()
+            + ")";
     }
     //endregion
 }

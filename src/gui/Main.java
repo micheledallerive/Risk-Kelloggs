@@ -7,16 +7,20 @@ import gui.views.MainWindow;
 import model.Game;
 
 import java.util.Enumeration;
-import javax.swing.*;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.plaf.FontUIResource;
 
 /**
  * Main class starting the GUI game.
+ *
  * @author moralj@usi.ch, dallem@usi.ch
  */
 public class Main {
     /**
      * Procedure - set the global font of the game.
+     *
      * @param fontUIResource FontUIResource object.
      */
     public static void setUIFont(final FontUIResource fontUIResource) {
@@ -48,10 +52,10 @@ public class Main {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (final UnsupportedLookAndFeelException
-                | IllegalAccessException
-                | InstantiationException
-                | ClassNotFoundException
-                | ClassCastException ex) {
+                       | IllegalAccessException
+                       | InstantiationException
+                       | ClassNotFoundException
+                       | ClassCastException ex) {
             ex.printStackTrace();
         }
         /* Turn off metal's use of bold fonts */
@@ -69,6 +73,7 @@ public class Main {
 
     /**
      * Procedure - Main method.
+     *
      * @param args Optional arguments.
      */
     public static void main(String[] args) {

@@ -7,6 +7,7 @@ import java.util.Scanner;
 
 /**
  * Describes the board of the game containing the map of the world.
+ *
  * @author moralj@usi.ch, dallem@usi.ch
  */
 public class Board {
@@ -22,6 +23,7 @@ public class Board {
     //endregion
 
     //region CONSTRUCTOR
+
     /**
      * Constructor.
      */
@@ -35,8 +37,10 @@ public class Board {
     //endregion
 
     //region GETTERS AND SETTERS
+
     /**
      * Getter of territories field.
+     *
      * @return ArrayList of territories.
      */
     public ArrayList<Territory> getTerritories() {
@@ -45,6 +49,7 @@ public class Board {
 
     /**
      * Getter of continents field.
+     *
      * @return ArrayList of continents.
      */
     public ArrayList<Continent> getContinents() {
@@ -53,6 +58,7 @@ public class Board {
 
     /**
      * Getter of index of given territory name.
+     *
      * @param name String name of the territory.
      * @return index int of the position of the territory in territories field.
      */
@@ -62,6 +68,7 @@ public class Board {
 
     /**
      * Getter of the adjacency field.
+     *
      * @return adjacency list.
      */
     public ArrayList<ArrayList<Integer>> getAdjacency() {
@@ -70,6 +77,7 @@ public class Board {
 
     /**
      * Getters of the adjacent field.
+     *
      * @param territory object territory.
      * @return arraylist of adjacent territory to the given one.
      */
@@ -83,6 +91,7 @@ public class Board {
     //endregion
 
     //region METHODS
+
     /**
      * Procedure - initialize contients and territories, setting adjacency list.
      */

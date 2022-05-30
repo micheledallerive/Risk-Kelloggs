@@ -1,6 +1,16 @@
 package test;
 
-import model.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
+import model.Card;
+import model.Continent;
+import model.Game;
+import model.Player;
+import model.Territory;
 import model.callback.GameCallback;
 import model.enums.ArmyColor;
 import model.enums.CardType;
@@ -8,9 +18,6 @@ import model.enums.GameStatus;
 
 import java.util.ArrayList;
 
-import static org.junit.Assert.*;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -68,8 +75,8 @@ public class GameTest {
 
         int[] p1Bonus = game.giveBonus(p1, -1);
         assertEquals(
-                game.getBoard().getContinents().get(1).getTerritories().size() / 3,
-                p1Bonus[0]);
+            game.getBoard().getContinents().get(1).getTerritories().size() / 3,
+            p1Bonus[0]);
 
         assertEquals(game.getBoard().getContinents().get(1).getValue(), p1Bonus[1]);
 
@@ -113,7 +120,7 @@ public class GameTest {
     @Test
     public void testPlay() {
         Game game = new Game();
-        int[] time = new int[]{0};
+        int[] time = new int[] {0};
         game.play(new GameCallback() {
             @Override
             public boolean onMainMenu() {
@@ -183,7 +190,6 @@ public class GameTest {
         game.nextStatus();
         assertEquals(game.getStatus(), GameStatus.PLAYING);
     }
-
 
 
 }

@@ -2,8 +2,17 @@ package gui.components;
 
 import gui.utils.FontUtils;
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerNumberModel;
+import javax.swing.SwingConstants;
 
 public class QuantityDialog extends BaseDialog {
 

@@ -1,14 +1,17 @@
 package test;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
 import model.Army;
 import model.Territory;
 import model.enums.ArmyColor;
 import model.enums.ArmyType;
-import org.junit.Test;
 
 import java.util.ArrayList;
 
-import static org.junit.Assert.*;
+import org.junit.Test;
 
 /**
  * This class tests the functionality of the class Army

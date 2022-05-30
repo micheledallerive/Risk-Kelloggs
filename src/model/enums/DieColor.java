@@ -2,6 +2,7 @@ package model.enums;
 
 /**
  * The color of the die.
+ *
  * @author moralj@usi.ch
  */
 public enum DieColor {

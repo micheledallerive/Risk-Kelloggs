@@ -1,15 +1,19 @@
 package test;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
 import model.Continent;
 import model.Game;
 import model.Player;
 import model.Territory;
 import model.enums.ArmyColor;
-import org.junit.Test;
 
 import java.util.ArrayList;
 
-import static org.junit.Assert.*;
+import org.junit.Test;
 
 /**
  * This class tests the functionality of the class Player
@@ -42,7 +46,7 @@ public class ContinentTest {
         assertEquals(5, asia.getValue());
 
         Player p1 = new Player(ArmyColor.BLUE, "bob");
-        for(Territory t : asiaTerritories) {
+        for (Territory t : asiaTerritories) {
             t.setOwner(p1);
         }
         asiaTerritories.get(0).setOwner(null);

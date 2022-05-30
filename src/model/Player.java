@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 
 /**
  * Describes each player of the game.
+ *
  * @author dallem@usi.ch
  */
 public class Player {
@@ -29,9 +30,11 @@ public class Player {
     //endregion
 
     //region CONSTRUCTOR
+
     /**
      * Creates a new player.
-     * @param color The color of the army of the player.
+     *
+     * @param color      The color of the army of the player.
      * @param playerName The name of the player.
      */
     public Player(final ArmyColor color, final String playerName) {
@@ -43,8 +46,10 @@ public class Player {
     //endregion
 
     //region GETTERS AND SETTERS
+
     /**
      * Give player's cards.
+     *
      * @return player's cards.
      */
     public ArrayList<Card> getCards() {
@@ -53,6 +58,7 @@ public class Player {
 
     /**
      * Add a card to the player cards.
+     *
      * @param card the card to add.
      */
     public void addCard(final Card card) {
@@ -61,6 +67,7 @@ public class Player {
 
     /**
      * Give player's army list.
+     *
      * @return player's armies.
      */
     public ArrayList<Army> getArmies() {
@@ -69,6 +76,7 @@ public class Player {
 
     /**
      * Add an army to the player's armies.
+     *
      * @param army The army to be added to the arraylist collections.
      */
     public void addArmy(final Army army) {
@@ -77,6 +85,7 @@ public class Player {
 
     /**
      * Remove an army from player's armies.
+     *
      * @param army The army to be removed from the arraylist collection.
      */
     public void removeArmy(final Army army) {
@@ -85,6 +94,7 @@ public class Player {
 
     /**
      * Give string representation of player's name.
+     *
      * @return Player name as String object
      */
     public String getName() {
@@ -93,6 +103,7 @@ public class Player {
 
     /**
      * Give player's color.
+     *
      * @return player's color.
      */
     public ArmyColor getColor() {
@@ -101,18 +112,21 @@ public class Player {
     //endregion
 
     //region METHODS
+
     /**
      * Creates a random list of players: one actual players and num-1 AIs.
+     *
      * @param num the number of players to create: 1 player, num-1 AIs.
      * @return returns the list of players
      */
     public static ArrayList<Player> generatePlayersRandomly(final byte num) {
-        return Player.generatePlayersRandomly(MAX_PLAYERS, (byte) 1, new String[] { "player" });
+        return Player.generatePlayersRandomly(MAX_PLAYERS, (byte) 1, new String[] {"player"});
     }
 
     /**
      * Creates a list of players.
-     * @param tot The number of total players: users + ias.
+     *
+     * @param tot   The number of total players: users + ias.
      * @param users The number of user players.
      * @param names The name of the users to be created.
      * @return Return the list of players
@@ -124,7 +138,7 @@ public class Player {
 
         ArmyColor color = null;
         byte index = 0;
-        for (;index < users; index++) {
+        for (; index < users; index++) {
             color = colors.get(index);
             players.add(new Player(color, names[index]));
         }
@@ -138,6 +152,7 @@ public class Player {
 
     /**
      * Give player's territories list.
+     *
      * @return player's territories.
      */
     public ArrayList<Territory> getTerritories() {
@@ -152,6 +167,7 @@ public class Player {
 
     /**
      * Return the list of continents owned by the player.
+     *
      * @param game The game object
      * @return The continents of the player.
      */
@@ -167,6 +183,7 @@ public class Player {
 
     /**
      * Return the list of the free armies of the player.
+     *
      * @return The player's free armies.
      */
     public List<Army> getFreeArmies() {
@@ -210,7 +227,7 @@ public class Player {
         ArrayList<DieColor> rollResult = Die.winner();
 
         final int defenderLost = (int) rollResult.stream()
-                .filter(dieColor -> dieColor == DieColor.RED).count();
+            .filter(dieColor -> dieColor == DieColor.RED).count();
         final int attackerLost = rollResult.size() - defenderLost;
 
         this.removeArmies(fromTerritory, attackerLost);
@@ -238,13 +255,14 @@ public class Player {
                                   int armies, int... defArmies) {
         ArrayList<DieColor> rollResult = getAttackDiceOutcome(fromTerritory, territory, armies, defArmies);
         final int defenderLost = (int) rollResult.stream()
-                .filter(dieColor -> dieColor == DieColor.RED).count();
+            .filter(dieColor -> dieColor == DieColor.RED).count();
         final int attackerLost = rollResult.size() - defenderLost;
-        return new int[]{attackerLost, defenderLost};
+        return new int[] {attackerLost, defenderLost};
     }
 
     /**
      * Return all the card combinations that the player could play.
+     *
      * @return A list of all the valid trio card combinations.
      */
     public ArrayList<Card[]> getCardCombinations() {
@@ -255,7 +273,7 @@ public class Player {
                     final Card c1 = this.cards.get(i);
                     final Card c2 = this.cards.get(j);
                     final Card c3 = this.cards.get(k);
-                    if (Card.validTrio(c1,c2,c3)) {
+                    if (Card.validTrio(c1, c2, c3)) {
                         validCombinations.add(new Card[] {c1, c2, c3});
                     }
                 }
@@ -266,6 +284,7 @@ public class Player {
 
     /**
      * Plays the wanted trio of cards in order to get armies.
+     *
      * @param cards the trio of cards to play
      * @return the number of armies gained
      */
@@ -292,6 +311,7 @@ public class Player {
 
     /**
      * Pick a random card from the game deck.
+     *
      * @param game The game the player is playing in.
      * @return The card picked.
      */
@@ -305,8 +325,9 @@ public class Player {
      * Place an amount of armies in a specific territory.
      * This function is used during the setup of the game and
      * when the player gets new armies every turn.
+     *
      * @param territory the territory where to place the armies
-     * @param amount the amount of armies to place.
+     * @param amount    the amount of armies to place.
      */
     public void placeArmies(final Territory territory, final int amount) {
         territory.setOwner(this);
@@ -323,8 +344,9 @@ public class Player {
 
     /**
      * Removes the given amount of armies from the given territory.
+     *
      * @param territory The territory to remove the armies from
-     * @param armies The number of armies to remove
+     * @param armies    The number of armies to remove
      */
     public void removeArmies(final Territory territory, int armies) {
         final Iterator<Army> iterator = this.armies.iterator();
@@ -339,13 +361,16 @@ public class Player {
 
     /**
      * Moves the given amount of armies from a territory to another.
-     * @param num the number of armies to move.
+     *
+     * @param num  the number of armies to move.
      * @param from the territory where to remove the armies.
-     * @param to the territory where to move the armies.
+     * @param to   the territory where to move the armies.
      */
     public void moveArmies(final byte num, final Territory from, final Territory to) {
         final ArrayList<Army> armies = from.getArmies();
-        if (armies.size() <= num) { return; }
+        if (armies.size() <= num) {
+            return;
+        }
         final Iterator<Army> iterator = armies.iterator();
         for (byte i = 0; i < num; i++) {
             final Army next = iterator.next();

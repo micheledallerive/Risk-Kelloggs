@@ -25,6 +25,7 @@ public class NameDialog extends BaseDialog {
 
     /**
      * Constructor.
+     *
      * @param parent invoking JFrame parent.
      */
     public NameDialog(JFrame parent) {
@@ -67,6 +68,7 @@ public class NameDialog extends BaseDialog {
 
     /**
      * Procedure - event on action performed.
+     *
      * @param actionEvent Event to handle.
      */
     private void actionPerformed(ActionEvent actionEvent) {
@@ -75,6 +77,7 @@ public class NameDialog extends BaseDialog {
 
     /**
      * Function - string name from JTextField holding new user names.
+     *
      * @return String name.
      */
     public String getName() {

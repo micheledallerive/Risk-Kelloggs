@@ -17,9 +17,10 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 //TODO: Rename JMainMenu
+
 /**
  * Class JMainMenu extended from JPanel to create main menu.
- * 
+ *
  * @author dallem@usi.ch
  */
 public class JMainMenu extends ImageBackgroundPanel {
@@ -33,9 +34,10 @@ public class JMainMenu extends ImageBackgroundPanel {
     // endregion
 
     // region CONSTRUCTOR
+
     /**
      * Constructor.
-     * 
+     *
      * @param callback Event for clickable buttons
      */
     public JMainMenu(final EventCallback callback) {
@@ -65,12 +67,14 @@ public class JMainMenu extends ImageBackgroundPanel {
 
         // add events to click or push any key to start the game
         this.addKeyListener(new KeyAdapter() {
-            @Override public void keyPressed(KeyEvent keyEvent) {
+            @Override
+            public void keyPressed(KeyEvent keyEvent) {
                 callback.onEvent(0);
             }
         });
         this.addMouseListener(new MouseAdapter() {
-            @Override public void mouseClicked(MouseEvent mouseEvent) {
+            @Override
+            public void mouseClicked(MouseEvent mouseEvent) {
                 callback.onEvent(0);
             }
         });

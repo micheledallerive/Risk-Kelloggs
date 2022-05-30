@@ -3,7 +3,6 @@ package gui.utils;
 import model.Player;
 import model.enums.ArmyColor;
 
-import javax.swing.*;
 import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -12,9 +11,11 @@ import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;
+import javax.swing.ImageIcon;
 
 /**
  * Class of Utils methods.
+ *
  * @author dallem@usi.ch
  */
 public class ImageUtils {
@@ -31,12 +32,13 @@ public class ImageUtils {
 
     /**
      * Convert an Image to a buffered one.
+     *
      * @param image Image to convert.
      * @return Buffered image object.
      */
     public static BufferedImage imageToBufferedImage(final Image image) {
         BufferedImage bufferedImage = new BufferedImage(image.getWidth(null), image.getHeight(null),
-                BufferedImage.TYPE_INT_ARGB);
+            BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2 = bufferedImage.createGraphics();
         g2.drawImage(image, 0, 0, null);
         g2.dispose();
@@ -57,7 +59,8 @@ public class ImageUtils {
         if (sbi != null) {
             dbi = new BufferedImage(dWidth, dHeight, imageType);
             Graphics2D g = dbi.createGraphics();
-            AffineTransform at = AffineTransform.getScaleInstance(((float) dWidth) / sbi.getWidth(), ((float) dHeight) / sbi.getHeight());
+            AffineTransform at = AffineTransform.getScaleInstance(((float) dWidth) / sbi.getWidth(),
+                ((float) dHeight) / sbi.getHeight());
             g.drawRenderedImage(sbi, at);
         }
         return dbi;
@@ -99,6 +102,7 @@ public class ImageUtils {
 
     /**
      * Create a correspondence between armycolor enum and color object.
+     *
      * @param armyColor Enum of armycolor to correspond.
      * @return Color object.
      */
@@ -126,7 +130,7 @@ public class ImageUtils {
         int red = rgb.getRed();
         int green = rgb.getGreen();
         int blue = rgb.getBlue();
-        return (red*0.299 + green*0.587 + blue*0.114) > 100 ? Color.BLACK : Color.WHITE;
+        return (red * 0.299 + green * 0.587 + blue * 0.114) > 100 ? Color.BLACK : Color.WHITE;
     }
 
     public static Image getPlayerIcon(Player player) {

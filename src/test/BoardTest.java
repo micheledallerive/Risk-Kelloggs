@@ -1,10 +1,11 @@
 package test;
 
+import static org.junit.Assert.assertEquals;
+
 import model.Board;
 import model.Game;
-import org.junit.Test;
 
-import static org.junit.Assert.*;
+import org.junit.Test;
 
 /**
  * This class tests the functionality of the class Board

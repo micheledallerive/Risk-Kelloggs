@@ -1,7 +1,17 @@
 package gui.components;
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.BasicStroke;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 
 public class JRoundButton extends ImageBackgroundPanel {
 
@@ -30,7 +40,8 @@ public class JRoundButton extends ImageBackgroundPanel {
 
     public void setIcon(ImageIcon icon) {
         JLabel label = new JLabel(icon);
-        label.setPreferredSize(new Dimension(getPreferredSize().width - 2 * MARGIN, getPreferredSize().height - 2 * MARGIN));
+        label.setPreferredSize(
+            new Dimension(getPreferredSize().width - 2 * MARGIN, getPreferredSize().height - 2 * MARGIN));
         add(label, BorderLayout.CENTER);
         revalidate();
         repaint();
@@ -50,7 +61,7 @@ public class JRoundButton extends ImageBackgroundPanel {
         super.paintComponent(graphics);
         Graphics2D g2 = (Graphics2D) graphics;
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-                RenderingHints.VALUE_ANTIALIAS_ON);
+            RenderingHints.VALUE_ANTIALIAS_ON);
         g2.setStroke(new BasicStroke(2));
         g2.setColor(Color.BLACK);
         g2.drawOval(0, 0, getWidth() - 1, getHeight() - 1);
