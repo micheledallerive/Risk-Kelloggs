@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 /**
  * Represents a single dice in the game.
+ *
  * @author dallem@usi.ch, moralj@usi.ch
  */
 public class Die {
@@ -27,8 +28,10 @@ public class Die {
     //endregion
 
     //region CONSTRUCTOR
+
     /**
      * Creates a new dice with a specific color.
+     *
      * @param color the color of the dice, blue if it is a defensive dice, red if it is an attacker dice
      */
     public Die(final DieColor color) {
@@ -38,8 +41,10 @@ public class Die {
     //endregion
 
     //region GETTERS AND SETTERS
+
     /**
      * Function - gives reference to red dice collection.
+     *
      * @return reference to ArrayList containing red dice
      */
     public static ArrayList<Die> getRedDice() {
@@ -48,6 +53,7 @@ public class Die {
 
     /**
      * Function - gives reference to blue dice collection.
+     *
      * @return reference to ArrayList containing blue dice
      */
     public static ArrayList<Die> getBlueDice() {
@@ -56,6 +62,7 @@ public class Die {
 
     /**
      * Return the color of the dice.
+     *
      * @return The color of the dice.
      */
     public DieColor getColor() {
@@ -64,6 +71,7 @@ public class Die {
 
     /**
      * Returns the number of the last outcome of the dice roll.
+     *
      * @return The last outcome of the dice.
      */
     public byte getNumber() {
@@ -72,6 +80,7 @@ public class Die {
     //endregion
 
     //region METHODS
+
     /**
      * Reset all the dice to the default value -1.
      */
@@ -101,6 +110,7 @@ public class Die {
     /**
      * Checks the current state of the dice and returns an array
      * in which each element is the winner of a pair of dice rolled.
+     *
      * @return An array of colors, each of which is the winner of a single roll.
      */
     public static ArrayList<DieColor> winner() {
@@ -127,11 +137,14 @@ public class Die {
 
     /**
      * Function - gives a random number used not in the scope of the risk game - Attack and Defense phase.
+     *
      * @return A random number from one of the dice.
      */
     public static byte casualRoll() {
         // game should be initialized
-        if (redDice == null) { return INVALID; }
+        if (redDice == null) {
+            return INVALID;
+        }
         Die die = redDice.get(0);
         die.roll();
         byte number = die.getNumber();

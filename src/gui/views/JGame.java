@@ -1,11 +1,5 @@
 package gui.views;
 
-import gui.EventCallback;
-import gui.components.JRoundButton;
-import gui.components.MessageDialog;
-import gui.components.NameDialog;
-import gui.components.PlayersDisplayer;
-import gui.utils.MapUtils;
 import model.AI;
 import model.Game;
 import model.Player;
@@ -13,11 +7,6 @@ import model.Territory;
 import model.callback.Callback;
 import model.enums.GameStatus;
 
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
-import javax.swing.JLayeredPane;
-import javax.swing.OverlayLayout;
-import javax.swing.Timer;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
@@ -30,6 +19,18 @@ import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.function.Function;
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JLayeredPane;
+import javax.swing.OverlayLayout;
+import javax.swing.Timer;
+
+import gui.EventCallback;
+import gui.components.JRoundButton;
+import gui.components.MessageDialog;
+import gui.components.NameDialog;
+import gui.components.PlayersDisplayer;
+import gui.utils.MapUtils;
 
 /**
  * Class JPanel to set up after main menu, the player's name before the start of
@@ -83,6 +84,7 @@ public class JGame extends JLayeredPane {
     // endregion
 
     // region METHODS
+
     /**
      * Procedure - handle name ask form.
      */
@@ -98,11 +100,13 @@ public class JGame extends JLayeredPane {
                 if (name == null || name.isEmpty()) {
                     name = "Player";
                 }
-                game.initializePlayers(6, 1, new String[]{name});
+                game.initializePlayers(6, 1, new String[] {name});
                 game.initArmies();
                 final boolean[] askedToRoll = {false};
                 createUI((id, args) -> {
-                    if (askedToRoll[0]) return;
+                    if (askedToRoll[0]) {
+                        return;
+                    }
                     askedToRoll[0] = true;
                     askToRollDie();
                 });
@@ -116,7 +120,7 @@ public class JGame extends JLayeredPane {
 
     private void askToRollDie() {
         MessageDialog rollDie = new MessageDialog(parent,
-                "Roll your die to determine who starts.");
+            "Roll your die to determine who starts.");
         rollDie.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosed(WindowEvent windowEvent) {
@@ -177,7 +181,8 @@ public class JGame extends JLayeredPane {
         This piece of code is really important: it allows the overlay items to be focusable by the user.
         Since we are using overlays, the overlay layer covers the map, in a way that the mouse cursor does not
         change as intended when going over a country in the map, since the overlay is "capturing" the mouse motion.
-        Therefore, to make the cursor toggle on the map, we need to make the overlay disabled (uiPane.setEnabled(false)),
+        Therefore, to make the cursor toggle on the map, we need to make the overlay disabled (uiPane.setEnabled
+        (false)),
         execute in a future method (since when we roll dice we want it to be focusable to click on the die).
         In order to make the cursor change when over a overlay component, we need to make the overlay enabled again
         when going on the component, and disable it back when going of the component.
@@ -217,7 +222,7 @@ public class JGame extends JLayeredPane {
                 map.setEnabled(true);
 
                 MessageDialog message = new MessageDialog(parent,
-                        game.getPlayerStarting() + " starts the game!");
+                    game.getPlayerStarting() + " starts the game!");
                 message.addWindowListener(new WindowAdapter() {
                     @Override
                     public void windowClosed(WindowEvent e) {
@@ -290,18 +295,20 @@ public class JGame extends JLayeredPane {
         if (currentPlayer.isAI()) {
             ((AI) currentPlayer).attack(game.getBoard(), new Callback() {
                 @Override
-                public void onPlayerAttacked(Player attacker, Player attacked, Territory fromTerritory, Territory attackedTerritory) {
+                public void onPlayerAttacked(Player attacker, Player attacked, Territory fromTerritory,
+                                             Territory attackedTerritory) {
                     System.out.println("Player is getting attacked by " + attacker);
                     currentPlayer.getAttackOutcome(fromTerritory, attackedTerritory,
-                            Math.min(fromTerritory.getArmiesCount(), 3), Math.min(attackedTerritory.getArmiesCount(), 2));
+                        Math.min(fromTerritory.getArmiesCount(), 3), Math.min(attackedTerritory.getArmiesCount(), 2));
                     game.nextTurn();
                 }
 
                 @Override
-                public void onAIAttacked(Player attacker, Player attacked, Territory fromTerritory, Territory attackedTerritory) {
+                public void onAIAttacked(Player attacker, Player attacked, Territory fromTerritory,
+                                         Territory attackedTerritory) {
                     System.out.println(attacker + " is attacking " + attacked);
                     currentPlayer.getAttackOutcome(fromTerritory, attackedTerritory,
-                            Math.min(fromTerritory.getArmiesCount(), 3), Math.min(attackedTerritory.getArmiesCount(), 2));
+                        Math.min(fromTerritory.getArmiesCount(), 3), Math.min(attackedTerritory.getArmiesCount(), 2));
                     game.nextTurn();
                 }
             });

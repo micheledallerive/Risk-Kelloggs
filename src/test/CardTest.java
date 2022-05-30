@@ -1,10 +1,11 @@
 package test;
 
+import static org.junit.Assert.assertEquals;
+
 import model.Card;
 import model.enums.CardType;
-import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
+import org.junit.Test;
 
 /**
  * This class tests the functionality of the class Card

@@ -9,10 +9,12 @@ import java.util.stream.Collectors;
 
 /**
  * Class AI to play versus the computer.
+ *
  * @author dallem@usi.ch
  */
 public class AI extends Player {
     //region CONSTRUCTORS
+
     /**
      * Constructor.
      */
@@ -22,6 +24,7 @@ public class AI extends Player {
 
     /**
      * Constructor with army color choice option.
+     *
      * @param color The color of the army
      */
     public AI(final ArmyColor color) {
@@ -30,9 +33,11 @@ public class AI extends Player {
     //endregion
 
     //region METHODS
+
     /**
      * Attacks a player.
-     * @param board game board.
+     *
+     * @param board    game board.
      * @param callback the callback to be called in the Main function
      *                 (either TUI or GUI) in order to let the player do
      *                 something when they are attacked by an AI.
@@ -40,12 +45,14 @@ public class AI extends Player {
     public void attack(final Board board, final Callback callback) {
         // from AI territories, get the ones that have more than 1 army
         List<Territory> available = this.getTerritories()
-                .stream()
-                .filter((territory) -> territory.getArmiesCount() > 1)
-                .collect(Collectors.toList());
+            .stream()
+            .filter((territory) -> territory.getArmiesCount() > 1)
+            .collect(Collectors.toList());
 
         // if all territories haven't more than one army, AI can't attack
-        if (available.size() == 0) { return; }
+        if (available.size() == 0) {
+            return;
+        }
 
         // otherwise, choose a random territory from the list,
         // get the nearby territories and randomly choose one to attack
@@ -60,16 +67,17 @@ public class AI extends Player {
         Player attackedPlayer = attackedTerritory.getOwner();
         if (attackedPlayer.isAI()) {
             callback.onAIAttacked(this, attackedPlayer,
-                    from, attackedTerritory);
+                from, attackedTerritory);
         } else {
             callback.onPlayerAttacked(this, attackedPlayer,
-                    from, attackedTerritory);
+                from, attackedTerritory);
         }
     }
 
     /**
      * Function to let the AI place armies during the game setup.
-     * @param game the game the AI is playing in
+     *
+     * @param game    the game the AI is playing in
      * @param onlyOne true if the AI can place only one army.
      * @return the territory the AI placed the armies in.
      */
@@ -92,8 +100,8 @@ public class AI extends Player {
             return null;
         }
         int amount = onlyOne
-                ? 1
-                : RandomUtil.random.nextInt(Math.min(10, freeArmies)) + 1;
+            ? 1
+            : RandomUtil.random.nextInt(Math.min(10, freeArmies)) + 1;
         this.placeArmies(chosen, amount);
         return chosen;
     }

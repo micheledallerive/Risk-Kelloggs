@@ -6,20 +6,21 @@ import model.Game;
 import model.Player;
 import model.Territory;
 
-import java.util.Locale;
 import java.util.Scanner;
 
 /**
  * Move armies command.
+ *
  * @author dallem@usi.ch
  */
 public class MoveArmiesCommand extends Command {
 
     /**
      * Default constructor.
-     * @param name Command name.
-     * @param game Game instance.
-     * @param input Scanner instance.
+     *
+     * @param name     Command name.
+     * @param game     Game instance.
+     * @param input    Scanner instance.
      * @param numInput Number scanner instance.
      */
     public MoveArmiesCommand(String name, Game game, Scanner input, Scanner numInput) {
@@ -28,6 +29,7 @@ public class MoveArmiesCommand extends Command {
 
     /**
      * Execute the command.
+     *
      * @return if the player turn is over.
      */
     @Override
@@ -45,8 +47,8 @@ public class MoveArmiesCommand extends Command {
         Territory toTerritory = game.getBoard().getTerritories().get(toIndex);
 
         print("How many armies do you want to move? (1 - "
-                + (fromTerritory.getArmiesCount() - 1) + ")");
-        byte amount = (byte)numInput.nextInt();
+            + (fromTerritory.getArmiesCount() - 1) + ")");
+        byte amount = (byte) numInput.nextInt();
         Player player = game.getPlayers().get(game.getTurn());
         player.moveArmies(amount, fromTerritory, toTerritory);
         return false;

@@ -1,21 +1,30 @@
 package gui.views;
 
-import gui.EventCallback;
-import gui.utils.FontUtils;
-import gui.utils.ImageUtils;
-import gui.utils.MapUtils;
-import gui.components.ImageBackgroundPanel;
 import model.Game;
 import model.Territory;
 
-import java.awt.*;
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Point;
+import java.awt.Polygon;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
+import gui.EventCallback;
+import gui.components.ImageBackgroundPanel;
+import gui.utils.FontUtils;
+import gui.utils.ImageUtils;
+import gui.utils.MapUtils;
+
 /**
  * Class to display the map of risk game.
- * 
+ *
  * @author dallem@usi.ch, moralj@usi.ch
  */
 public class MapPanel extends ImageBackgroundPanel {
@@ -31,9 +40,10 @@ public class MapPanel extends ImageBackgroundPanel {
     // endregion
 
     // region CONSTRUCTORS
+
     /**
      * Constructor.
-     * 
+     *
      * @param game Game object.
      */
     public MapPanel(final Game game) {
@@ -81,9 +91,10 @@ public class MapPanel extends ImageBackgroundPanel {
     // endregion
 
     // region METHODS
+
     /**
      * Function - give the territory clicked on the map.
-     * 
+     *
      * @param pointX Abscissa of the clicked point.
      * @param pointY Ordinate of the clicked point.
      * @return the index of the territory.
@@ -182,9 +193,9 @@ public class MapPanel extends ImageBackgroundPanel {
                 continue;
             }
             if (attackingFrom != null
-                    && attackingTo == null
-                    && (!game.getBoard().getAdjacent(attackingFrom).contains(territory)
-                    || attackingFrom.getOwner() == territory.getOwner())) {
+                && attackingTo == null
+                && (!game.getBoard().getAdjacent(attackingFrom).contains(territory)
+                || attackingFrom.getOwner() == territory.getOwner())) {
                 continue;
             }
             Polygon polygon = MapUtils.POLYGONS.get(territory.getName().toString());
@@ -214,7 +225,8 @@ public class MapPanel extends ImageBackgroundPanel {
             Point mouse = lastMovedPoint;
             mouse = MapUtils.mapToView(mouse, getWidth(), getHeight());
             graphics.setColor(Color.BLACK);
-            drawArrow(graphics, centroid.x, centroid.y, MapUtils.viewToMapX(mouse.x, getWidth()), MapUtils.viewToMapY(mouse.y, getHeight()), 20, 50);
+            drawArrow(graphics, centroid.x, centroid.y, MapUtils.viewToMapX(mouse.x, getWidth()),
+                MapUtils.viewToMapY(mouse.y, getHeight()), 20, 50);
         }
         if (attackResult != null) {
             Point fromCentroid = MapUtils.getCentroid(MapUtils.POLYGONS.get(getAttackingFrom().getName().toString()));
@@ -225,10 +237,12 @@ public class MapPanel extends ImageBackgroundPanel {
             graphics.setColor(Color.WHITE);
             float yLabelIncrease = 1.75f;
             if (attackResult[0] > 0) {
-                drawString(graphics, Color.RED, "-" + attackResult[0], fromCentroid.x, (int) (fromCentroid.y - yLabelIncrease * RADIUS), LOSS_CIRCLE_RADIUS);
+                drawString(graphics, Color.RED, "-" + attackResult[0], fromCentroid.x,
+                    (int) (fromCentroid.y - yLabelIncrease * RADIUS), LOSS_CIRCLE_RADIUS);
             }
             if (attackResult[1] > 0) {
-                drawString(graphics, Color.RED, "-" + attackResult[1], toCentroid.x, (int) (toCentroid.y - yLabelIncrease * RADIUS), LOSS_CIRCLE_RADIUS);
+                drawString(graphics, Color.RED, "-" + attackResult[1], toCentroid.x,
+                    (int) (toCentroid.y - yLabelIncrease * RADIUS), LOSS_CIRCLE_RADIUS);
             }
         }
     }
@@ -250,9 +264,9 @@ public class MapPanel extends ImageBackgroundPanel {
         double offs = headAngle * Math.PI / 180.0;
         double angle = Math.atan2(y0 - y1, x0 - x1);
         int[] xs = {x1 + (int) (headLength * Math.cos(angle + offs)), x1,
-                x1 + (int) (headLength * Math.cos(angle - offs))};
+            x1 + (int) (headLength * Math.cos(angle - offs))};
         int[] ys = {y1 + (int) (headLength * Math.sin(angle + offs)), y1,
-                y1 + (int) (headLength * Math.sin(angle - offs))};
+            y1 + (int) (headLength * Math.sin(angle - offs))};
         g.drawLine(x0, y0, x1, y1);
         //g.setStroke(new BasicStroke(3));
         g.drawPolyline(xs, ys, 3);

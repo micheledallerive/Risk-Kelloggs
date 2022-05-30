@@ -1,6 +1,5 @@
 package gui.views;
 
-import gui.EventCallback;
 import model.Game;
 import model.StatusListener;
 import model.enums.GameStatus;
@@ -16,6 +15,7 @@ import javax.swing.JPanel;
 
 /**
  * Class main window for GUI main handler.
+ *
  * @author moralj@usi.ch
  */
 public class MainWindow extends JFrame {
@@ -31,9 +31,10 @@ public class MainWindow extends JFrame {
     // endregion
 
     // region CONSTRUCTORS
+
     /**
      * Constructor.
-     * 
+     *
      * @param game Game object.
      */
     public MainWindow(final Game game) {
@@ -61,6 +62,7 @@ public class MainWindow extends JFrame {
     // endregion
 
     // region METHODS
+
     /**
      * Function - configure the menu bar.
      *

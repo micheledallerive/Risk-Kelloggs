@@ -20,19 +20,20 @@ import model.Territory;
 import model.callback.Callback;
 import model.callback.GameCallback;
 import model.enums.GameStatus;
-import tui.command.AttackCommand;
-import tui.command.Command;
-import tui.command.EndTurnCommand;
-import tui.command.MoveArmiesCommand;
 
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
+import tui.command.AttackCommand;
+import tui.command.Command;
+import tui.command.EndTurnCommand;
+import tui.command.MoveArmiesCommand;
+
 
 /**
  * TUI class.
- * 
+ *
  * @author dallem@usi.ch, moralj@usi.ch
  */
 public class Main {
@@ -66,9 +67,9 @@ public class Main {
     private boolean mainMenu() {
         print("Welcome to Risk Kellogg's");
         printOptions(
-                "Play a new game of Risk Kellogg's",
-                "Get information about Risk",
-                "Exit the game"
+            "Play a new game of Risk Kellogg's",
+            "Get information about Risk",
+            "Exit the game"
         );
         int choice = numInput.nextInt();
         switch (choice) {
@@ -97,14 +98,13 @@ public class Main {
             - Make the players move the armies in the territories he wants
          */
         String name;
-        do
-        {
+        do {
             print("Insert your in-game name (0-15 characters):");
             name = input.nextLine();
         }
         while (name.length() < 1 || name.length() > 15);
         ArrayList<Player> players =
-                Player.generatePlayersRandomly((byte) 6, (byte) 1, new String[]{ name });
+            Player.generatePlayersRandomly((byte) 6, (byte) 1, new String[] {name});
         for (Player player : players) {
             game.addPlayer(player);
         }
@@ -140,14 +140,14 @@ public class Main {
             if (currentPlayer.getFreeArmies().size() > 0) {
                 clearConsole();
                 if (currentPlayer.isAI()) {
-                    ((AI)currentPlayer).placeArmy(game, !finishedTerritories);
+                    ((AI) currentPlayer).placeArmy(game, !finishedTerritories);
                     //print(currentPlayer.getColor().toString() + " chose " + chosen.getName().toString());
                 } else {
                     placeArmies(!finishedTerritories);
                 }
             }
             finishedTerritories = game.getBoard().getTerritories()
-                            .stream().filter(t -> t.getOwner() == null).count() == 0;
+                .stream().filter(t -> t.getOwner() == null).count() == 0;
             game.nextTurn();
         }
 
@@ -163,22 +163,24 @@ public class Main {
 
 
         String chosenName = askTerritory(
-                "Enter the territory where you want to place your armies: ",
-                input,
-                (tn) -> ((freeTerritories && game.getBoard().getTerritories().get(game.getBoard().getTerritoryIdx(tn)).getOwner() == null)
-                        || (!freeTerritories && game.getBoard().getTerritories().get(game.getBoard().getTerritoryIdx(tn)).getOwner() == currentPlayer)),
-                game.getBoard());
+            "Enter the territory where you want to place your armies: ",
+            input,
+            (tn) -> ((freeTerritories && game.getBoard().getTerritories().get(game.getBoard().getTerritoryIdx(tn))
+                .getOwner() == null)
+                || (!freeTerritories && game.getBoard().getTerritories().get(game.getBoard().getTerritoryIdx(tn))
+                .getOwner() == currentPlayer)),
+            game.getBoard());
 
         int armies = 1;
         if (!freeTerritories) {
             armies = askNumber("Enter the amount of armies you want to place"
-                            + (freeTerritories ? "" : " (You have " + currentPlayer.getFreeArmies().size() + " free armies)"),
-                    numInput, 1, currentPlayer.getFreeArmies().size(), null);
+                    + (freeTerritories ? "" : " (You have " + currentPlayer.getFreeArmies().size() + " free armies)"),
+                numInput, 1, currentPlayer.getFreeArmies().size(), null);
         }
 
         Territory territory = game.getBoard().getTerritories().get(game.getBoard().getTerritoryIdx(chosenName));
         if ((territory.getOwner() == currentPlayer && !freeTerritories)
-                || territory.getOwner() == null) {
+            || territory.getOwner() == null) {
             currentPlayer.placeArmies(territory, armies);
         }
     }
@@ -190,21 +192,21 @@ public class Main {
         Player player = game.getPlayers().get(game.getTurn());
         int numOfTerritories = player.getTerritories().size();
         if (player.isAI()) {
-            ((AI)player).attack(game.getBoard(), new Callback() {
+            ((AI) player).attack(game.getBoard(), new Callback() {
                 @Override
                 public void onPlayerAttacked(Player attacker, Player attacked,
                                              Territory fromTerritory, Territory attackedTerritory) {
                     print(player + " is attacking you in "
-                            + attackedTerritory.getName().toString() + "!");
+                        + attackedTerritory.getName().toString() + "!");
                     print("How many armies do you want to defend with (max. "
-                            + Math.min(attackedTerritory.getArmiesCount(), 3)
-                            + ")?");
+                        + Math.min(attackedTerritory.getArmiesCount(), 3)
+                        + ")?");
                     int defend = numInput.nextInt();
                     int[] losses = attacker.getAttackOutcome(fromTerritory, attackedTerritory,
-                            Math.min(fromTerritory.getArmiesCount(), 3), defend);
+                        Math.min(fromTerritory.getArmiesCount(), 3), defend);
                     print(
-                            attacker + " lost " + losses[0] + " armies",
-                            attacked + " lost " + losses[1] + " armies"
+                        attacker + " lost " + losses[0] + " armies",
+                        attacked + " lost " + losses[1] + " armies"
                     );
                     consolePause(input);
                 }
@@ -212,10 +214,12 @@ public class Main {
                 @Override
                 public void onAIAttacked(Player attacker, Player attacked,
                                          Territory fromTerritory, Territory attackedTerritory) {
-                    if (fromTerritory.getArmiesCount() < 2) { return; }
+                    if (fromTerritory.getArmiesCount() < 2) {
+                        return;
+                    }
                     attacker.getAttackOutcome(fromTerritory, attackedTerritory,
-                            Math.min(fromTerritory.getArmiesCount() - 1, 3),
-                            Math.min(attackedTerritory.getArmiesCount(), 3));
+                        Math.min(fromTerritory.getArmiesCount() - 1, 3),
+                        Math.min(attackedTerritory.getArmiesCount(), 3));
                 }
             });
         } else {
@@ -229,7 +233,7 @@ public class Main {
                 printMap(game);
                 print();
                 printOptions(
-                        commands.stream().map(Command::getName).collect(Collectors.toList())
+                    commands.stream().map(Command::getName).collect(Collectors.toList())
                 );
                 int choice = numInput.nextInt();
                 Command chosen = commands.get(choice - 1);
@@ -237,8 +241,8 @@ public class Main {
             }
             if (player.getTerritories().size() > numOfTerritories) {
                 print("You conquered "
-                        + (player.getTerritories().size() - numOfTerritories)
-                        + " territories, so you can pick a card!");
+                    + (player.getTerritories().size() - numOfTerritories)
+                    + " territories, so you can pick a card!");
                 Card pickedCard = player.pickCard(game);
                 print("You picked the card: " + pickedCard.toString());
                 consolePause(input);
@@ -257,12 +261,12 @@ public class Main {
             print("You have the following card combinations:");
             for (int i = 0; i < combinations.size(); i++) {
                 print((i + 1)
-                        + ": "
-                        + combinations.get(i)[0].toString()
-                        + ", "
-                        + combinations.get(i)[1].toString()
-                        + ", "
-                        + combinations.get(i)[2].toString());
+                    + ": "
+                    + combinations.get(i)[0].toString()
+                    + ", "
+                    + combinations.get(i)[1].toString()
+                    + ", "
+                    + combinations.get(i)[2].toString());
             }
             do {
                 print("Which one do you want to use? (-1 to use none)");
@@ -286,8 +290,8 @@ public class Main {
 
         if (choice != -1) {
             String cardsStr = playedCombination[0].getType().toString()
-                    + ", " + playedCombination[1].getType().toString()
-                    + ", " + playedCombination[2].getType().toString();
+                + ", " + playedCombination[1].getType().toString()
+                + ", " + playedCombination[2].getType().toString();
             print("You got " + bonus[2] + " armies because you played the combination: " + cardsStr + ".");
         }
 
@@ -355,6 +359,7 @@ public class Main {
 
     /**
      * Procedure - static main method.
+     *
      * @param args arguments to set terminal interface
      */
     public static void main(String[] args) {

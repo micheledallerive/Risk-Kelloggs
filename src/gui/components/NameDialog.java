@@ -1,7 +1,5 @@
 package gui.components;
 
-import gui.utils.FontUtils;
-
 import java.awt.Dimension;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
@@ -15,6 +13,8 @@ import javax.swing.JTextField;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 
+import gui.utils.FontUtils;
+
 /**
  * Class to get name of player.
  *
@@ -25,6 +25,7 @@ public class NameDialog extends BaseDialog {
 
     /**
      * Constructor.
+     *
      * @param parent invoking JFrame parent.
      */
     public NameDialog(JFrame parent) {
@@ -67,6 +68,7 @@ public class NameDialog extends BaseDialog {
 
     /**
      * Procedure - event on action performed.
+     *
      * @param actionEvent Event to handle.
      */
     private void actionPerformed(ActionEvent actionEvent) {
@@ -75,6 +77,7 @@ public class NameDialog extends BaseDialog {
 
     /**
      * Function - string name from JTextField holding new user names.
+     *
      * @return String name.
      */
     public String getName() {

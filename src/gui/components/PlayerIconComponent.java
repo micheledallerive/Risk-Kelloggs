@@ -1,14 +1,23 @@
 package gui.components;
 
-import gui.utils.ImageUtils;
 import model.Player;
 
-import java.awt.*;
-import javax.swing.*;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
+import gui.utils.ImageUtils;
 
 
 /**
  * Class display player icon JComponent.
+ *
  * @author dallem@usi.ch
  */
 public class PlayerIconComponent extends TransparentPanel {
@@ -19,13 +28,14 @@ public class PlayerIconComponent extends TransparentPanel {
 
     /**
      * Constructor.
+     *
      * @param player Player representing this component.
      */
     public PlayerIconComponent(Player player) {
         super();
         this.player = player;
         setLayout(new GridBagLayout());
-        setBorder(BorderFactory.createEmptyBorder(0,20,0,20));
+        setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 20));
 
         GridBagConstraints constraints = new GridBagConstraints();
 
@@ -45,7 +55,7 @@ public class PlayerIconComponent extends TransparentPanel {
 
         JLabel icon = new JLabel(new ImageIcon(ImageUtils.getPlayerIcon(player)));
 
-        JPanel iconCircle = new TransparentPanel(){
+        JPanel iconCircle = new TransparentPanel() {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
@@ -53,7 +63,7 @@ public class PlayerIconComponent extends TransparentPanel {
                 g.fillOval(0, 0, getWidth(), getHeight());
             }
         };
-        iconCircle.setBorder(BorderFactory.createEmptyBorder(3,3,3,3));
+        iconCircle.setBorder(BorderFactory.createEmptyBorder(3, 3, 3, 3));
         iconCircle.setLayout(new GridBagLayout());
         iconCircle.add(icon, constraints);
 
