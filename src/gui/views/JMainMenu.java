@@ -1,9 +1,9 @@
 package gui.views;
 
 import gui.EventCallback;
-import gui.utils.FontUtils;
 import gui.components.ImageBackgroundPanel;
 import gui.components.TransparentPanel;
+import gui.utils.FontUtils;
 
 import java.awt.Color;
 import java.awt.Font;
