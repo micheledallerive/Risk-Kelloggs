@@ -9,11 +9,21 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+/**
+ * Displays the players in the game.
+ *
+ * @author dallem@usi.ch
+ */
 public class PlayersDisplayer extends TransparentPanel {
     private final Game game;
     private final JLabel[] pointers;
     private final JDie[] dice;
 
+    /**
+     * Creates a new PlayersDisplayer.
+     *
+     * @param game the game to display.
+     */
     public PlayersDisplayer(Game game) {
         super();
         this.game = game;
@@ -56,6 +66,11 @@ public class PlayersDisplayer extends TransparentPanel {
         });
     }
 
+    /**
+     * Chooses the player to start.
+     *
+     * @param eventCallback the callback to add.
+     */
     public void chooseStartingPlayer(EventCallback eventCallback) {
         for (JDie die : dice) {
             die.setVisible(true);
@@ -87,6 +102,9 @@ public class PlayersDisplayer extends TransparentPanel {
         });
     }
 
+    /**
+     * Hides the dice.
+     */
     public void hideDice() {
         for (JDie die : dice) {
             die.setVisible(false);
