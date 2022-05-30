@@ -208,8 +208,7 @@ public class MapUtils {
             Territory territory = game.getBoard().getTerritories().get(id);
             Player player = game.getPlayers().get(game.getTurn());
 
-            if (game.getStatus() == GameStatus.SETUP) {
-
+            if (!player.getFreeArmies().isEmpty()) {
 
                 if (game.getPlayers().get(game.getTurn()).isAI()
                         || player.getFreeArmies().isEmpty()) {
@@ -218,7 +217,7 @@ public class MapUtils {
                 }
 
                 boolean everythingOccupied = game.getBoard().getTerritories().stream()
-                    .noneMatch(t -> t.getOwner() == null);
+                        .noneMatch(t -> t.getOwner() == null);
                 if (territory.getOwner() != null) {
                     if (territory.getOwner() == player && !everythingOccupied) {
                         PopupUtils.showPopup(parent, "You have to place armies on free territories!", clickX, clickY);
@@ -240,7 +239,9 @@ public class MapUtils {
                             int quantity = quantityDialog.getSelectedQuantity();
                             if (quantity > 0) {
                                 player.placeArmies(territory, quantity);
-                                nextTurn.apply(null);
+                                if (game.getStatus() != GameStatus.PLAYING) {
+                                    nextTurn.apply(null);
+                                }
                             }
                         }
                     });

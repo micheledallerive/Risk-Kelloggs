@@ -158,7 +158,7 @@ public class JGame extends JLayeredPane {
             @Override
             public void mouseClicked(MouseEvent event) {
                 super.mouseClicked(event);
-                // TODO PAUSE SCREEN
+                // TODO PAUSE SCREEN we dont have enough time lmao
             }
         });
         uiPane.add(pauseButton, constraints);
@@ -317,7 +317,8 @@ public class JGame extends JLayeredPane {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
-                map.resetCallbacks();
+                map.removeCallback(playingCallback);
+                map.removeCallback(moveCallback);
                 if (game.getStatus() == GameStatus.PLAYING) {
                     map.addCallback(playingCallback);
                 }
@@ -328,7 +329,8 @@ public class JGame extends JLayeredPane {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
-                map.resetCallbacks();
+                map.removeCallback(playingCallback);
+                map.removeCallback(moveCallback);
                 if (game.getStatus() == GameStatus.PLAYING) {
                     map.addCallback(moveCallback);
                 }
@@ -339,7 +341,8 @@ public class JGame extends JLayeredPane {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
-                map.resetCallbacks();
+                map.removeCallback(playingCallback);
+                map.removeCallback(moveCallback);
                 nextTurn.apply(null);
             }
         });
@@ -438,7 +441,26 @@ public class JGame extends JLayeredPane {
                 }
             });
         } else {
-            timer.stop();
+            int[] playerBonus = game.giveBonus(currentPlayer, -1); // im sad we didnt do cards ;(
+            int totalBonus = playerBonus[0] + playerBonus[1] + playerBonus[2];
+            if (totalBonus > 0 && game.getTurnsPlayed() > 0) {
+                MessageDialog bonusDialog = new MessageDialog(parent, new String[]{
+                        "You gained " + totalBonus + " bonus armies",
+                        "Place them!"
+                });
+                bonusDialog.addWindowListener(new WindowAdapter() {
+                    @Override
+                    public void windowClosed(WindowEvent e) {
+                        super.windowClosed(e);
+                        timer.stop();
+                    }
+                });
+                bonusDialog.pack();
+                bonusDialog.setLocationRelativeTo(null);
+                bonusDialog.setVisible(true);
+            } else {
+                timer.stop();
+            }
         }
     }
     // endregion
