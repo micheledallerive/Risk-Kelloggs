@@ -1,6 +1,7 @@
 # Project Risk Kellogg's
 
 Our game Risk-Kellogg's is a Risk-based game: the goal of every player is to conquer the whole world.
+The game starts by placing your armies in the whole word. Once it's done, you can start attacking the other players, move armies across countries and conquer the whole world!
 
 ## Team Members
 
@@ -40,6 +41,22 @@ The classes in the `tui` and `gui` packages SHOULD refer to classes in the `mode
 The classes in the `model` package need to come with unit tests.
 (The classes in the `tui` and `gui` packages do not need to be covered with tests.)
 
+## Screenshots
+
+### TUI
+![Map](screenshots/tui_map.png)
+
+### GUI
+![Main menu](screenshots/game_menu.png)
+![Board](screenshots/Move1.png)
+![Attack](screenshots/background_with_instruction.png)
+
+### Bluej
+![TUI](screenshots/tui.png)
+![GUI](screenshots/gui_components.png)
+![GUI_2](screenshots/gui_views.png)
+![Model](screenshots/model_tree.png)
+
 ## How build using Maven
 
 In this top-level directory:
@@ -61,8 +78,6 @@ To run this application, with the TUI, from the command line:
 java -cp target/classes tui.Main
 ```
 
-DESCRIPTION OF COMMAND LINE ARGUMENTS
-
 ### Running the GUI
 
 To run this application, with the GUI, from the command line:
@@ -70,8 +85,6 @@ To run this application, with the GUI, from the command line:
 ```bash
 java -cp target/classes gui.Main
 ```
-
-DESCRIPTION OF COMMAND LINE ARGUMENTS
 
 ### How run the JUnit tests with Maven
 
