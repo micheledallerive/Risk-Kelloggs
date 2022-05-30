@@ -177,8 +177,9 @@ public class JGame extends JLayeredPane {
         constraints.fill = GridBagConstraints.NONE;
 
         game.addListener((TurnListener) newTurn -> {
-            playerTurn.setVisible(!game.getPlayers().get(newTurn).isAI()
-                && game.getStatus() == GameStatus.PLAYING);
+            playerTurn.setVisible(!game.getPlayers().get(game.getTurn()).isAI()
+                && (game.getStatus() == GameStatus.PLAYING
+                    || !game.getPlayerStarting().isAI()));
             System.out.println("Change turn " + (!game.getPlayers().get(newTurn).isAI()
                 && game.getStatus() == GameStatus.PLAYING));
             revalidate();
@@ -350,7 +351,6 @@ public class JGame extends JLayeredPane {
     private void setup(Timer timer) {
         boolean someoneHasFreeArmies = game.getPlayers().stream().anyMatch(p -> !p.getFreeArmies().isEmpty());
         if (!someoneHasFreeArmies) {
-            game.setTurn(game.getPlayerStarting());
             timer.stop();
 
             MessageDialog startPlaying = new MessageDialog(

@@ -190,7 +190,7 @@ public class MapUtils {
     }
 
     /**
-     * Playing callback event callback.
+     * The callback of the map for the setup.
      *
      * @param game     the game
      * @param map      the map
@@ -225,11 +225,11 @@ public class MapUtils {
                     .noneMatch(t -> t.getOwner() == null);
                 if (territory.getOwner() != null) {
                     if (territory.getOwner() == player && !everythingOccupied) {
-                        PopupUtils.showPopup(parent, "You have to place armies on free territories!", clickX, clickY);
+                        showError(parent, "You have to place armies on free territories!", clickX, clickY);
                         return;
                     }
                     if (territory.getOwner() != player) {
-                        PopupUtils.showPopup(parent, "You can't place armies on enemy territories!", clickX, clickY);
+                        showError(parent, "You can't place armies on enemy territories!", clickX, clickY);
                         return;
                     }
                 }
@@ -274,10 +274,10 @@ public class MapUtils {
                                                 MapPanel map,
                                                 Function<Void, Void> nextTurn,
                                                 JFrame parent) {
-        return (id, args) -> {
+        return (id, arguments) -> {
 
-            int clickX = (int) args[0];
-            int clickY = (int) args[1];
+            int positionX = (int) arguments[0];
+            int positionY = (int) arguments[1];
             if (id == -1) {
                 nextTurn.apply(null);
                 return;
@@ -287,15 +287,15 @@ public class MapUtils {
             if (map.getAttackingFrom() == null || map.getAttackingTo() != null) {
                 // i have to choose where to attack from
                 if (territory.getOwner() != player) {
-                    PopupUtils.showPopup(parent, "You can't attack from enemy territories!", clickX, clickY);
+                    showError(parent, "You can't attack from enemy territories!", positionX, positionY);
                     return;
                 }
                 if (game.getBoard().getAdjacent(territory).stream().allMatch(t -> t.getOwner() == player)) {
-                    PopupUtils.showPopup(parent, "You can't attack any territory from here!", clickX, clickY);
+                    showError(parent, "You don't have enough armies!", positionX, positionY);
                     return;
                 }
                 if (territory.getArmies().size() < 2) {
-                    PopupUtils.showPopup(parent, "You don't have enough armies!", clickX, clickY);
+                    showError(parent, "You don't have enough armies!", positionX, positionY);
                     return;
                 }
                 map.setAttackingFrom(territory);
@@ -304,11 +304,11 @@ public class MapUtils {
 
 
                 if (territory.getOwner() == player) {
-                    PopupUtils.showPopup(parent, "You can't attack your own territories!", clickX, clickY);
+                    showError(parent, "You can't attack your own territories!", positionX, positionY);
                     return;
                 }
                 if (game.getBoard().getAdjacent(territory).stream().noneMatch(t -> map.getAttackingFrom() == t)) {
-                    PopupUtils.showPopup(parent, "You must attack an adjacent territory", clickX, clickY);
+                    showError(parent, "You must attack an adjacent territory", positionX, positionY);
                     return;
                 }
                 System.out.println("Set where to attack to");
@@ -368,21 +368,21 @@ public class MapUtils {
             Player player = game.getPlayers().get(game.getTurn());
 
             if (territory.getOwner() != player) {
-                PopupUtils.showPopup(parent, "You must choose a territory you owe.", clickX, clickY);
+                showError(parent, "You must choose a territory you owe.", clickX, clickY);
                 return;
             }
 
             if (map.getAttackingFrom() == null || map.getAttackingTo() != null) {
                 // i have to choose where to attack from
                 if (territory.getArmies().size() < 2) {
-                    PopupUtils.showPopup(parent, "You don't have enough armies!", clickX, clickY);
+                    showError(parent, "You don't have enough armies!", clickX, clickY);
                     return;
                 }
                 map.setAttackingFrom(territory);
             } else {
                 // i have to choose where to attack to
                 if (game.getBoard().getAdjacent(territory).stream().noneMatch(t -> map.getAttackingFrom() == t)) {
-                    PopupUtils.showPopup(parent, "You must attack an adjacent territory", clickX, clickY);
+                    showError(parent, "You can't attack from that territory!", clickX, clickY);
                     return;
                 }
                 map.setAttackingTo(territory);
@@ -410,6 +410,10 @@ public class MapUtils {
                 quantityDialog.setVisible(true);
             }
         };
+    }
+
+    private static void showError(JFrame frame, String message, int posX, int posY) {
+        PopupUtils.showPopup(frame, message, posX, posY);
     }
     //endregion
 }
