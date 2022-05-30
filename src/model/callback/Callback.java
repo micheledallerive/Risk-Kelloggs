@@ -6,7 +6,7 @@ import model.Territory;
 /**
  * Interface to create event when a Player gets attacked (including AI).
  *
- * @author dallem@usi.ch
+ * @author dallem @usi.ch
  */
 public interface Callback {
     /**

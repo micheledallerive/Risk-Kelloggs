@@ -14,6 +14,9 @@ import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
 
+/**
+ * The type Quantity dialog.
+ */
 public class QuantityDialog extends BaseDialog {
 
     private int selectedQuantity;
@@ -22,6 +25,14 @@ public class QuantityDialog extends BaseDialog {
     private int max;
     private String message;
 
+    /**
+     * Instantiates a new Quantity dialog.
+     *
+     * @param parent  the parent
+     * @param message the message
+     * @param min     the min
+     * @param max     the max
+     */
     public QuantityDialog(JFrame parent, String message, int min, int max) {
         super(parent, "", true, 100);
         this.min = min;
@@ -58,6 +69,11 @@ public class QuantityDialog extends BaseDialog {
         add(okButton, constraints);
     }
 
+    /**
+     * Gets selected quantity.
+     *
+     * @return the selected quantity
+     */
     public int getSelectedQuantity() {
         return selectedQuantity;
     }

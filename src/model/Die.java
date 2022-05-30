@@ -9,7 +9,7 @@ import java.util.ArrayList;
 /**
  * Represents a single dice in the game.
  *
- * @author dallem@usi.ch, moralj@usi.ch
+ * @author dallem @usi.ch, moralj@usi.ch
  */
 public class Die {
     //region CONSTANTS

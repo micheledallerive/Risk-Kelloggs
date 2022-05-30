@@ -24,7 +24,7 @@ import java.util.ArrayList;
 /**
  * Class to display the map of risk game.
  *
- * @author dallem@usi.ch, moralj@usi.ch
+ * @author dallem @usi.ch, moralj@usi.ch
  */
 public class MapPanel extends ImageBackgroundPanel {
     // region CONSTANTS
@@ -137,7 +137,8 @@ public class MapPanel extends ImageBackgroundPanel {
     /**
      * Function - trigger all the callbacks.
      *
-     * @param val Value to pass to the callbacks.
+     * @param val  Value to pass to the callbacks.
+     * @param args the args
      */
     public void triggerCallbacks(int val, Object... args) {
         for (EventCallback callback : callbacks) {
@@ -151,37 +152,80 @@ public class MapPanel extends ImageBackgroundPanel {
         setBrightness(enabled ? 1f : .5f);
     }
 
+    /**
+     * The Attacking from.
+     */
     Territory attackingFrom = null;
+    /**
+     * The Attacking to.
+     */
     Territory attackingTo = null;
+    /**
+     * The Attack result.
+     */
     int[] attackResult = null;
 
+    /**
+     * Sets attacking from.
+     *
+     * @param territory the territory
+     */
     public void setAttackingFrom(Territory territory) {
         this.attackingFrom = territory;
     }
 
+    /**
+     * Gets attacking from.
+     *
+     * @return the attacking from
+     */
     public Territory getAttackingFrom() {
         return this.attackingFrom;
     }
 
+    /**
+     * Sets attacking to.
+     *
+     * @param territory the territory
+     */
     public void setAttackingTo(Territory territory) {
         this.attackingTo = territory;
     }
 
+    /**
+     * Gets attacking to.
+     *
+     * @return the attacking to
+     */
     public Territory getAttackingTo() {
         return this.attackingTo;
     }
 
+    /**
+     * Sets attack result.
+     *
+     * @param attackResult the attack result
+     */
     public void setAttackResult(int[] attackResult) {
         this.attackResult = attackResult;
     }
 
+    /**
+     * Clear attacking.
+     */
     public void clearAttacking() {
         this.attackingFrom = null;
         this.attackingTo = null;
         this.attackResult = null;
     }
 
+    /**
+     * The constant RADIUS.
+     */
     final static int RADIUS = 30;
+    /**
+     * The constant LOSS_CIRCLE_RADIUS.
+     */
     final static int LOSS_CIRCLE_RADIUS = 20;
 
     @Override

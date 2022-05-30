@@ -13,10 +13,16 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
+/**
+ * The type J round button.
+ */
 public class JRoundButton extends ImageBackgroundPanel {
 
     private static final int MARGIN = 7;
 
+    /**
+     * Instantiates a new J round button.
+     */
     public JRoundButton() {
         super("src/gui/assets/images/dialog_texture.png", 1f);
         setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -25,6 +31,11 @@ public class JRoundButton extends ImageBackgroundPanel {
         setBorder(BorderFactory.createEmptyBorder(MARGIN, MARGIN, MARGIN, MARGIN));
     }
 
+    /**
+     * Instantiates a new J round button.
+     *
+     * @param text the text
+     */
     public JRoundButton(String text) {
         this();
         JLabel label = new JLabel(text);
@@ -33,11 +44,21 @@ public class JRoundButton extends ImageBackgroundPanel {
         add(label, BorderLayout.CENTER);
     }
 
+    /**
+     * Instantiates a new J round button.
+     *
+     * @param icon the icon
+     */
     public JRoundButton(ImageIcon icon) {
         this();
         setIcon(icon);
     }
 
+    /**
+     * Sets icon.
+     *
+     * @param icon the icon
+     */
     public void setIcon(ImageIcon icon) {
         JLabel label = new JLabel(icon);
         label.setPreferredSize(

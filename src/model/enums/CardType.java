@@ -3,7 +3,7 @@ package model.enums;
 /**
  * Describes the figure represented by a card.
  *
- * @author dallem@usi.ch
+ * @author dallem @usi.ch
  */
 public enum CardType {
     /**

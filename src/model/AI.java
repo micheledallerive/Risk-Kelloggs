@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 /**
  * Class AI to play versus the computer.
  *
- * @author dallem@usi.ch
+ * @author dallem @usi.ch
  */
 public class AI extends Player {
     //region CONSTRUCTORS
@@ -38,9 +38,8 @@ public class AI extends Player {
      * Attacks a player.
      *
      * @param board    game board.
-     * @param callback the callback to be called in the Main function
-     *                 (either TUI or GUI) in order to let the player do
-     *                 something when they are attacked by an AI.
+     * @param callback the callback to be called in the Main function                 (either TUI or GUI) in order to
+     *                let the player do                 something when they are attacked by an AI.
      */
     public void attack(final Board board, final Callback callback) {
         // from AI territories, get the ones that have more than 1 army

@@ -17,7 +17,7 @@ import javax.swing.JPanel;
 /**
  * Class display player icon JComponent.
  *
- * @author dallem@usi.ch
+ * @author dallem @usi.ch
  */
 public class PlayerIconComponent extends TransparentPanel {
 

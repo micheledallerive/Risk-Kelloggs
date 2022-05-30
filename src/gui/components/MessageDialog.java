@@ -8,16 +8,40 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
+/**
+ * The type Message dialog.
+ */
 public class MessageDialog extends BaseDialog {
 
+    /**
+     * Instantiates a new Message dialog.
+     *
+     * @param parent  the parent
+     * @param message the message
+     */
     public MessageDialog(JFrame parent, String message) {
         this(parent, new String[] {message}, "", 20f, "OK");
     }
 
+    /**
+     * Instantiates a new Message dialog.
+     *
+     * @param parent   the parent
+     * @param messages the messages
+     */
     public MessageDialog(JFrame parent, String[] messages) {
         this(parent, messages, "", 20f, "OK");
     }
 
+    /**
+     * Instantiates a new Message dialog.
+     *
+     * @param parent        the parent
+     * @param messages      the messages
+     * @param title         the title
+     * @param fontSize      the font size
+     * @param buttonMessage the button message
+     */
     public MessageDialog(JFrame parent, String[] messages,
                          String title, float fontSize,
                          String buttonMessage) {

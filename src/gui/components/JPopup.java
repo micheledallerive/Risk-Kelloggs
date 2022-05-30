@@ -13,16 +13,28 @@ import javax.swing.JLabel;
 import javax.swing.JPopupMenu;
 import javax.swing.Timer;
 
+/**
+ * The type J popup.
+ */
 public class JPopup extends JPopupMenu {
 
     private static final int AUTOHIDE_DELAY = 4000;
 
     private final boolean autohide;
 
+    /**
+     * Instantiates a new J popup.
+     */
     public JPopup() {
         this("", false);
     }
 
+    /**
+     * Instantiates a new J popup.
+     *
+     * @param message  the message
+     * @param autohide the autohide
+     */
     public JPopup(String message, boolean autohide) {
         super(message);
         this.autohide = autohide;

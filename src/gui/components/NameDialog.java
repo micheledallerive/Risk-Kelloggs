@@ -18,7 +18,7 @@ import javax.swing.border.EmptyBorder;
 /**
  * Class to get name of player.
  *
- * @author dallem@usi.ch
+ * @author dallem @usi.ch
  */
 public class NameDialog extends BaseDialog {
     private final JTextField nameField;

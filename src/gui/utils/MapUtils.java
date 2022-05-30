@@ -25,19 +25,32 @@ import javax.swing.Timer;
  * Class map handling initialization of methods to have a direct representation and
  * correspondence between map image and clickable map territory integrated with the game model.
  *
- * @author dallem@usi.ch
+ * @author dallem @usi.ch
  */
 public class MapUtils {
     //region CONSTANTS
     private static final String FILE_BOUNDS = "src/gui/bounds.dat";
+    /**
+     * The constant WIDTH.
+     */
     public static final int WIDTH = 1920;
+    /**
+     * The constant HEIGHT.
+     */
     public static final int HEIGHT = 1280;
     //endregion
 
     //region FIELDS
+    /**
+     * The constant POLYGONS.
+     */
     public static final HashMap<String, Polygon> POLYGONS = new HashMap<>();
     //endregion
 
+    //region CONSTRUCTORS
+    /**
+     * Singleton.
+     */
     private MapUtils() {
 
     }
@@ -79,22 +92,58 @@ public class MapUtils {
         }
     }
 
+    /**
+     * View to map x int.
+     *
+     * @param x     the x
+     * @param width the width
+     * @return the int
+     */
     public static int viewToMapX(int x, int width) {
         return (int) ((x * (MapUtils.WIDTH * 1.125) / width));
     }
 
+    /**
+     * View to map y int.
+     *
+     * @param y      the y
+     * @param height the height
+     * @return the int
+     */
     public static int viewToMapY(int y, int height) {
         return (y * MapUtils.HEIGHT / height);
     }
 
+    /**
+     * Map to view point.
+     *
+     * @param point  the point
+     * @param width  the width
+     * @param height the height
+     * @return the point
+     */
     public static Point mapToView(Point point, int width, int height) {
         return new Point(mapToViewX(point.x, width), mapToViewY(point.y, height));
     }
 
+    /**
+     * Map to view x int.
+     *
+     * @param x     the x
+     * @param width the width
+     * @return the int
+     */
     public static int mapToViewX(int x, int width) {
         return (int) ((x * (width * 0.8888) / MapUtils.WIDTH));
     }
 
+    /**
+     * Map to view y int.
+     *
+     * @param y      the y
+     * @param height the height
+     * @return the int
+     */
     public static int mapToViewY(int y, int height) {
         return (y * height / MapUtils.HEIGHT);
     }
@@ -103,6 +152,7 @@ public class MapUtils {
      * Calculates the signed area of the polygon
      *
      * @param polygon the polygon
+     * @return the double
      */
     public static double signedArea(Polygon polygon) {
         int[] x = polygon.xpoints;
@@ -119,6 +169,7 @@ public class MapUtils {
      * Calculates the centroid of the given polygon.
      *
      * @param polygon the polygon to calculate the centroid of.
+     * @return the centroid
      */
     public static Point getCentroid(final Polygon polygon) {
         // calculate the area of the polygon
@@ -139,6 +190,15 @@ public class MapUtils {
         return new Point((int) cx, (int) cy);
     }
 
+    /**
+     * Playing callback event callback.
+     *
+     * @param game     the game
+     * @param map      the map
+     * @param nextTurn the next turn
+     * @param parent   the parent
+     * @return the event callback
+     */
     public static EventCallback playingCallback(Game game,
                                                 MapPanel map,
                                                 Function<Void, Void> nextTurn,

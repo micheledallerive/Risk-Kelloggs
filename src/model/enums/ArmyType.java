@@ -3,7 +3,7 @@ package model.enums;
 /**
  * Describes the type of the army piece.
  *
- * @author dallem@usi.ch
+ * @author dallem @usi.ch
  */
 public enum ArmyType {
     /**

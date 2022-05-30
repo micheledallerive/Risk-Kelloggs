@@ -15,7 +15,7 @@ import javax.swing.Timer;
 /**
  * Class Die graphical representation.
  *
- * @author dallem@usi.ch, moralj@usi.ch
+ * @author dallem @usi.ch, moralj@usi.ch
  */
 public class JDie extends JComponent {
     //region CONSTANTS
@@ -46,6 +46,8 @@ public class JDie extends JComponent {
 
     /**
      * Constructor - just the color of the die.
+     *
+     * @param color the color
      */
     public JDie(DieColor color) {
         this(color, 250, 4000);
@@ -54,6 +56,7 @@ public class JDie extends JComponent {
     /**
      * Constructor - full optional.
      *
+     * @param color         the color
      * @param frameDuration Duration in milliseconds of Timer.
      * @param totalDuration Total amount of milliseconds to roll.
      */

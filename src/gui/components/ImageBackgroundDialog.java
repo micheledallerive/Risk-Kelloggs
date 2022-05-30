@@ -10,7 +10,7 @@ import javax.swing.border.EmptyBorder;
 /**
  * Class to create a modal dialog with an image as background.
  *
- * @author dallem@usi.ch
+ * @author dallem @usi.ch
  */
 public class ImageBackgroundDialog extends JDialog {
     /**

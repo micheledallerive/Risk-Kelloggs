@@ -14,11 +14,19 @@ import java.awt.event.MouseEvent;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
+/**
+ * The type Players displayer.
+ */
 public class PlayersDisplayer extends TransparentPanel {
     private final Game game;
     private final JLabel[] pointers;
     private final JDie[] dice;
 
+    /**
+     * Instantiates a new Players displayer.
+     *
+     * @param game the game
+     */
     public PlayersDisplayer(Game game) {
         super();
         this.game = game;
@@ -61,6 +69,11 @@ public class PlayersDisplayer extends TransparentPanel {
         });
     }
 
+    /**
+     * Choose starting player.
+     *
+     * @param eventCallback the event callback
+     */
     public void chooseStartingPlayer(EventCallback eventCallback) {
         for (JDie die : dice) {
             die.setVisible(true);
@@ -92,6 +105,9 @@ public class PlayersDisplayer extends TransparentPanel {
         });
     }
 
+    /**
+     * Hide dice.
+     */
     public void hideDice() {
         for (JDie die : dice) {
             die.setVisible(false);

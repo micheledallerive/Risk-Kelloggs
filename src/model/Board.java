@@ -8,14 +8,20 @@ import java.util.Scanner;
 /**
  * Describes the board of the game containing the map of the world.
  *
- * @author moralj@usi.ch, dallem@usi.ch
+ * @author moralj @usi.ch, dallem@usi.ch
  */
 public class Board {
-    //region CONSTANTS
+    /**
+     * The constant PATH_ADJ.
+     */
+//region CONSTANTS
     public static final String PATH_ADJ = "src/model/data/adjacency.txt";
     //endregion
 
-    //region FIELDS
+    /**
+     * The Adjacency.
+     */
+//region FIELDS
     public final ArrayList<ArrayList<Integer>> adjacency;
     private final HashMap<String, Integer> mapTerritoryToIdx;
     private final ArrayList<Territory> territories;

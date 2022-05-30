@@ -16,7 +16,7 @@ import javax.swing.ImageIcon;
 /**
  * Class of Utils methods.
  *
- * @author dallem@usi.ch
+ * @author dallem @usi.ch
  */
 public class ImageUtils {
     /**
@@ -26,6 +26,12 @@ public class ImageUtils {
 
     }
 
+    /**
+     * Gets image.
+     *
+     * @param path the path
+     * @return the image
+     */
     public static Image getImage(final String path) {
         return new ImageIcon(path).getImage();
     }
@@ -125,6 +131,12 @@ public class ImageUtils {
         }
     }
 
+    /**
+     * Choose foreground color color.
+     *
+     * @param color the color
+     * @return the color
+     */
     public static Color chooseForegroundColor(ArmyColor color) {
         Color rgb = armyColorToColor(color);
         int red = rgb.getRed();
@@ -133,6 +145,12 @@ public class ImageUtils {
         return (red * 0.299 + green * 0.587 + blue * 0.114) > 100 ? Color.BLACK : Color.WHITE;
     }
 
+    /**
+     * Gets player icon.
+     *
+     * @param player the player
+     * @return the player icon
+     */
     public static Image getPlayerIcon(Player player) {
         String path = "src/gui/assets/images/icon/";
         path += player.isAI() ? "ai" : "player";
