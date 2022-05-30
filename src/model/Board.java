@@ -15,7 +15,7 @@ public class Board {
     //endregion
 
     //region FIELDS
-    public final HashMap<Integer, ArrayList<Integer>> adjacency;
+    public final ArrayList<ArrayList<Integer>> adjacency;
     private final HashMap<String, Integer> mapTerritoryToIdx;
     private final ArrayList<Territory> territories;
     private final ArrayList<Continent> continents;
@@ -26,7 +26,7 @@ public class Board {
      * Constructor.
      */
     public Board() {
-        this.adjacency = new HashMap<>();
+        this.adjacency = new ArrayList<>();
         this.mapTerritoryToIdx = new HashMap<>();
         this.territories = new ArrayList<>();
         this.continents = new ArrayList<>();
@@ -35,25 +35,47 @@ public class Board {
     //endregion
 
     //region GETTERS AND SETTERS
+    /**
+     * Getter of territories field.
+     * @return ArrayList of territories.
+     */
     public ArrayList<Territory> getTerritories() {
         return this.territories;
     }
 
+    /**
+     * Getter of continents field.
+     * @return ArrayList of continents.
+     */
     public ArrayList<Continent> getContinents() {
         return this.continents;
     }
 
+    /**
+     * Getter of index of given territory name.
+     * @param name String name of the territory.
+     * @return index int of the position of the territory in territories field.
+     */
     public int getTerritoryIdx(final String name) {
         return this.mapTerritoryToIdx.get(name);
     }
 
-    public HashMap<Integer, ArrayList<Integer>> getAdjacency() {
+    /**
+     * Getter of the adjacency field.
+     * @return adjacency list.
+     */
+    public ArrayList<ArrayList<Integer>> getAdjacency() {
         return this.adjacency;
     }
 
+    /**
+     * Getters of the adjacent field.
+     * @param territory object territory.
+     * @return arraylist of adjacent territory to the given one.
+     */
     public ArrayList<Territory> getAdjacent(Territory territory) {
         ArrayList<Territory> adjacent = new ArrayList<>();
-        for (int idx : this.adjacency.get(getTerritoryIdx(territory.getName()))) {
+        for (final int idx : this.adjacency.get(this.getTerritoryIdx(territory.getName()))) {
             adjacent.add(this.territories.get(idx));
         }
         return adjacent;
@@ -61,11 +83,14 @@ public class Board {
     //endregion
 
     //region METHODS
+    /**
+     * Procedure - initialize contients and territories, setting adjacency list.
+     */
     private void initMap() {
-        try {
-            final Scanner scanContinents = new Scanner(new File(Continent.PATH_CONTINENTS));
-            final Scanner scanBonus = new Scanner(new File(Continent.PATH_BONUS));
-            final Scanner scanTerritories = new Scanner(new File(Territory.PATH_TERRITORIES));
+        try (final Scanner scanContinents = new Scanner(new File(Continent.PATH_CONTINENTS));
+             final Scanner scanBonus = new Scanner(new File(Continent.PATH_BONUS));
+             final Scanner scanTerritories = new Scanner(new File(Territory.PATH_TERRITORIES));
+             final Scanner scanAdj = new Scanner(new File(PATH_ADJ))) {
 
             // create every continent
             while (scanContinents.hasNextLine() && scanBonus.hasNextLine()) {
@@ -84,18 +109,16 @@ public class Board {
             }
 
             // get adjacency
-            final Scanner scanAdj = new Scanner(new File(PATH_ADJ));
-            for (final Territory terr : this.territories) {
+            for (int i = 0; i < this.territories.size(); i++) {
                 // foreach territory
                 final String[] splitAdj = scanAdj.nextLine().split(",");
-                final ArrayList<Integer> adjCurrent = new ArrayList<>();
+                this.adjacency.add(new ArrayList<>());
                 for (final String adjName : splitAdj) {
                     // get its adjacent
-                    adjCurrent.add(this.getTerritoryIdx(adjName));
+                    this.adjacency.get(i).add(this.getTerritoryIdx(adjName));
                 }
-                this.adjacency.put(this.getTerritoryIdx(terr.getName()), adjCurrent);
             }
-        } catch (Exception exception) {
+        } catch (final Exception exception) {
             exception.printStackTrace();
         }
     }

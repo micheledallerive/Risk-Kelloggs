@@ -1,7 +1,10 @@
 package gui.views;
 
 import gui.EventCallback;
-import gui.components.*;
+import gui.components.JRoundButton;
+import gui.components.MessageDialog;
+import gui.components.NameDialog;
+import gui.components.PlayersDisplayer;
 import gui.utils.MapUtils;
 import model.AI;
 import model.Game;
@@ -10,10 +13,21 @@ import model.Territory;
 import model.callback.Callback;
 import model.enums.GameStatus;
 
-import java.awt.*;
-import java.awt.event.*;
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JLayeredPane;
+import javax.swing.OverlayLayout;
+import javax.swing.Timer;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.function.Function;
-import javax.swing.*;
 
 /**
  * Class JPanel to set up after main menu, the player's name before the start of
@@ -67,7 +81,6 @@ public class JGame extends JLayeredPane {
     // endregion
 
     // region METHODS
-
     /**
      * Procedure - handle name ask form.
      */
@@ -193,7 +206,6 @@ public class JGame extends JLayeredPane {
         };
 
         final EventCallback playingCallback = MapUtils.playingCallback(game, map, nextTurn, parent);
-        //final EventCallback playingCallback = MapUtils.playCallback(game, nextTurn, parent);
 
         // handles user
         map.addCallback(playingCallback);
@@ -233,7 +245,7 @@ public class JGame extends JLayeredPane {
         map.repaint();
     }
 
-    private void playing(Timer timer) {
+    private void playing(final Timer timer) {
         Player currentPlayer = game.getPlayers().get(game.getTurn());
         if (currentPlayer.isAI()) {
             ((AI) currentPlayer).attack(game.getBoard(), new Callback() {

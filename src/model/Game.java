@@ -392,7 +392,7 @@ public class Game implements Serializable {
     }
 
     /**
-     * Procedure - add turn listener
+     * Procedure - add turn listener.
      * @param tl TurnListener interface implemented.
      */
     public void addListener(final TurnListener tl) {

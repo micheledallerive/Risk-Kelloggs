@@ -32,11 +32,12 @@ public class AI extends Player {
     //region METHODS
     /**
      * Attacks a player.
+     * @param board game board.
      * @param callback the callback to be called in the Main function
      *                 (either TUI or GUI) in order to let the player do
      *                 something when they are attacked by an AI.
      */
-    public void attack(Board board, Callback callback) {
+    public void attack(final Board board, final Callback callback) {
         // from AI territories, get the ones that have more than 1 army
         List<Territory> available = this.getTerritories()
                 .stream()

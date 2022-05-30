@@ -48,7 +48,7 @@ public class AttackCommand extends Command {
         Territory fromTerritory = territories.get(board.getTerritoryIdx(fromTerritoryStr));
 
         if (fromTerritory.getName() != null) {
-            HashMap<Integer, ArrayList<Integer>> adjacency = board.getAdjacency();
+            ArrayList<ArrayList<Integer>> adjacency = board.getAdjacency();
 
             String toAttack = askTerritory(
                 "Which territory do you want to attack?",
