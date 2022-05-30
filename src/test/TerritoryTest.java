@@ -16,6 +16,9 @@ import org.junit.Test;
  */
 public class TerritoryTest {
 
+    /**
+     * Test occupied.
+     */
     @Test
     public void testOccupied() {
         Player player = new Player(ArmyColor.RED, "bob");
@@ -25,6 +28,9 @@ public class TerritoryTest {
         assertTrue(territory.isOccupied());
     }
 
+    /**
+     * Test owner.
+     */
     @Test
     public void testOwner() {
         Player player = new Player(ArmyColor.RED, "bob");
@@ -41,6 +47,9 @@ public class TerritoryTest {
         assertEquals(42, Territory.ADJACENCY.size());
     }*/
 
+    /**
+     * Test getters.
+     */
     @Test
     public void testGetters() {
         Territory territory = new Territory("ALASKA");

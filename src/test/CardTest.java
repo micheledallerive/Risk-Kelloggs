@@ -12,6 +12,9 @@ import org.junit.Test;
  */
 public class CardTest {
 
+    /**
+     * Test constructor getters.
+     */
     @Test
     public void testConstructorGetters() {
         Card card = new Card(CardType.INFANTRY, "AFGHANISTAN");

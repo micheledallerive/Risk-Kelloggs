@@ -25,6 +25,9 @@ import org.junit.Test;
  */
 public class GameTest {
 
+    /**
+     * Test constructor getter setter.
+     */
     @Test
     public void testConstructorGetterSetter() {
         ArrayList<Player> players = new ArrayList<>();
@@ -41,6 +44,9 @@ public class GameTest {
         assertEquals(GameStatus.MENU, game.getStatus());
     }
 
+    /**
+     * Test init armies.
+     */
     @Test
     public void testInitArmies() {
         Game game = new Game();
@@ -52,6 +58,9 @@ public class GameTest {
         assertTrue(p1.getArmies().isEmpty());
     }
 
+    /**
+     * Test give bonus.
+     */
     @Test
     public void testGiveBonus() {
         Game game = new Game();
@@ -91,6 +100,9 @@ public class GameTest {
 
     }
 
+    /**
+     * Test cards.
+     */
     @Test
     public void testCards() {
         Game game = new Game();
@@ -100,6 +112,9 @@ public class GameTest {
         assertNull(game.getRandomCard());
     }
 
+    /**
+     * Test world conquered.
+     */
     @Test
     public void testWorldConquered() {
         Game game = new Game(new ArrayList<Player>());
@@ -117,6 +132,9 @@ public class GameTest {
         assertTrue(game.isWorldConquered());
     }
 
+    /**
+     * Test play.
+     */
     @Test
     public void testPlay() {
         Game game = new Game();
@@ -160,6 +178,9 @@ public class GameTest {
         });
     }
 
+    /**
+     * Test next set turn.
+     */
     @Test
     public void testNextSetTurn() {
         Game game = new Game();
@@ -181,6 +202,9 @@ public class GameTest {
         assertEquals(3, game.getTurn());
     }
 
+    /**
+     * Test set status.
+     */
     @Test
     public void testSetStatus() {
         Game game = new Game();

@@ -12,8 +12,14 @@ import model.enums.ArmyColor;
 
 import org.junit.Test;
 
+/**
+ * The type Ai test.
+ */
 public class AITest {
 
+    /**
+     * Test constructor.
+     */
     @Test
     public void testConstructor() {
         AI ai = new AI();
@@ -26,6 +32,9 @@ public class AITest {
         //ai2.calculateNextMove();
     }
 
+    /**
+     * Test attack.
+     */
     @Test
     public void testAttack() {
         AI blue = new AI(ArmyColor.BLUE);
@@ -82,6 +91,9 @@ public class AITest {
         }
     }
 
+    /**
+     * Test place army.
+     */
     @Test
     public void testPlaceArmy() {
         AI blue = new AI(ArmyColor.BLUE);

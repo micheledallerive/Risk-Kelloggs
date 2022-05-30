@@ -37,8 +37,8 @@ public class AI extends Player {
      * Attacks a player.
      *
      * @param board    game board.
-     * @param callback the callback to be called in the Main function                 (either TUI or GUI) in order to
-     *                 let the player do                 something when they are attacked by an AI.
+     * @param callback the callback to be called in the Main function (either TUI or GUI) in order to
+     *      let the player do something when they are attacked by an AI.
      */
     public void attack(final Board board, final Callback callback) {
         // from AI territories, get the ones that have more than 1 army
@@ -50,9 +50,7 @@ public class AI extends Player {
         }
 
         // if all territories haven't more than one army, AI can't attack
-        if (available.size() == 0) {
-            return;
-        }
+        if (available.isEmpty()) { return; }
 
         // otherwise, choose a random territory from the list,
         // get the nearby territories and randomly choose one to attack
@@ -89,7 +87,7 @@ public class AI extends Player {
                 freeTerritories.add(territory);
             }
         }
-        if (freeTerritories.size() > 0) {
+        if (!freeTerritories.isEmpty()) {
             chosen = freeTerritories.get(RandomUtil.random.nextInt(freeTerritories.size()));
         } else {
             ArrayList<Territory> territories = this.getTerritories();

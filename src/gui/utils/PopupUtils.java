@@ -11,7 +11,7 @@ import javax.swing.Timer;
 /**
  * The type Popup utils.
  *
- * @author dallem@usi.ch
+ * @author dallem @usi.ch
  */
 public class PopupUtils {
 

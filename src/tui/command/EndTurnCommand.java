@@ -7,7 +7,7 @@ import java.util.Scanner;
 /**
  * The End turn command.
  *
- * @author dallem@usi.ch
+ * @author dallem @usi.ch
  */
 public class EndTurnCommand extends Command {
     /**

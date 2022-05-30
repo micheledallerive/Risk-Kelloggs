@@ -16,7 +16,7 @@ import javax.swing.Timer;
 /**
  * A JPopupMenu that displays a message and a close button.
  *
- * @author dallem@usi.ch
+ * @author dallem @usi.ch
  */
 public class JPopup extends JPopupMenu {
 

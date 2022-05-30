@@ -33,7 +33,7 @@ import java.util.stream.Collectors;
 /**
  * TUI class.
  *
- * @author dallem@usi.ch, moralj@usi.ch
+ * @author dallem @usi.ch, moralj@usi.ch
  */
 public class Main {
 

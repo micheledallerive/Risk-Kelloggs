@@ -12,7 +12,7 @@ import javax.swing.JLabel;
 /**
  * The type Message dialog.
  *
- * @author dallem@usi.ch
+ * @author dallem @usi.ch
  */
 public class MessageDialog extends BaseDialog {
 

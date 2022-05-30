@@ -10,9 +10,12 @@ import org.junit.Test;
 /**
  * This class tests the functionality of the class Dice
  *
- * @author moralj@usi.ch
+ * @author moralj @usi.ch
  */
 public class DieTest {
+    /**
+     * Init test.
+     */
     @Test
     public void initTest() {
         Die.init();
@@ -23,6 +26,9 @@ public class DieTest {
         assertEquals(3, blue);
     }
 
+    /**
+     * Roll test.
+     */
     @Test
     public void rollTest() {
         Die.init();

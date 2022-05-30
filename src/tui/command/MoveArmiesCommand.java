@@ -11,7 +11,7 @@ import java.util.Scanner;
 /**
  * Move armies command.
  *
- * @author dallem@usi.ch
+ * @author dallem @usi.ch
  */
 public class MoveArmiesCommand extends Command {
 

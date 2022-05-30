@@ -10,8 +10,15 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.ImageIcon;
 
+/**
+ * The type J turn picker.
+ * @author dallem@usi.ch
+ */
 public class JTurnPicker extends TransparentPanel {
 
+    /**
+     * Instantiates a new J turn picker.
+     */
     public JTurnPicker() {
         super();
         init();
@@ -26,15 +33,13 @@ public class JTurnPicker extends TransparentPanel {
         constraints.weighty = 1;
 
         final MouseAdapter cursorAdapter = new MouseAdapter() {
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                super.mouseEntered(e);
+            @Override public void mouseEntered(MouseEvent mouseEvent) {
+                super.mouseEntered(mouseEvent);
                 setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
             }
 
-            @Override
-            public void mouseExited(MouseEvent e) {
-                super.mouseExited(e);
+            @Override public void mouseExited(MouseEvent mouseEvent) {
+                super.mouseExited(mouseEvent);
                 setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
             }
         };
@@ -68,21 +73,30 @@ public class JTurnPicker extends TransparentPanel {
 
     }
 
+    /**
+     * Sets play adapter.
+     *
+     * @param adapter the adapter
+     */
     public void setPlayAdapter(MouseAdapter adapter) {
         getComponents()[0].addMouseListener(adapter);
     }
 
+    /**
+     * Sets move adapter.
+     *
+     * @param adapter the adapter
+     */
     public void setMoveAdapter(MouseAdapter adapter) {
         getComponents()[1].addMouseListener(adapter);
     }
 
+    /**
+     * Sets end adapter.
+     *
+     * @param adapter the adapter
+     */
     public void setEndAdapter(MouseAdapter adapter) {
         getComponents()[2].addMouseListener(adapter);
-    }
-
-    @Override
-    public void setVisible(boolean aFlag) {
-        super.setVisible(aFlag);
-        //if (getParent() != null) ((JPanel) getParent()).getRootPane().getGlassPane().setVisible(aFlag);
     }
 }

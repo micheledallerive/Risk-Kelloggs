@@ -15,7 +15,7 @@ import javax.swing.plaf.FontUIResource;
 /**
  * Main class starting the GUI game.
  *
- * @author moralj@usi.ch, dallem@usi.ch
+ * @author moralj @usi.ch, dallem@usi.ch
  */
 public class Main {
     /**

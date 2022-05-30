@@ -17,7 +17,7 @@ import javax.swing.JLabel;
 /**
  * Displays the players in the game.
  *
- * @author dallem@usi.ch
+ * @author dallem @usi.ch
  */
 public class PlayersDisplayer extends TransparentPanel {
     private final Game game;

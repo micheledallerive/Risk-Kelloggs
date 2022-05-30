@@ -22,6 +22,9 @@ import org.junit.Test;
  */
 public class PlayerTest {
 
+    /**
+     * Test constructor.
+     */
     @Test
     public void testConstructor() {
         Player player1 = new Player(ArmyColor.BLACK, "bob");
@@ -35,6 +38,9 @@ public class PlayerTest {
         assertFalse(player1.isAI());
     }
 
+    /**
+     * Test player cards.
+     */
     @Test
     public void testPlayerCards() {
         Game game = new Game();
@@ -50,6 +56,9 @@ public class PlayerTest {
         assertEquals(oldCardsCount + 1, player.getCards().size());
     }
 
+    /**
+     * Test player armies.
+     */
     @Test
     public void testPlayerArmies() {
         Game game = new Game();
@@ -93,6 +102,9 @@ public class PlayerTest {
         game.giveArmiesToPlayer(player, armiesGained);
     }
 
+    /**
+     * Test attack.
+     */
     @Test
     public void testAttack() {
         Game game = new Game();
@@ -116,6 +128,9 @@ public class PlayerTest {
         assertTrue(results2[1] >= 0 && results2[1] <= 3);
     }
 
+    /**
+     * Test place armies.
+     */
     @Test
     public void testPlaceArmies() {
         Game game = new Game();
@@ -144,6 +159,9 @@ public class PlayerTest {
         bob.placeArmies(territory, -50);
     }
 
+    /**
+     * Test remove armies.
+     */
     @Test
     public void testRemoveArmies() {
         Game game = new Game();
@@ -180,6 +198,9 @@ public class PlayerTest {
         assertEquals(bob.getArmies().size(), oldArmiesSize + 1);
     }
 
+    /**
+     * Test move armies.
+     */
     @Test
     public void testMoveArmies() {
         Game game = new Game();
@@ -210,6 +231,9 @@ public class PlayerTest {
         //assertEquals(territory, bob.getTerritories().get(0)); // redo this test, ISN'T CONSISTENT.
     }
 
+    /**
+     * Test generate players randomly.
+     */
     @Test
     public void testGeneratePlayersRandomly() {
         Game game = new Game();
@@ -244,6 +268,9 @@ public class PlayerTest {
         assertFalse(game.getPlayers().get(0).isAI());
     }
 
+    /**
+     * Test continents.
+     */
     @Test
     public void testContinents() {
         Game game = new Game();

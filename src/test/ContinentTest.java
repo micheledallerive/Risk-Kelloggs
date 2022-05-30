@@ -26,6 +26,9 @@ public class ContinentTest {
         assertEquals(6, Continent.BONUS_VALUES.length);
     }*/
 
+    /**
+     * Test constructor getter setter.
+     */
     @Test
     public void testConstructorGetterSetter() {
         new Game();
@@ -37,6 +40,9 @@ public class ContinentTest {
         assertFalse(europe.isOccupied());
     }
 
+    /**
+     * Test is occupied.
+     */
     @Test
     public void testIsOccupied() {
         Game g = new Game();
@@ -56,6 +62,9 @@ public class ContinentTest {
         assertEquals(p1, asia.getOwner());
     }
 
+    /**
+     * Test string.
+     */
     @Test
     public void testString() {
         Game game = new Game();

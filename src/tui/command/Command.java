@@ -7,12 +7,21 @@ import java.util.Scanner;
 /**
  * Abstract class for the Command Pattern.
  *
- * @author dallem@usi.ch
+ * @author dallem @usi.ch
  */
 public abstract class Command {
     private String name;
+    /**
+     * The Game.
+     */
     protected Game game;
+    /**
+     * The Input.
+     */
     protected Scanner input;
+    /**
+     * The Num input.
+     */
     protected Scanner numInput;
 
     /**

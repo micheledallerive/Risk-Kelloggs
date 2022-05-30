@@ -3,7 +3,7 @@ package gui;
 /**
  * This class is used to create a callback for the click event.
  *
- * @author dallem@usi.ch
+ * @author dallem @usi.ch
  */
 public interface EventCallback {
     /**

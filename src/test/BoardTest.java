@@ -12,6 +12,9 @@ import org.junit.Test;
  */
 public class BoardTest {
 
+    /**
+     * Test init.
+     */
     @Test
     public void testInit() {
         Game game = new Game();

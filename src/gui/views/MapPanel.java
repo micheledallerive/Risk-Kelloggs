@@ -143,7 +143,7 @@ public class MapPanel extends ImageBackgroundPanel {
     }
 
     /**
-     * Resets the callbacks
+     * Resets the callbacks.
      */
     public void resetCallbacks() {
         this.callbacks.clear();

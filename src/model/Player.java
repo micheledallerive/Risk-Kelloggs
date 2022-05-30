@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 /**
  * Describes each player of the game.
  *
- * @author dallem@usi.ch, moralj@usi.ch
+ * @author dallem @usi.ch, moralj@usi.ch
  */
 public class Player {
     //region CONSTANTS

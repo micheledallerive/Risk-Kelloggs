@@ -314,9 +314,8 @@ public class JGame extends JLayeredPane {
         final EventCallback playingCallback = MapUtils.playingCallback(game, map, nextTurn, parent);
         final EventCallback moveCallback = MapUtils.moveCallback(game, map, nextTurn, parent);
         turnPicker.setPlayAdapter(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
+            @Override public void mouseClicked(MouseEvent mouseEvent) {
+                super.mouseClicked(mouseEvent);
                 map.removeCallback(playingCallback);
                 map.removeCallback(moveCallback);
                 if (game.getStatus() == GameStatus.PLAYING) {
@@ -327,8 +326,8 @@ public class JGame extends JLayeredPane {
 
         turnPicker.setMoveAdapter(new MouseAdapter() {
             @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
+            public void mouseClicked(MouseEvent mouseEvent) {
+                super.mouseClicked(mouseEvent);
                 map.removeCallback(playingCallback);
                 map.removeCallback(moveCallback);
                 if (game.getStatus() == GameStatus.PLAYING) {
@@ -339,8 +338,8 @@ public class JGame extends JLayeredPane {
 
         turnPicker.setEndAdapter(new MouseAdapter() {
             @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
+            public void mouseClicked(MouseEvent mouseEvent) {
+                super.mouseClicked(mouseEvent);
                 map.removeCallback(playingCallback);
                 map.removeCallback(moveCallback);
                 nextTurn.apply(null);
@@ -355,10 +354,11 @@ public class JGame extends JLayeredPane {
             timer.stop();
 
             MessageDialog startPlaying = new MessageDialog(
-                parent, new String[] {
-                "The game starts!",
-                "Destroy the other players and conquer the world!",
-            });
+                parent,
+                new String[] {
+                    "The game starts!",
+                    "Destroy the other players and conquer the world!"
+                });
             startPlaying.addWindowListener(new WindowAdapter() {
                 @Override
                 public void windowClosed(WindowEvent event) {
@@ -450,9 +450,8 @@ public class JGame extends JLayeredPane {
                     "Place them!"
                 });
                 bonusDialog.addWindowListener(new WindowAdapter() {
-                    @Override
-                    public void windowClosed(WindowEvent e) {
-                        super.windowClosed(e);
+                    @Override public void windowClosed(WindowEvent windowEvent) {
+                        super.windowClosed(windowEvent);
                         timer.stop();
                     }
                 });

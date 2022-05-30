@@ -23,6 +23,9 @@ public class Continent {
     //endregion
 
     //region FIELDS
+    /**
+     * The constant TERRITORIES.
+     */
     public static final ArrayList<ArrayList<Territory>> TERRITORIES = new ArrayList<>();
 
     private final String name;
@@ -101,7 +104,7 @@ public class Continent {
      * Returns the owner of the whole continent. If there is no unique owner, it returns null.
      *
      * @return null if the country is now owned by a single person,
-     * otherwise returns the person that owns all the continent.
+     *      otherwise returns the person that owns all the continent.
      */
     public Player getOwner() {
         return isOccupied() ? territories.get(0).getOwner() : null;

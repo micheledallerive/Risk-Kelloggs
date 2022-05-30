@@ -25,7 +25,7 @@ import javax.swing.Timer;
  * Class map handling initialization of methods to have a direct representation and
  * correspondence between map image and clickable map territory integrated with the game model.
  *
- * @author dallem@usi.ch
+ * @author dallem @usi.ch
  */
 public class MapUtils {
     //region CONSTANTS
@@ -261,6 +261,15 @@ public class MapUtils {
         };
     }
 
+    /**
+     * Playing callback event callback.
+     *
+     * @param game     the game
+     * @param map      the map
+     * @param nextTurn the next turn
+     * @param parent   the parent
+     * @return the event callback
+     */
     public static EventCallback playingCallback(Game game,
                                                 MapPanel map,
                                                 Function<Void, Void> nextTurn,
@@ -334,6 +343,15 @@ public class MapUtils {
         };
     }
 
+    /**
+     * Move callback event callback.
+     *
+     * @param game     the game
+     * @param map      the map
+     * @param nextTurn the next turn
+     * @param parent   the parent
+     * @return the event callback
+     */
     public static EventCallback moveCallback(Game game,
                                              MapPanel map,
                                              Function<Void, Void> nextTurn,

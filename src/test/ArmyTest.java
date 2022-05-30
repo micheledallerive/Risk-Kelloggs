@@ -18,6 +18,9 @@ import org.junit.Test;
  */
 public class ArmyTest {
 
+    /**
+     * Test constructor.
+     */
     @Test
     public void testConstructor() {
         Army army1 = new Army();
@@ -33,6 +36,9 @@ public class ArmyTest {
         assertEquals("ALASKA", army2.getTerritory().getName());
     }
 
+    /**
+     * Test move to.
+     */
     @Test
     public void testMoveTo() {
         Territory t1 = new Territory("ALASKA");
@@ -43,6 +49,9 @@ public class ArmyTest {
         assertEquals(t2, army1.getTerritory());
     }
 
+    /**
+     * Test to string.
+     */
     @Test
     public void testToString() {
         Army army = new Army(ArmyType.INFANTRY, ArmyColor.BLACK, null);
@@ -51,12 +60,18 @@ public class ArmyTest {
         assertTrue(army2.toString().toLowerCase().contains("alaska"));
     }
 
+    /**
+     * Test get value.
+     */
     @Test
     public void testGetValue() {
         Army army = new Army(ArmyType.INFANTRY, ArmyColor.BLACK, null);
         assertEquals(1, army.calculateValue());
     }
 
+    /**
+     * Test array value.
+     */
     @Test
     public void testArrayValue() {
         Army army = new Army(ArmyType.INFANTRY, ArmyColor.BLACK, null);

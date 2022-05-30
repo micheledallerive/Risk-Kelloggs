@@ -6,24 +6,15 @@ import model.enums.ArmyType;
 import model.enums.CardType;
 import model.enums.GameStatus;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 
 /**
  * Represents the game itself.
- *
- * @author dallem @usi.ch, moralj@usi.ch
+ * @author dallem@usi.ch, moralj@usi.ch
  */
-public class Game implements Serializable {
-    //region CONSTANTS
-    public static final String PATH = "src/model/data/save.txt";
-    //endregion
-
+public class Game {
     //region FIELDS
     // events: Observer, Listeners design pattern
     private final ArrayList<StatusListener> statusListeners;
@@ -60,7 +51,6 @@ public class Game implements Serializable {
 
         this.statusListeners = new ArrayList<>();
         this.turnListeners = new ArrayList<>();
-
         this.allArmies = new HashMap<>();
         this.players = players;
         this.cardsDeck = new ArrayList<>();
@@ -75,10 +65,8 @@ public class Game implements Serializable {
     //endregion
 
     //region GETTERS AND SETTERS
-
     /**
      * Returns the list of players of the game.
-     *
      * @return the list of players of the game.
      */
     public ArrayList<Player> getPlayers() {
@@ -87,7 +75,6 @@ public class Game implements Serializable {
 
     /**
      * Adds a player to the list of players.
-     *
      * @param player the player to add
      */
     public void addPlayer(Player player) {
@@ -96,7 +83,6 @@ public class Game implements Serializable {
 
     /**
      * Returns the board of the current game.
-     *
      * @return the board of the game.
      */
     public Board getBoard() {
@@ -105,7 +91,6 @@ public class Game implements Serializable {
 
     /**
      * Returns the current state of the game.
-     *
      * @return the GameStatus
      */
     public GameStatus getStatus() {
@@ -114,7 +99,6 @@ public class Game implements Serializable {
 
     /**
      * Sets the current state of the game.
-     *
      * @param status the new status of the game
      */
     public void setStatus(GameStatus status) {
@@ -124,7 +108,6 @@ public class Game implements Serializable {
 
     /**
      * Returns the player that starts the game.
-     *
      * @return the player that starts the game.
      */
     public Player getPlayerStarting() {
@@ -133,7 +116,6 @@ public class Game implements Serializable {
 
     /**
      * Sets the player that starts the game.
-     *
      * @param player the player that starts the game.
      */
     public void setPlayerStarting(final Player player) {
@@ -151,7 +133,6 @@ public class Game implements Serializable {
 
     /**
      * Sets the current number of turns each player played.
-     *
      * @param turnsPlayed the number of turns each player played.
      */
     public void setTurnsPlayed(int turnsPlayed) {
@@ -160,7 +141,6 @@ public class Game implements Serializable {
 
     /**
      * Returns the current turn.
-     *
      * @return the current turn
      */
     public final int getTurn() {
@@ -169,7 +149,6 @@ public class Game implements Serializable {
 
     /**
      * Sets the current turn.
-     *
      * @param turn the turn to set as the current one.
      */
     public final void setTurn(int turn) {
@@ -179,7 +158,6 @@ public class Game implements Serializable {
 
     /**
      * Sets the current turn to the player.
-     *
      * @param player the player to set as the current one.
      */
     public void setTurn(final Player player) {
@@ -194,21 +172,6 @@ public class Game implements Serializable {
     //endregion
 
     //region METHODS
-
-    /**
-     * Save game object into file.
-     */
-    public void save() {
-        try {
-            FileOutputStream fos = new FileOutputStream(PATH);
-            ObjectOutputStream oos = new ObjectOutputStream(fos);
-            oos.writeObject(this);
-            oos.close();
-        } catch (final IOException exception) {
-            exception.printStackTrace();
-        }
-    }
-
     /**
      * Initializes the deck of card creating all the cards that it contains.
      */
@@ -252,7 +215,6 @@ public class Game implements Serializable {
 
     /**
      * Moves the chosen amount of armies from the total armies to the armies owned by the player.
-     *
      * @param player the player to give armies to
      * @param num    the amount of armies
      */
@@ -263,7 +225,6 @@ public class Game implements Serializable {
 
     /**
      * Get a random card from the deck and remove it.
-     *
      * @return the card that was randomly picked.
      */
     public Card getRandomCard() {
@@ -279,7 +240,6 @@ public class Game implements Serializable {
     /**
      * Gives the turn bonus to the player and returns the value of armies gained
      * divided by reason (for UI purposes).
-     *
      * @param player                the player to give the bonus to
      * @param indexCardsCombination cards combination the player wants to play (-1 to not play)
      * @return Integer array representing bonus
@@ -319,7 +279,6 @@ public class Game implements Serializable {
 
     /**
      * Initializes randomly created players.
-     *
      * @param total the total number of players
      * @param users the number of actual players (not AIs)
      * @param names the names of the players
@@ -349,7 +308,6 @@ public class Game implements Serializable {
 
     /**
      * Checks if the whole world has been conquered by only one person.
-     *
      * @return true if the whole world is owned by a single person.
      */
     public boolean isWorldConquered() {
@@ -364,7 +322,6 @@ public class Game implements Serializable {
 
     /**
      * Starts the game handling the different states.
-     *
      * @param callback The event to call with respect to game status.
      */
     public void play(GameCallback callback) {
@@ -399,7 +356,6 @@ public class Game implements Serializable {
 
     /**
      * Procedure - add status listener to its listeners arraylist.
-     *
      * @param sl StatusListener interface implemented.
      */
     public void addListener(final StatusListener sl) {
@@ -408,7 +364,6 @@ public class Game implements Serializable {
 
     /**
      * Procedure - add turn listener.
-     *
      * @param tl TurnListener interface implemented.
      */
     public void addListener(final TurnListener tl) {

@@ -15,7 +15,7 @@ import java.util.function.Function;
 /**
  * Defines some static utility methods for printing on the console.
  *
- * @author dallem@usi.ch
+ * @author dallem @usi.ch
  */
 public class Utils {
 

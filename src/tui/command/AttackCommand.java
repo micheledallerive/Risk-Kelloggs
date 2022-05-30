@@ -15,7 +15,7 @@ import java.util.Scanner;
 /**
  * The attack command.
  *
- * @author dallem@usi.ch
+ * @author dallem @usi.ch
  */
 public class AttackCommand extends Command {
 
