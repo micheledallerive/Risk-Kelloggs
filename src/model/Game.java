@@ -7,6 +7,7 @@ import model.enums.CardType;
 import model.enums.GameStatus;
 
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -16,10 +17,13 @@ import java.util.HashMap;
 /**
  * Represents the game itself.
  *
- * @author dallem@usi.ch, moralj@usi.ch
+ * @author dallem @usi.ch, moralj@usi.ch
  */
 public class Game implements Serializable {
     //region CONSTANTS
+    /**
+     * The constant PATH.
+     */
     public static final String PATH = "src/model/data/save.txt";
     //endregion
 
@@ -215,7 +219,7 @@ public class Game implements Serializable {
             ObjectOutputStream oos = new ObjectOutputStream(fos);
             oos.writeObject(this);
             oos.close();
-        } catch (Exception exception) {
+        } catch (final IOException exception) {
             exception.printStackTrace();
         }
     }

@@ -5,7 +5,7 @@ import model.enums.GameStatus;
 /**
  * Interface - implement listener for game status change.
  *
- * @author moralj@usi.ch
+ * @author moralj @usi.ch
  */
 public interface StatusListener {
     /**

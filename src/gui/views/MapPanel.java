@@ -24,18 +24,26 @@ import java.util.ArrayList;
 /**
  * Class to display the map of risk game.
  *
- * @author dallem@usi.ch, moralj@usi.ch
+ * @author dallem @usi.ch, moralj@usi.ch
  */
 public class MapPanel extends ImageBackgroundPanel {
     // region CONSTANTS
     private static final String MAP_PATH = "src/gui/assets/images/map.jpg";
     private static final float BRIGHTNESS_DEFAULT = 1f;
+    private static final  int RADIUS = 30;
+    private static final int LOSS_CIRCLE_RADIUS = 20;
     // endregion
 
     // region FIELDS
     private final ArrayList<EventCallback> callbacks;
     private final Game game;
     private Point lastMovedPoint = null;
+
+    private Territory attackingFrom = null;
+
+    private Territory attackingTo = null;
+
+    private int[] attackResult = null;
     // endregion
 
     // region CONSTRUCTORS
@@ -126,13 +134,6 @@ public class MapPanel extends ImageBackgroundPanel {
     }
 
     /**
-     * Function - removes all the callbacks
-     */
-    public void resetCallbacks() {
-        this.callbacks.clear();
-    }
-
-    /**
      * Function - returns the callbacks list.
      *
      * @return the callbacks list.
@@ -144,7 +145,8 @@ public class MapPanel extends ImageBackgroundPanel {
     /**
      * Function - trigger all the callbacks.
      *
-     * @param val Value to pass to the callbacks.
+     * @param val  Value to pass to the callbacks.
+     * @param args the args
      */
     public void triggerCallbacks(int val, Object... args) {
         for (EventCallback callback : callbacks) {
@@ -158,48 +160,71 @@ public class MapPanel extends ImageBackgroundPanel {
         setBrightness(enabled ? 1f : .5f);
     }
 
-    Territory attackingFrom = null;
-    Territory attackingTo = null;
-    int[] attackResult = null;
-
+    /**
+     * Sets attacking from.
+     *
+     * @param territory the territory
+     */
     public void setAttackingFrom(Territory territory) {
         this.attackingFrom = territory;
     }
 
+    /**
+     * Gets attacking from.
+     *
+     * @return the attacking from
+     */
     public Territory getAttackingFrom() {
         return this.attackingFrom;
     }
 
+    /**
+     * Sets attacking to.
+     *
+     * @param territory the territory
+     */
     public void setAttackingTo(Territory territory) {
         this.attackingTo = territory;
     }
 
+    /**
+     * Gets attacking to.
+     *
+     * @return the attacking to
+     */
     public Territory getAttackingTo() {
         return this.attackingTo;
     }
 
-    public void setAttackResult(int[] attackResult) {
-        this.attackResult = attackResult;
+    /**
+     * Sets attack result.
+     *
+     * @param attackResult the attack result
+     */
+    public void setAttackResult(final int[] attackResult) {
+        this.attackResult = attackResult.clone();
     }
 
+    /**
+     * Clear attacking.
+     */
     public void clearAttacking() {
         this.attackingFrom = null;
         this.attackingTo = null;
         this.attackResult = null;
     }
 
-    final static int RADIUS = 30;
-    final static int LOSS_CIRCLE_RADIUS = 20;
-
     @Override
-    public void paintComponent(Graphics graphcs) {
-        super.paintComponent(graphcs);
-        Graphics2D graphics = (Graphics2D) graphcs;
+    public void paintComponent(Graphics paramGraphics) {
+        super.paintComponent(paramGraphics);
+
+        Graphics2D graphics = (Graphics2D) paramGraphics;
         for (Territory territory : game.getBoard().getTerritories()) {
             if (territory.getOwner() == null || territory.getArmiesCount() == 0) {
                 continue;
             }
-            Polygon polygon = MapUtils.POLYGONS.get(territory.getName().toString());
+
+            Polygon polygon = MapUtils.POLYGONS.get(territory.getName());
             Point centroid = MapUtils.getCentroid(polygon);
             centroid = MapUtils.mapToView(centroid, getWidth(), getHeight());
             graphics.setColor(ImageUtils.armyColorToColor(territory.getOwner().getColor()));
@@ -215,7 +240,7 @@ public class MapPanel extends ImageBackgroundPanel {
             String number = String.valueOf(territory.getArmiesCount());
             FontMetrics fm = graphics.getFontMetrics();
             int xxx = (int) (centroid.x - (fm.stringWidth(number) * .5) + 1);
-            int yyy = (fm.getAscent() + (centroid.y - (fm.getAscent() + fm.getDescent()) / 2));
+            int yyy = fm.getAscent() + (centroid.y - (fm.getAscent() + fm.getDescent()) / 2);
             graphics.drawString(number, xxx, yyy);
         }
 
@@ -229,6 +254,7 @@ public class MapPanel extends ImageBackgroundPanel {
             drawArrow(graphics, centroid.x, centroid.y, MapUtils.viewToMapX(mouse.x, getWidth()),
                 MapUtils.viewToMapY(mouse.y, getHeight()), 20, 50);
         }
+
         if (attackResult != null) {
             Point fromCentroid = MapUtils.getCentroid(MapUtils.POLYGONS.get(getAttackingFrom().getName().toString()));
             Point toCentroid = MapUtils.getCentroid(MapUtils.POLYGONS.get(getAttackingTo().getName().toString()));
@@ -256,7 +282,7 @@ public class MapPanel extends ImageBackgroundPanel {
         graphics.setFont(new Font("Arial", Font.BOLD, 24));
         FontMetrics fm = graphics.getFontMetrics();
         int x1 = (int) (xxx - (fm.stringWidth(text) * .5) + 1);
-        int y1 = (fm.getAscent() + (yyy - (fm.getAscent() + fm.getDescent()) / 2));
+        int y1 = fm.getAscent() + (yyy - (fm.getAscent() + fm.getDescent()) / 2);
         graphics.drawString(text, x1, y1);
     }
 

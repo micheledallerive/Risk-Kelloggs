@@ -21,7 +21,7 @@ import javax.swing.border.EmptyBorder;
 /**
  * Class JMainMenu extended from JPanel to create main menu.
  *
- * @author dallem@usi.ch
+ * @author dallem @usi.ch
  */
 public class JMainMenu extends ImageBackgroundPanel {
 

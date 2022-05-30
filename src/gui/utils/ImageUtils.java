@@ -16,7 +16,7 @@ import javax.swing.ImageIcon;
 /**
  * Class of Utils methods.
  *
- * @author dallem@usi.ch
+ * @author dallem @usi.ch
  */
 public class ImageUtils {
     /**
@@ -26,6 +26,12 @@ public class ImageUtils {
 
     }
 
+    /**
+     * Gets image.
+     *
+     * @param path the path
+     * @return the image
+     */
     public static Image getImage(final String path) {
         return new ImageIcon(path).getImage();
     }
@@ -46,22 +52,22 @@ public class ImageUtils {
     }
 
     /**
-     * scale image
+     * Scale image.
      *
      * @param sbi       image to scale
      * @param imageType type of image
-     * @param dWidth    width of destination image
-     * @param dHeight   height of destination image
+     * @param width    width of destination image
+     * @param height   height of destination image
      * @return scaled image
      */
-    public static BufferedImage scale(BufferedImage sbi, int imageType, int dWidth, int dHeight) {
+    public static BufferedImage scale(BufferedImage sbi, int imageType, int width, int height) {
         BufferedImage dbi = null;
         if (sbi != null) {
-            dbi = new BufferedImage(dWidth, dHeight, imageType);
-            Graphics2D g = dbi.createGraphics();
-            AffineTransform at = AffineTransform.getScaleInstance(((float) dWidth) / sbi.getWidth(),
-                ((float) dHeight) / sbi.getHeight());
-            g.drawRenderedImage(sbi, at);
+            dbi = new BufferedImage(width, height, imageType);
+            Graphics2D graphics = dbi.createGraphics();
+            AffineTransform at = AffineTransform.getScaleInstance(((float) width) / sbi.getWidth(),
+                ((float) height) / sbi.getHeight());
+            graphics.drawRenderedImage(sbi, at);
         }
         return dbi;
     }
@@ -125,6 +131,12 @@ public class ImageUtils {
         }
     }
 
+    /**
+     * Choose foreground color color.
+     *
+     * @param color the color
+     * @return the color
+     */
     public static Color chooseForegroundColor(ArmyColor color) {
         Color rgb = armyColorToColor(color);
         int red = rgb.getRed();
@@ -133,6 +145,12 @@ public class ImageUtils {
         return (red * 0.299 + green * 0.587 + blue * 0.114) > 100 ? Color.BLACK : Color.WHITE;
     }
 
+    /**
+     * Gets player icon.
+     *
+     * @param player the player
+     * @return the player icon
+     */
     public static Image getPlayerIcon(Player player) {
         String path = "src/gui/assets/images/icon/";
         path += player.isAI() ? "ai" : "player";

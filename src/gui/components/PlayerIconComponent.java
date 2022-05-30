@@ -19,14 +19,15 @@ import javax.swing.JPanel;
 /**
  * Class display player icon JComponent.
  *
- * @author dallem@usi.ch
+ * @author dallem @usi.ch
  */
 public class PlayerIconComponent extends TransparentPanel {
 
-    //region CONSTRUCTORS
-
+    //region FIELDS
     private final Player player;
+    //endregion
 
+    //region CONSTRUCTORS
     /**
      * Constructor.
      *
@@ -58,9 +59,9 @@ public class PlayerIconComponent extends TransparentPanel {
 
         JPanel iconCircle = new TransparentPanel() {
             @Override
-            protected void paintComponent(Graphics g) {
-                super.paintComponent(g);
-                Graphics2D graphics2D = (Graphics2D) g.create();
+            protected void paintComponent(Graphics graphics) {
+                super.paintComponent(graphics);
+                Graphics2D graphics2D = (Graphics2D) graphics.create();
                 graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                         RenderingHints.VALUE_ANTIALIAS_ON);
                 graphics2D.setColor(Color.WHITE);
@@ -75,9 +76,9 @@ public class PlayerIconComponent extends TransparentPanel {
     }
 
     @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        Graphics2D graphics2D = (Graphics2D) g.create();
+    protected void paintComponent(Graphics graphics) {
+        super.paintComponent(graphics);
+        Graphics2D graphics2D = (Graphics2D) graphics.create();
         graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_ON);
         graphics2D.setColor(ImageUtils.armyColorToColor(player.getColor()));

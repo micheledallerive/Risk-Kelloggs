@@ -8,7 +8,7 @@ import java.util.ArrayList;
 /**
  * Describes a single piece of army, using its type (i.e. the shape) and the color.
  *
- * @author dallem@usi.ch, moralj@usi.ch
+ * @author dallem @usi.ch, moralj@usi.ch
  */
 public class Army {
     //region ENUMS

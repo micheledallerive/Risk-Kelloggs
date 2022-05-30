@@ -16,7 +16,7 @@ import javax.swing.JPanel;
 /**
  * Class main window for GUI main handler.
  *
- * @author moralj@usi.ch
+ * @author moralj @usi.ch
  */
 public class MainWindow extends JFrame {
     // region CONSTANTS

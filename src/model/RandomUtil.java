@@ -5,9 +5,12 @@ import java.util.Random;
 /**
  * Class for initialize a unique random seed to generate pseudo-random code.
  *
- * @author dallem@usi.ch, moralj@usi.ch
+ * @author dallem @usi.ch, moralj@usi.ch
  */
 public final class RandomUtil {
+    /**
+     * The constant random.
+     */
     public static Random random;
 
     private RandomUtil() {

@@ -10,7 +10,7 @@ import java.util.Map;
 /**
  * Class specialized to provide the game font.
  *
- * @author dallem@usi.ch, moralj@usi.ch
+ * @author dallem @usi.ch, moralj@usi.ch
  */
 public class FontUtils {
     // region CONSTANTS

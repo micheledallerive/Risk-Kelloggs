@@ -11,7 +11,7 @@ import javax.swing.JFrame;
 /**
  * Class for message modal dialogs.
  *
- * @author dallem@usi.ch
+ * @author dallem @usi.ch
  */
 public class BaseDialog extends ImageBackgroundDialog {
 

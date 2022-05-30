@@ -1,6 +1,7 @@
 package model;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
@@ -8,14 +9,20 @@ import java.util.Scanner;
 /**
  * Describes the board of the game containing the map of the world.
  *
- * @author moralj@usi.ch, dallem@usi.ch
+ * @author moralj @usi.ch, dallem@usi.ch
  */
 public class Board {
     //region CONSTANTS
+    /**
+     * The constant PATH_ADJ.
+     */
     public static final String PATH_ADJ = "src/model/data/adjacency.txt";
     //endregion
 
     //region FIELDS
+    /**
+     * The Adjacency.
+     */
     public final ArrayList<ArrayList<Integer>> adjacency;
     private final HashMap<String, Integer> mapTerritoryToIdx;
     private final ArrayList<Territory> territories;
@@ -23,7 +30,6 @@ public class Board {
     //endregion
 
     //region CONSTRUCTOR
-
     /**
      * Constructor.
      */
@@ -37,7 +43,6 @@ public class Board {
     //endregion
 
     //region GETTERS AND SETTERS
-
     /**
      * Getter of territories field.
      *
@@ -127,7 +132,7 @@ public class Board {
                     this.adjacency.get(i).add(this.getTerritoryIdx(adjName));
                 }
             }
-        } catch (final Exception exception) {
+        } catch (final FileNotFoundException exception) {
             exception.printStackTrace();
         }
     }

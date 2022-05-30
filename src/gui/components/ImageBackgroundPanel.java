@@ -14,7 +14,7 @@ import javax.swing.ImageIcon;
 /**
  * Class for panel with background image.
  *
- * @author dallem@usi.ch
+ * @author dallem @usi.ch
  */
 public class ImageBackgroundPanel extends TransparentPanel {
 

@@ -14,11 +14,18 @@ import java.util.stream.Collectors;
 /**
  * Describes each player of the game.
  *
- * @author dallem@usi.ch
+ * @author dallem@usi.ch, moralj@usi.ch
  */
 public class Player {
     //region CONSTANTS
+    /**
+     * The constant MIN_PLAYERS.
+     */
     static final byte MIN_PLAYERS = 3;
+
+    /**
+     * The Max players.
+     */
     static final byte MAX_PLAYERS = 6;
     //endregion
 
@@ -50,7 +57,7 @@ public class Player {
     /**
      * Give player's cards.
      *
-     * @return player's cards.
+     * @return player 's cards.
      */
     public ArrayList<Card> getCards() {
         return this.cards;
@@ -68,7 +75,7 @@ public class Player {
     /**
      * Give player's army list.
      *
-     * @return player's armies.
+     * @return player 's armies.
      */
     public ArrayList<Army> getArmies() {
         return this.armies;
@@ -104,7 +111,7 @@ public class Player {
     /**
      * Give player's color.
      *
-     * @return player's color.
+     * @return player 's color.
      */
     public ArmyColor getColor() {
         return this.color;
@@ -153,7 +160,7 @@ public class Player {
     /**
      * Give player's territories list.
      *
-     * @return player's territories.
+     * @return player 's territories.
      */
     public ArrayList<Territory> getTerritories() {
         final HashSet<Territory> set = new HashSet<>();
@@ -207,8 +214,7 @@ public class Player {
      * @param territory     the territory to attack
      * @param armies        the number of armies to use for the attack
      * @param defArmies     The optional parameter array states number of defender armies.
-     * @return an array containing how many armies the attacker has lost
-     * and how many armies the defender has lost.
+     * @return an array containing how many armies the attacker has lost and how many armies the defender has lost.
      */
     public ArrayList<DieColor> getAttackDiceOutcome(final Territory fromTerritory, final Territory territory,
                                                     int armies, int... defArmies) {
@@ -248,8 +254,7 @@ public class Player {
      * @param territory     the territory to attack
      * @param armies        the number of armies to use for the attack
      * @param defArmies     The optional parameter array states number of defender armies.
-     * @return an array containing how many armies the attacker has lost
-     * and how many armies the defender has lost.
+     * @return an array containing how many armies the attacker has lost and how many armies the defender has lost.
      */
     public int[] getAttackOutcome(final Territory fromTerritory, final Territory territory,
                                   int armies, int... defArmies) {

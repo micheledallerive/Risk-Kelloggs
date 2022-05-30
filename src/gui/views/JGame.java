@@ -21,7 +21,7 @@ import javax.swing.*;
  * Class JPanel to set up after main menu, the player's name before the start of
  * the game.
  *
- * @author dallem@usi.ch
+ * @author dallem @usi.ch
  */
 public class JGame extends JLayeredPane {
     // region FIELDS

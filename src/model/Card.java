@@ -5,7 +5,7 @@ import model.enums.CardType;
 /**
  * Describes a card with territory and figure.
  *
- * @author dallem@usi.ch
+ * @author dallem @usi.ch
  */
 public class Card {
     //region FIELDS
@@ -18,8 +18,8 @@ public class Card {
     /**
      * Create a new card.
      *
-     * @param type      The type of the card that is represented
-     *                  in the bottom (infantry, cavalry, artillery, wild).
+     * @param type      The type of the card that is represented in the bottom (infantry, cavalry,
+     *                  artillery, wild).
      * @param territory The territory represented in the top of the card.
      */
     public Card(final CardType type, final String territory) {

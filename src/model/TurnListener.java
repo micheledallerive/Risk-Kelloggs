@@ -3,7 +3,7 @@ package model;
 /**
  * Event to implement to handle turn changing behavior.
  *
- * @author dallem@usi.ch
+ * @author dallem @usi.ch
  */
 public interface TurnListener {
     /**

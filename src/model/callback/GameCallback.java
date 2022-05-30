@@ -3,7 +3,7 @@ package model.callback;
 /**
  * Callback to handle game status.
  *
- * @author dallem@usi.ch
+ * @author dallem @usi.ch
  */
 public interface GameCallback {
     /**
