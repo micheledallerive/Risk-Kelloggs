@@ -240,7 +240,7 @@ public class Player {
         defender.removeArmies(territory, defenderLost);
 
         if (territory.getArmiesCount() == 0) {
-            moveArmies((byte) (armies - attackerLost), fromTerritory, territory);
+            moveArmies((byte) Math.min((armies - attackerLost), fromTerritory.getArmiesCount()), fromTerritory, territory);
             territory.setOwner(fromTerritory.getOwner());
         }
 

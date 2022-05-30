@@ -43,10 +43,12 @@ public class AI extends Player {
      */
     public void attack(final Board board, final Callback callback) {
         // from AI territories, get the ones that have more than 1 army
-        List<Territory> available = this.getTerritories()
-            .stream()
-            .filter((territory) -> territory.getArmiesCount() > 1)
-            .collect(Collectors.toList());
+        List<Territory> available = new ArrayList<>();
+        for (Territory territory : this.getTerritories()) {
+            if (territory.getArmiesCount() > 1) {
+                available.add(territory);
+            }
+        }
 
         // if all territories haven't more than one army, AI can't attack
         if (available.size() == 0) {

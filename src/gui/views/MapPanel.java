@@ -98,6 +98,7 @@ public class MapPanel extends ImageBackgroundPanel {
     // endregion
 
     // region METHODS
+
     /**
      * Function - give the territory clicked on the map.
      *
@@ -139,6 +140,13 @@ public class MapPanel extends ImageBackgroundPanel {
      */
     public ArrayList<EventCallback> getCallbacks() {
         return this.callbacks;
+    }
+
+    /**
+     * Resets the callbacks
+     */
+    public void resetCallbacks() {
+        this.callbacks.clear();
     }
 
     /**
@@ -219,14 +227,7 @@ public class MapPanel extends ImageBackgroundPanel {
 
         Graphics2D graphics = (Graphics2D) paramGraphics;
         for (Territory territory : game.getBoard().getTerritories()) {
-
-            // don't render the territory if
-            if (territory.getOwner() == null        // territory without owner
-                || territory.getArmiesCount() == 0  //
-                || (attackingFrom != null
-                    && attackingTo == null
-                    && (!game.getBoard().getAdjacent(attackingFrom).contains(territory)
-                        || attackingFrom.getOwner() == territory.getOwner()))) {
+            if (territory.getOwner() == null || territory.getArmiesCount() == 0) {
                 continue;
             }
 
@@ -279,8 +280,7 @@ public class MapPanel extends ImageBackgroundPanel {
             drawString(graphics, Color.RED, "-" + attackResult[1], toCentroid.x,
                 (int) (toCentroid.y - ylabelIncrease * RADIUS), LOSS_CIRCLE_RADIUS);
 
-        }
-
+            }
     }
 
     private void drawString(Graphics2D graphics, Color color, String text, int xxx, int yyy, final int radius) {
