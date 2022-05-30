@@ -101,11 +101,11 @@ public class PlayerTest {
         bob.placeArmies(from, 15);
         alice.placeArmies(to, 4);
 
-        int[] results = bob.attack(from, to, 3, 3);
+        int[] results = bob.getAttackOutcome(from, to, 3, 3);
         assertTrue(results[0] >= 0 && results[0] <= 3);
         assertTrue(results[1] >= 0 && results[1] <= 3);
 
-        int[] results2 = bob.attack(from, to, 3);
+        int[] results2 = bob.getAttackOutcome(from, to, 3);
         assertTrue(results2[0] >= 0 && results2[0] <= 3);
         assertTrue(results2[1] >= 0 && results2[1] <= 3);
     }

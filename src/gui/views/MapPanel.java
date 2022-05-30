@@ -176,6 +176,7 @@ public class MapPanel extends ImageBackgroundPanel {
         super.paintComponent(graphcs);
         Graphics2D graphics = (Graphics2D) graphcs;
         final int RADIUS = 30;
+        final int LOSS_CIRCLE_RADIUS = 20;
         for (Territory territory : game.getBoard().getTerritories()) {
             if (territory.getOwner() == null || territory.getArmiesCount() == 0) {
                 continue;
@@ -221,16 +222,20 @@ public class MapPanel extends ImageBackgroundPanel {
             fromCentroid = MapUtils.mapToView(fromCentroid, getWidth(), getHeight());
             toCentroid = MapUtils.mapToView(toCentroid, getWidth(), getHeight());
             // draw on top of the centroid how many armies were lost
+            graphics.setColor(Color.WHITE);
+            float yLabelIncrease = 1.75f;
             if (attackResult[0] > 0) {
-                drawString(graphics, Color.RED, "-" + attackResult[0], fromCentroid.x, (int) (fromCentroid.y - 1.5 * RADIUS));
+                drawString(graphics, Color.RED, "-" + attackResult[0], fromCentroid.x, (int) (fromCentroid.y - yLabelIncrease * RADIUS), LOSS_CIRCLE_RADIUS);
             }
             if (attackResult[1] > 0) {
-                drawString(graphics, Color.RED, "-" + attackResult[1], toCentroid.x, (int) (toCentroid.y - 1.5 * RADIUS));
+                drawString(graphics, Color.RED, "-" + attackResult[1], toCentroid.x, (int) (toCentroid.y - yLabelIncrease * RADIUS), LOSS_CIRCLE_RADIUS);
             }
         }
     }
 
-    private void drawString(Graphics2D graphics, Color color, String text, int x, int y) {
+    private void drawString(Graphics2D graphics, Color color, String text, int x, int y, final int RADIUS) {
+        graphics.setColor(Color.WHITE);
+        graphics.fillOval(x - RADIUS, y - RADIUS, RADIUS * 2 - 1, RADIUS * 2 - 1);
         graphics.setColor(color);
         graphics.setFont(new Font("Arial", Font.BOLD, 24));
         FontMetrics fm = graphics.getFontMetrics();

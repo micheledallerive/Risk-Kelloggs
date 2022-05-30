@@ -11,11 +11,13 @@ public class QuantityDialog extends BaseDialog {
 
     private int min;
     private int max;
+    private String message;
 
-    public QuantityDialog(JFrame parent, int min, int max) {
+    public QuantityDialog(JFrame parent, String message, int min, int max) {
         super(parent, "", true, 100);
         this.min = min;
         this.max = max;
+        this.message = message;
         initComponents();
     }
 
@@ -24,7 +26,7 @@ public class QuantityDialog extends BaseDialog {
         GridBagConstraints constraints = new GridBagConstraints();
 
         constraints.gridy = 0;
-        JLabel label = new JLabel("Select the amount of armies to place: ");
+        JLabel label = new JLabel(message);
         label.setHorizontalAlignment(SwingConstants.CENTER);
         label.setFont(FontUtils.addLetterSpacing(label.getFont().deriveFont(Font.PLAIN, 18f), .1f));
         add(label, constraints);
