@@ -1,5 +1,10 @@
 package gui.views;
 
+import gui.EventCallback;
+import gui.components.ImageBackgroundPanel;
+import gui.components.TransparentPanel;
+import gui.utils.FontUtils;
+
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.KeyAdapter;
@@ -10,11 +15,6 @@ import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-
-import gui.EventCallback;
-import gui.components.ImageBackgroundPanel;
-import gui.components.TransparentPanel;
-import gui.utils.FontUtils;
 
 //TODO: Rename JMainMenu
 

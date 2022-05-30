@@ -1,5 +1,6 @@
 package gui.components;
 
+import gui.EventCallback;
 import model.Game;
 import model.TurnListener;
 
@@ -12,8 +13,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
-
-import gui.EventCallback;
 
 public class PlayersDisplayer extends TransparentPanel {
     private final Game game;

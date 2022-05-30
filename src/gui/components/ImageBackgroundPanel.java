@@ -1,5 +1,7 @@
 package gui.components;
 
+import gui.utils.ImageUtils;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -8,8 +10,6 @@ import java.awt.Image;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import javax.swing.ImageIcon;
-
-import gui.utils.ImageUtils;
 
 /**
  * Class for panel with background image.

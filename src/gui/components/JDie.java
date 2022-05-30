@@ -1,5 +1,6 @@
 package gui.components;
 
+import gui.EventCallback;
 import model.Die;
 import model.enums.DieColor;
 
@@ -10,8 +11,6 @@ import java.util.HashMap;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.Timer;
-
-import gui.EventCallback;
 
 /**
  * Class Die graphical representation.

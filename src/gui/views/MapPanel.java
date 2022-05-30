@@ -1,5 +1,10 @@
 package gui.views;
 
+import gui.EventCallback;
+import gui.components.ImageBackgroundPanel;
+import gui.utils.FontUtils;
+import gui.utils.ImageUtils;
+import gui.utils.MapUtils;
 import model.Game;
 import model.Territory;
 
@@ -15,12 +20,6 @@ import java.awt.Polygon;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
-
-import gui.EventCallback;
-import gui.components.ImageBackgroundPanel;
-import gui.utils.FontUtils;
-import gui.utils.ImageUtils;
-import gui.utils.MapUtils;
 
 /**
  * Class to display the map of risk game.
@@ -182,12 +181,13 @@ public class MapPanel extends ImageBackgroundPanel {
         this.attackResult = null;
     }
 
+    final static int RADIUS = 30;
+    final static int LOSS_CIRCLE_RADIUS = 20;
+
     @Override
     public void paintComponent(Graphics graphcs) {
         super.paintComponent(graphcs);
         Graphics2D graphics = (Graphics2D) graphcs;
-        final int RADIUS = 30;
-        final int LOSS_CIRCLE_RADIUS = 20;
         for (Territory territory : game.getBoard().getTerritories()) {
             if (territory.getOwner() == null || territory.getArmiesCount() == 0) {
                 continue;
@@ -213,9 +213,9 @@ public class MapPanel extends ImageBackgroundPanel {
 
             String number = String.valueOf(territory.getArmiesCount());
             FontMetrics fm = graphics.getFontMetrics();
-            int x = (int) (centroid.x - (fm.stringWidth(number) * .5) + 1);
-            int y = (fm.getAscent() + (centroid.y - (fm.getAscent() + fm.getDescent()) / 2));
-            graphics.drawString(number, x, y);
+            int xxx = (int) (centroid.x - (fm.stringWidth(number) * .5) + 1);
+            int yyy = (fm.getAscent() + (centroid.y - (fm.getAscent() + fm.getDescent()) / 2));
+            graphics.drawString(number, xxx, yyy);
         }
 
         if (getAttackingFrom() != null && getAttackingTo() == null) {
@@ -235,41 +235,42 @@ public class MapPanel extends ImageBackgroundPanel {
             toCentroid = MapUtils.mapToView(toCentroid, getWidth(), getHeight());
             // draw on top of the centroid how many armies were lost
             graphics.setColor(Color.WHITE);
-            float yLabelIncrease = 1.75f;
+            float ylabelIncrease = 1.75f;
             if (attackResult[0] > 0) {
                 drawString(graphics, Color.RED, "-" + attackResult[0], fromCentroid.x,
-                    (int) (fromCentroid.y - yLabelIncrease * RADIUS), LOSS_CIRCLE_RADIUS);
+                    (int) (fromCentroid.y - ylabelIncrease * RADIUS), LOSS_CIRCLE_RADIUS);
             }
             if (attackResult[1] > 0) {
                 drawString(graphics, Color.RED, "-" + attackResult[1], toCentroid.x,
-                    (int) (toCentroid.y - yLabelIncrease * RADIUS), LOSS_CIRCLE_RADIUS);
+                    (int) (toCentroid.y - ylabelIncrease * RADIUS), LOSS_CIRCLE_RADIUS);
+
             }
         }
     }
 
-    private void drawString(Graphics2D graphics, Color color, String text, int x, int y, final int RADIUS) {
+    private void drawString(Graphics2D graphics, Color color, String text, int xxx, int yyy, final int radius) {
         graphics.setColor(Color.WHITE);
-        graphics.fillOval(x - RADIUS, y - RADIUS, RADIUS * 2 - 1, RADIUS * 2 - 1);
+        graphics.fillOval(xxx - radius, yyy - radius, radius * 2 - 1, radius * 2 - 1);
         graphics.setColor(color);
         graphics.setFont(new Font("Arial", Font.BOLD, 24));
         FontMetrics fm = graphics.getFontMetrics();
-        int x1 = (int) (x - (fm.stringWidth(text) * .5) + 1);
-        int y1 = (fm.getAscent() + (y - (fm.getAscent() + fm.getDescent()) / 2));
+        int x1 = (int) (xxx - (fm.stringWidth(text) * .5) + 1);
+        int y1 = (fm.getAscent() + (yyy - (fm.getAscent() + fm.getDescent()) / 2));
         graphics.drawString(text, x1, y1);
     }
 
-    private void drawArrow(Graphics2D g, int x0, int y0, int x1,
+    private void drawArrow(Graphics2D graphics, int x0, int y0, int x1,
                            int y1, int headLength, int headAngle) {
-        g.setStroke(new BasicStroke(10));
+        graphics.setStroke(new BasicStroke(10));
         double offs = headAngle * Math.PI / 180.0;
         double angle = Math.atan2(y0 - y1, x0 - x1);
         int[] xs = {x1 + (int) (headLength * Math.cos(angle + offs)), x1,
             x1 + (int) (headLength * Math.cos(angle - offs))};
         int[] ys = {y1 + (int) (headLength * Math.sin(angle + offs)), y1,
             y1 + (int) (headLength * Math.sin(angle - offs))};
-        g.drawLine(x0, y0, x1, y1);
+        graphics.drawLine(x0, y0, x1, y1);
         //g.setStroke(new BasicStroke(3));
-        g.drawPolyline(xs, ys, 3);
+        graphics.drawPolyline(xs, ys, 3);
     }
 
     // endregion

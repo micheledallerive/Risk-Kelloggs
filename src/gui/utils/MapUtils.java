@@ -1,5 +1,8 @@
 package gui.utils;
 
+import gui.EventCallback;
+import gui.components.QuantityDialog;
+import gui.views.MapPanel;
 import model.Game;
 import model.Player;
 import model.Territory;
@@ -17,10 +20,6 @@ import java.util.function.Function;
 import java.util.regex.PatternSyntaxException;
 import javax.swing.JFrame;
 import javax.swing.Timer;
-
-import gui.EventCallback;
-import gui.components.QuantityDialog;
-import gui.views.MapPanel;
 
 /**
  * Class map handling initialization of methods to have a direct representation and

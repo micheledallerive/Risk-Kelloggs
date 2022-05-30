@@ -1,5 +1,7 @@
 package gui.components;
 
+import gui.utils.FontUtils;
+
 import java.awt.Dimension;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
@@ -12,8 +14,6 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
-
-import gui.utils.FontUtils;
 
 /**
  * Class to get name of player.

@@ -1,5 +1,6 @@
 package gui.components;
 
+import gui.utils.ImageUtils;
 import model.Player;
 
 import java.awt.Color;
@@ -11,8 +12,6 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-
-import gui.utils.ImageUtils;
 
 
 /**

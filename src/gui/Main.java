@@ -1,5 +1,9 @@
 package gui;
 
+import gui.components.JDie;
+import gui.utils.FontUtils;
+import gui.utils.MapUtils;
+import gui.views.MainWindow;
 import model.Game;
 
 import java.util.Enumeration;
@@ -7,11 +11,6 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.plaf.FontUIResource;
-
-import gui.components.JDie;
-import gui.utils.FontUtils;
-import gui.utils.MapUtils;
-import gui.views.MainWindow;
 
 /**
  * Main class starting the GUI game.

@@ -1,5 +1,11 @@
 package gui.views;
 
+import gui.EventCallback;
+import gui.components.JRoundButton;
+import gui.components.MessageDialog;
+import gui.components.NameDialog;
+import gui.components.PlayersDisplayer;
+import gui.utils.MapUtils;
 import model.AI;
 import model.Game;
 import model.Player;
@@ -24,13 +30,6 @@ import javax.swing.JFrame;
 import javax.swing.JLayeredPane;
 import javax.swing.OverlayLayout;
 import javax.swing.Timer;
-
-import gui.EventCallback;
-import gui.components.JRoundButton;
-import gui.components.MessageDialog;
-import gui.components.NameDialog;
-import gui.components.PlayersDisplayer;
-import gui.utils.MapUtils;
 
 /**
  * Class JPanel to set up after main menu, the player's name before the start of
@@ -150,8 +149,8 @@ public class JGame extends JLayeredPane {
         pauseButton.setPreferredSize(new Dimension(50, 50));
         pauseButton.addMouseListener(new MouseAdapter() {
             @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
+            public void mouseClicked(MouseEvent event) {
+                super.mouseClicked(event);
                 // TODO PAUSE SCREEN
             }
         });
@@ -169,8 +168,8 @@ public class JGame extends JLayeredPane {
 
         uiPane.addComponentListener(new ComponentAdapter() {
             @Override
-            public void componentResized(ComponentEvent e) {
-                super.componentResized(e);
+            public void componentResized(ComponentEvent event) {
+                super.componentResized(event);
                 if (callback != null) {
                     callback.onEvent(-1);
                 }
@@ -193,14 +192,14 @@ public class JGame extends JLayeredPane {
         for (Component component : uiPane.getComponents()) {
             component.addMouseListener(new MouseAdapter() {
                 @Override
-                public void mouseEntered(MouseEvent e) {
-                    super.mouseEntered(e);
+                public void mouseEntered(MouseEvent event) {
+                    super.mouseEntered(event);
                     uiPanel.setEnabled(true);
                 }
 
                 @Override
-                public void mouseExited(MouseEvent e) {
-                    super.mouseExited(e);
+                public void mouseExited(MouseEvent event) {
+                    super.mouseExited(event);
                     uiPanel.setEnabled(false);
                 }
             });
@@ -225,8 +224,8 @@ public class JGame extends JLayeredPane {
                     game.getPlayerStarting() + " starts the game!");
                 message.addWindowListener(new WindowAdapter() {
                     @Override
-                    public void windowClosed(WindowEvent e) {
-                        super.windowClosed(e);
+                    public void windowClosed(WindowEvent event) {
+                        super.windowClosed(event);
                         playersDisplayer.hideDice();
                         uiPanel.setEnabled(false);
                         startGame();
@@ -240,8 +239,7 @@ public class JGame extends JLayeredPane {
     }
 
     private void startGame() {
-        final boolean DEBUG = true;
-        Timer timer = new Timer(DEBUG ? 250 : 1000, null);
+        Timer timer = new Timer(500, null);
         // ai interaction
         final Function<Void, Void> nextTurn = aVoid -> {
             game.nextTurn();

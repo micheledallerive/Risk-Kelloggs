@@ -1,12 +1,12 @@
 package gui.utils;
 
+import gui.components.JPopup;
+
 import java.awt.BorderLayout;
 import java.awt.Component;
 import javax.swing.JLabel;
 import javax.swing.JPopupMenu;
 import javax.swing.Timer;
-
-import gui.components.JPopup;
 
 public class PopupUtils {
 

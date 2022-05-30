@@ -1,5 +1,7 @@
 package gui.components;
 
+import gui.utils.ImageUtils;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -10,8 +12,6 @@ import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPopupMenu;
 import javax.swing.Timer;
-
-import gui.utils.ImageUtils;
 
 public class JPopup extends JPopupMenu {
 

@@ -20,15 +20,14 @@ import model.Territory;
 import model.callback.Callback;
 import model.callback.GameCallback;
 import model.enums.GameStatus;
-
-import java.util.ArrayList;
-import java.util.Scanner;
-import java.util.stream.Collectors;
-
 import tui.command.AttackCommand;
 import tui.command.Command;
 import tui.command.EndTurnCommand;
 import tui.command.MoveArmiesCommand;
+
+import java.util.ArrayList;
+import java.util.Scanner;
+import java.util.stream.Collectors;
 
 
 /**
