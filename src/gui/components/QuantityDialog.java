@@ -20,27 +20,36 @@ public class QuantityDialog extends BaseDialog {
 
     private int min;
     private int max;
-    private String message;
+    private String[] messages;
 
     public QuantityDialog(JFrame parent, String message, int min, int max) {
+        this(parent, new String[]{message}, min, max);
+    }
+
+    public QuantityDialog(JFrame parent, String[] messages, int min, int max) {
         super(parent, "", true, 100);
+
         this.min = min;
         this.max = max;
-        this.message = message;
+        this.messages = messages;
+
         initComponents();
     }
 
     private void initComponents() {
         setLayout(new GridBagLayout());
         GridBagConstraints constraints = new GridBagConstraints();
+        constraints.insets = new Insets(0, 5, 10, 5);
 
         constraints.gridy = 0;
-        JLabel label = new JLabel(message);
-        label.setHorizontalAlignment(SwingConstants.CENTER);
-        label.setFont(FontUtils.addLetterSpacing(label.getFont().deriveFont(Font.PLAIN, 18f), .1f));
-        add(label, constraints);
+        for (String message : messages) {
+            JLabel label = new JLabel(message);
+            label.setHorizontalAlignment(SwingConstants.CENTER);
+            label.setFont(FontUtils.addLetterSpacing(label.getFont().deriveFont(Font.PLAIN, 18f), .1f));
+            add(label, constraints);
+            constraints.gridy++;
+        }
 
-        constraints.gridy = 1;
         constraints.insets = new Insets(20, 0, 30, 0);
         JSpinner spinner = new JSpinner();
         spinner.setModel(new SpinnerNumberModel(1, min, max, 1));
@@ -49,7 +58,7 @@ public class QuantityDialog extends BaseDialog {
         add(spinner, constraints);
 
         constraints.insets = new Insets(0, 0, 0, 0);
-        constraints.gridy = 2;
+        constraints.gridy++;
         JButton okButton = new JButton("OK");
         okButton.addActionListener(e -> {
             selectedQuantity = (int) spinner.getValue();

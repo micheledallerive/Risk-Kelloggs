@@ -139,23 +139,26 @@ public class MapUtils {
         return new Point((int) cx, (int) cy);
     }
 
-    public static EventCallback playingCallback(Game game,
-                                                MapPanel map,
-                                                Function<Void, Void> nextTurn,
-                                                JFrame parent) {
+    public static EventCallback setupCallback(Game game,
+                                              MapPanel map,
+                                              Function<Void, Void> nextTurn,
+                                              JFrame parent) {
         return (id, args) -> {
 
             int clickX = (int) args[0];
             int clickY = (int) args[1];
+            if (id == -1) {
+                nextTurn.apply(null);
+                return;
+            }
             Territory territory = game.getBoard().getTerritories().get(id);
             Player player = game.getPlayers().get(game.getTurn());
 
             if (game.getStatus() == GameStatus.SETUP) {
 
 
-                if (id == -1
-                    || game.getPlayers().get(game.getTurn()).isAI()
-                    || player.getFreeArmies().isEmpty()) {
+                if (game.getPlayers().get(game.getTurn()).isAI()
+                        || player.getFreeArmies().isEmpty()) {
                     nextTurn.apply(null);
                     return;
                 }
@@ -194,63 +197,139 @@ public class MapUtils {
                     player.placeArmies(territory, 1);
                     nextTurn.apply(null);
                 }
+            }
+        };
+    }
+
+    public static EventCallback playingCallback(Game game,
+                                                MapPanel map,
+                                                Function<Void, Void> nextTurn,
+                                                JFrame parent) {
+        return (id, args) -> {
+
+            int clickX = (int) args[0];
+            int clickY = (int) args[1];
+            if (id == -1) {
+                nextTurn.apply(null);
+                return;
+            }
+            Territory territory = game.getBoard().getTerritories().get(id);
+            Player player = game.getPlayers().get(game.getTurn());
+            if (map.getAttackingFrom() == null || map.getAttackingTo() != null) {
+                // i have to choose where to attack from
+                if (territory.getOwner() != player) {
+                    PopupUtils.showPopup(parent, "You can't attack from enemy territories!", clickX, clickY);
+                    return;
+                }
+                if (game.getBoard().getAdjacent(territory).stream().allMatch(t -> t.getOwner() == player)) {
+                    PopupUtils.showPopup(parent, "You can't attack any territory from here!", clickX, clickY);
+                    return;
+                }
+                if (territory.getArmies().size() < 2) {
+                    PopupUtils.showPopup(parent, "You don't have enough armies!", clickX, clickY);
+                    return;
+                }
+                map.setAttackingFrom(territory);
             } else {
-                System.out.println("Playing");
-                if (map.getAttackingFrom() == null) {
-                    // i have to choose where to attack from
-                    if (territory.getOwner() != player) {
-                        PopupUtils.showPopup(parent, "You can't attack from enemy territories!", clickX, clickY);
-                        return;
-                    }
-                    if (game.getBoard().getAdjacent(territory).stream().allMatch(t -> t.getOwner() == player)) {
-                        PopupUtils.showPopup(parent, "You can't attack any territory from here!", clickX, clickY);
-                        return;
-                    }
-                    if (territory.getArmies().size() < 2) {
-                        PopupUtils.showPopup(parent, "You don't have enough armies!", clickX, clickY);
-                        return;
-                    }
-                    System.out.println("Set where to attack from");
-                    map.setAttackingFrom(territory);
-                } else {
-                    // i have to choose where to attack to
-                    if (territory.getOwner() == player) {
-                        PopupUtils.showPopup(parent, "You can't attack your own territories!", clickX, clickY);
-                        return;
-                    }
-                    if (game.getBoard().getAdjacent(territory).stream().noneMatch(t -> map.getAttackingFrom() == t)) {
-                        PopupUtils.showPopup(parent, "You must attack an adjacent territory", clickX, clickY);
-                        return;
-                    }
-                    System.out.println("Set where to attack to");
-                    map.setAttackingTo(territory);
-                    QuantityDialog quantityDialog = new QuantityDialog(
+                // i have to choose where to attack to
+
+
+                if (territory.getOwner() == player) {
+                    PopupUtils.showPopup(parent, "You can't attack your own territories!", clickX, clickY);
+                    return;
+                }
+                if (game.getBoard().getAdjacent(territory).stream().noneMatch(t -> map.getAttackingFrom() == t)) {
+                    PopupUtils.showPopup(parent, "You must attack an adjacent territory", clickX, clickY);
+                    return;
+                }
+                System.out.println("Set where to attack to");
+                map.setAttackingTo(territory);
+                QuantityDialog quantityDialog = new QuantityDialog(
                         parent, "How many armies do you want to attack with?",
                         1, Math.min(map.getAttackingFrom().getArmies().size() - 1, 3));
-                    quantityDialog.addWindowListener(new WindowAdapter() {
-                        @Override
-                        public void windowClosed(WindowEvent event) {
-                            if (quantityDialog.getSelectedQuantity() > 0) {
-                                int quantity = quantityDialog.getSelectedQuantity();
-                                int[] result = player.getAttackOutcome(
+                quantityDialog.addWindowListener(new WindowAdapter() {
+                    @Override
+                    public void windowClosed(WindowEvent event) {
+                        if (quantityDialog.getSelectedQuantity() > 0) {
+                            int quantity = quantityDialog.getSelectedQuantity();
+                            int[] result = player.getAttackOutcome(
                                     map.getAttackingFrom(),
                                     map.getAttackingTo(),
                                     quantity);
-                                map.setAttackResult(result);
-                                Timer timer = new Timer(1000, e -> {
-                                    map.clearAttacking();
-                                    map.repaint();
-                                });
-                                timer.setRepeats(false);
-                                timer.start();
+                            map.setAttackResult(result);
+                            Timer timer = new Timer(1000, e -> {
+                                map.clearAttacking();
                                 map.repaint();
-                            }
+                            });
+                            timer.setRepeats(false);
+                            timer.start();
+                            map.repaint();
                         }
-                    });
-                    quantityDialog.pack();
-                    quantityDialog.setLocationRelativeTo(null);
-                    quantityDialog.setVisible(true);
+                    }
+                });
+                quantityDialog.pack();
+                quantityDialog.setLocationRelativeTo(null);
+                quantityDialog.setVisible(true);
+            }
+        };
+    }
+
+    public static EventCallback moveCallback(Game game,
+                                             MapPanel map,
+                                             Function<Void, Void> nextTurn,
+                                             JFrame parent) {
+        return (id, args) -> {
+
+            int clickX = (int) args[0];
+            int clickY = (int) args[1];
+            if (id == -1) {
+                // nextTurn.apply(null);
+                return;
+            }
+            Territory territory = game.getBoard().getTerritories().get(id);
+            Player player = game.getPlayers().get(game.getTurn());
+
+            if (territory.getOwner() != player) {
+                PopupUtils.showPopup(parent, "You must choose a territory you owe.", clickX, clickY);
+                return;
+            }
+
+            if (map.getAttackingFrom() == null || map.getAttackingTo() != null) {
+                // i have to choose where to attack from
+                if (territory.getArmies().size() < 2) {
+                    PopupUtils.showPopup(parent, "You don't have enough armies!", clickX, clickY);
+                    return;
                 }
+                map.setAttackingFrom(territory);
+            } else {
+                // i have to choose where to attack to
+                if (game.getBoard().getAdjacent(territory).stream().noneMatch(t -> map.getAttackingFrom() == t)) {
+                    PopupUtils.showPopup(parent, "You must attack an adjacent territory", clickX, clickY);
+                    return;
+                }
+                map.setAttackingTo(territory);
+                QuantityDialog quantityDialog = new QuantityDialog(
+                        parent, "How many armies do you want to move?",
+                        1, map.getAttackingFrom().getArmies().size() - 1);
+                quantityDialog.addWindowListener(new WindowAdapter() {
+                    @Override
+                    public void windowClosed(WindowEvent event) {
+                        if (quantityDialog.getSelectedQuantity() > 0) {
+                            int quantity = quantityDialog.getSelectedQuantity();
+                            player.moveArmies((byte) quantity, map.getAttackingFrom(), map.getAttackingTo());
+                            Timer timer = new Timer(1000, e -> {
+                                map.clearAttacking();
+                                map.repaint();
+                            });
+                            timer.setRepeats(false);
+                            timer.start();
+                            map.repaint();
+                        }
+                    }
+                });
+                quantityDialog.pack();
+                quantityDialog.setLocationRelativeTo(null);
+                quantityDialog.setVisible(true);
             }
         };
     }

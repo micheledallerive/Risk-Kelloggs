@@ -1,23 +1,13 @@
 package gui.views;
 
 import gui.EventCallback;
-import gui.components.JRoundButton;
-import gui.components.MessageDialog;
-import gui.components.NameDialog;
-import gui.components.PlayersDisplayer;
+import gui.components.*;
 import gui.utils.MapUtils;
-import model.AI;
-import model.Game;
-import model.Player;
-import model.Territory;
+import model.*;
 import model.callback.Callback;
 import model.enums.GameStatus;
 
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
+import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
@@ -25,11 +15,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.function.Function;
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
-import javax.swing.JLayeredPane;
-import javax.swing.OverlayLayout;
-import javax.swing.Timer;
+import javax.swing.*;
 
 /**
  * Class JPanel to set up after main menu, the player's name before the start of
@@ -43,6 +29,7 @@ public class JGame extends JLayeredPane {
     private final JFrame parent;
     private JLayeredPane uiPanel;
     private PlayersDisplayer playersDisplayer;
+    private JTurnPicker turnPicker;
     private final MapPanel map;
     // endregion
 
@@ -96,7 +83,7 @@ public class JGame extends JLayeredPane {
                 map.setEnabled(false);
 
                 String name = nameDialog.getName();
-                if (name == null || name.isEmpty()) {
+                if (name == null || name.trim().isEmpty()) {
                     name = "Player";
                 }
                 game.initializePlayers(6, 1, new String[] {name});
@@ -145,7 +132,7 @@ public class JGame extends JLayeredPane {
         constraints.anchor = GridBagConstraints.NORTHWEST;
         constraints.insets = new Insets(20, 20, 0, 0);
         final JRoundButton pauseButton = new JRoundButton();
-        pauseButton.setIcon(new ImageIcon("src/gui/assets/images/pause.png"));
+        pauseButton.setIcon(new ImageIcon("src/gui/assets/images/icon/pause.png"));
         pauseButton.setPreferredSize(new Dimension(50, 50));
         pauseButton.addMouseListener(new MouseAdapter() {
             @Override
@@ -157,6 +144,30 @@ public class JGame extends JLayeredPane {
         uiPane.add(pauseButton, constraints);
 
         constraints.gridx = 1;
+        constraints.fill = GridBagConstraints.HORIZONTAL;
+
+        JPanel turnContainer = new TransparentPanel();
+        turnContainer.setLayout(new BorderLayout());
+        final JTurnPicker playerTurn = new JTurnPicker();
+        playerTurn.setVisible(false);
+        this.turnPicker = playerTurn;
+        turnContainer.add(playerTurn, BorderLayout.CENTER);
+        uiPane.add(turnContainer, constraints);
+
+        constraints.fill = GridBagConstraints.NONE;
+
+        game.addListener((TurnListener) newTurn -> {
+            playerTurn.setVisible(!game.getPlayers().get(newTurn).isAI()
+                    && game.getStatus() == GameStatus.PLAYING);
+            System.out.println("Change turn " + (!game.getPlayers().get(newTurn).isAI()
+                    && game.getStatus() == GameStatus.PLAYING));
+            revalidate();
+            repaint();
+            map.clearAttacking();
+        });
+
+
+        constraints.gridx = 2;
         constraints.anchor = GridBagConstraints.EAST;
         constraints.insets = new Insets(0, 0, 0, 0);
         final PlayersDisplayer playersDisplayer = new PlayersDisplayer(game);
@@ -228,7 +239,22 @@ public class JGame extends JLayeredPane {
                         super.windowClosed(event);
                         playersDisplayer.hideDice();
                         uiPanel.setEnabled(false);
-                        startGame();
+                        MessageDialog setupMessage = new MessageDialog(parent,
+                                new String[]{
+                                        "Game setup!",
+                                        "Choose your countries",
+                                        "Once they are all chosen, finish placing your armies",
+                                });
+                        setupMessage.addWindowListener(new WindowAdapter() {
+                            @Override
+                            public void windowClosed(WindowEvent event) {
+                                super.windowClosed(event);
+                                startGame();
+                            }
+                        });
+                        setupMessage.pack();
+                        setupMessage.setLocationRelativeTo(null);
+                        setupMessage.setVisible(true);
                     }
                 });
                 message.pack();
@@ -248,12 +274,12 @@ public class JGame extends JLayeredPane {
             return null;
         };
 
-        final EventCallback playingCallback = MapUtils.playingCallback(game, map, nextTurn, parent);
+        final EventCallback setupCallback = MapUtils.setupCallback(game, map, nextTurn, parent);
 
         // handles user
-        map.addCallback(playingCallback);
+        map.addCallback(setupCallback);
 
-        // TODO FINISH THIS DONT FIX
+
         // handles ai
         timer.addActionListener(e -> {
             if (game.getStatus() == GameStatus.SETUP) {
@@ -264,13 +290,63 @@ public class JGame extends JLayeredPane {
         });
 
         timer.start();
+
+        final EventCallback playingCallback = MapUtils.playingCallback(game, map, nextTurn, parent);
+        final EventCallback moveCallback = MapUtils.moveCallback(game, map, nextTurn, parent);
+        turnPicker.setPlayAdapter(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                map.resetCallbacks();
+                if (game.getStatus() == GameStatus.PLAYING) {
+                    map.addCallback(playingCallback);
+                }
+            }
+        });
+
+        turnPicker.setMoveAdapter(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                map.resetCallbacks();
+                if (game.getStatus() == GameStatus.PLAYING) {
+                    map.addCallback(moveCallback);
+                }
+            }
+        });
+
+        turnPicker.setEndAdapter(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                map.resetCallbacks();
+                nextTurn.apply(null);
+            }
+        });
     }
 
     private void setup(Timer timer) {
         boolean someoneHasFreeArmies = game.getPlayers().stream().anyMatch(p -> !p.getFreeArmies().isEmpty());
         if (!someoneHasFreeArmies) {
             game.setTurn(game.getPlayerStarting());
-            game.nextStatus();
+            timer.stop();
+
+            MessageDialog startPlaying = new MessageDialog(
+                    parent, new String[]{
+                    "The game starts!",
+                    "Destroy the other players and conquer the world!",
+            });
+            startPlaying.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosed(WindowEvent event) {
+                    super.windowClosed(event);
+                    game.nextStatus();
+                    timer.start();
+                }
+            });
+            startPlaying.pack();
+            startPlaying.setLocationRelativeTo(null);
+            startPlaying.setVisible(true);
             return;
         }
         boolean everythingOccupied = game.getBoard().getTerritories().stream().noneMatch(t -> t.getOwner() == null);
@@ -296,9 +372,40 @@ public class JGame extends JLayeredPane {
                 public void onPlayerAttacked(Player attacker, Player attacked, Territory fromTerritory,
                                              Territory attackedTerritory) {
                     System.out.println("Player is getting attacked by " + attacker);
-                    currentPlayer.getAttackOutcome(fromTerritory, attackedTerritory,
-                        Math.min(fromTerritory.getArmiesCount(), 3), Math.min(attackedTerritory.getArmiesCount(), 2));
-                    game.nextTurn();
+                    timer.stop();
+                    QuantityDialog defendQuantity = new QuantityDialog(
+                            parent,
+                            new String[]{
+                                    "You are getting attacked by " + attacker + " in " + attackedTerritory.getName(),
+                                    "How many armies do you want to defend with?",
+                            },
+                            1,
+                            Math.min(attackedTerritory.getArmiesCount(), 3)
+                    );
+                    defendQuantity.addWindowListener(new WindowAdapter() {
+                        @Override
+                        public void windowClosed(WindowEvent event) {
+                            super.windowClosed(event);
+                            int quantity = defendQuantity.getSelectedQuantity();
+                            map.setAttackingTo(attackedTerritory);
+                            map.setAttackingFrom(fromTerritory);
+                            map.setAttackResult(
+                                    attacker.getAttackOutcome(fromTerritory, attackedTerritory,
+                                            Math.min(fromTerritory.getArmiesCount() - 1, 3),
+                                            Math.min(quantity, 3))
+                            );
+                            Timer t1 = new Timer(1000, e1 -> {
+                                map.clearAttacking();
+                                game.nextTurn();
+                                timer.start();
+                            });
+                            t1.setRepeats(false);
+                            t1.start();
+                        }
+                    });
+                    defendQuantity.pack();
+                    defendQuantity.setLocationRelativeTo(null);
+                    defendQuantity.setVisible(true);
                 }
 
                 @Override
@@ -306,7 +413,7 @@ public class JGame extends JLayeredPane {
                                          Territory attackedTerritory) {
                     System.out.println(attacker + " is attacking " + attacked);
                     currentPlayer.getAttackOutcome(fromTerritory, attackedTerritory,
-                        Math.min(fromTerritory.getArmiesCount(), 3), Math.min(attackedTerritory.getArmiesCount(), 2));
+                            Math.min(fromTerritory.getArmiesCount() - 1, 3), Math.min(attackedTerritory.getArmiesCount(), 2));
                     game.nextTurn();
                 }
             });

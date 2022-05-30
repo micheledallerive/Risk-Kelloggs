@@ -126,6 +126,13 @@ public class MapPanel extends ImageBackgroundPanel {
     }
 
     /**
+     * Function - removes all the callbacks
+     */
+    public void resetCallbacks() {
+        this.callbacks.clear();
+    }
+
+    /**
      * Function - returns the callbacks list.
      *
      * @return the callbacks list.
@@ -190,12 +197,6 @@ public class MapPanel extends ImageBackgroundPanel {
         Graphics2D graphics = (Graphics2D) graphcs;
         for (Territory territory : game.getBoard().getTerritories()) {
             if (territory.getOwner() == null || territory.getArmiesCount() == 0) {
-                continue;
-            }
-            if (attackingFrom != null
-                && attackingTo == null
-                && (!game.getBoard().getAdjacent(attackingFrom).contains(territory)
-                || attackingFrom.getOwner() == territory.getOwner())) {
                 continue;
             }
             Polygon polygon = MapUtils.POLYGONS.get(territory.getName().toString());

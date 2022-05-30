@@ -6,8 +6,10 @@ import model.Player;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.RenderingHints;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -58,8 +60,11 @@ public class PlayerIconComponent extends TransparentPanel {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
-                g.setColor(Color.WHITE);
-                g.fillOval(0, 0, getWidth(), getHeight());
+                Graphics2D graphics2D = (Graphics2D) g.create();
+                graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+                        RenderingHints.VALUE_ANTIALIAS_ON);
+                graphics2D.setColor(Color.WHITE);
+                graphics2D.fillOval(0, 0, getWidth(), getHeight());
             }
         };
         iconCircle.setBorder(BorderFactory.createEmptyBorder(3, 3, 3, 3));
@@ -72,9 +77,12 @@ public class PlayerIconComponent extends TransparentPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        g.setColor(ImageUtils.armyColorToColor(player.getColor()));
+        Graphics2D graphics2D = (Graphics2D) g.create();
+        graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+                RenderingHints.VALUE_ANTIALIAS_ON);
+        graphics2D.setColor(ImageUtils.armyColorToColor(player.getColor()));
         int width = getComponents()[1].getX() + getComponents()[1].getWidth();
-        g.fillRoundRect(0, 0, width, getHeight(), getHeight(), getHeight());
+        graphics2D.fillRoundRect(0, 0, width, getHeight(), getHeight(), getHeight());
     }
 
     //endregion
