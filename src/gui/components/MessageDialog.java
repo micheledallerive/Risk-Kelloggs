@@ -1,5 +1,6 @@
 package gui.components;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -56,6 +57,7 @@ public class MessageDialog extends BaseDialog {
 
         for (String message : messages) {
             JLabel label = new JLabel(message);
+            label.setForeground(Color.WHITE);
             label.setFont(label.getFont().deriveFont(Font.BOLD, fontSize));
             add(label, gbc);
 
