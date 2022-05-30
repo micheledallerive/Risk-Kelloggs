@@ -13,11 +13,17 @@ import javax.swing.JLabel;
 import javax.swing.JPopupMenu;
 import javax.swing.Timer;
 
+/**
+ * A JPopupMenu that displays a message and a close button.
+ *
+ * @author dallem@usi.ch
+ */
 public class JPopup extends JPopupMenu {
 
     private static final int AUTOHIDE_DELAY = 4000;
 
     private final boolean autohide;
+
 
     public JPopup() {
         this("", false);

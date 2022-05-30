@@ -67,7 +67,7 @@ public class PlayersDisplayer extends TransparentPanel {
                 pointer.setVisible(false);
             }
             pointers[newTurn].setVisible(true);
-//            repaint();
+            //repaint();
         });
     }
 
@@ -87,8 +87,8 @@ public class PlayersDisplayer extends TransparentPanel {
         dice[0].setCursor(new Cursor(Cursor.HAND_CURSOR));
         dice[0].addMouseListener(new MouseAdapter() {
             @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
+            public void mouseClicked(MouseEvent ev) {
+                super.mouseClicked(ev);
                 dice[0].roll();
             }
         });
