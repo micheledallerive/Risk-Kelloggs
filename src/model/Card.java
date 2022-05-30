@@ -18,7 +18,7 @@ public class Card {
     /**
      * Create a new card.
      *
-     * @param type      The type of the card that is represented                  in the bottom (infantry, cavalry,
+     * @param type      The type of the card that is represented in the bottom (infantry, cavalry,
      *                  artillery, wild).
      * @param territory The territory represented in the top of the card.
      */

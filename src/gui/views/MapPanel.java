@@ -38,6 +38,12 @@ public class MapPanel extends ImageBackgroundPanel {
     private final ArrayList<EventCallback> callbacks;
     private final Game game;
     private Point lastMovedPoint = null;
+
+    private Territory attackingFrom = null;
+
+    private Territory attackingTo = null;
+
+    private int[] attackResult = null;
     // endregion
 
     // region CONSTRUCTORS
@@ -155,19 +161,6 @@ public class MapPanel extends ImageBackgroundPanel {
     }
 
     /**
-     * The Attacking from.
-     */
-    Territory attackingFrom = null;
-    /**
-     * The Attacking to.
-     */
-    Territory attackingTo = null;
-    /**
-     * The Attack result.
-     */
-    int[] attackResult = null;
-
-    /**
      * Sets attacking from.
      *
      * @param territory the territory
@@ -208,8 +201,8 @@ public class MapPanel extends ImageBackgroundPanel {
      *
      * @param attackResult the attack result
      */
-    public void setAttackResult(int[] attackResult) {
-        this.attackResult = attackResult;
+    public void setAttackResult(final int[] attackResult) {
+        this.attackResult = attackResult.clone();
     }
 
     /**
@@ -222,20 +215,24 @@ public class MapPanel extends ImageBackgroundPanel {
     }
 
     @Override
-    public void paintComponent(Graphics graphcs) {
-        super.paintComponent(graphcs);
-        Graphics2D graphics = (Graphics2D) graphcs;
+    public void paintComponent(Graphics paramGraphics) {
+        super.paintComponent(paramGraphics);
+
+        Graphics2D graphics = (Graphics2D) paramGraphics;
         for (Territory territory : game.getBoard().getTerritories()) {
             if (territory.getOwner() == null || territory.getArmiesCount() == 0) {
                 continue;
             }
+
             if (attackingFrom != null
                 && attackingTo == null
-                && (!game.getBoard().getAdjacent(attackingFrom).contains(territory)
-                || attackingFrom.getOwner() == territory.getOwner())) {
+                && !game.getBoard().getAdjacent(attackingFrom).contains(territory)
+                || attackingFrom.getOwner() == territory.getOwner()) {
                 continue;
             }
-            Polygon polygon = MapUtils.POLYGONS.get(territory.getName().toString());
+
+
+            Polygon polygon = MapUtils.POLYGONS.get(territory.getName());
             Point centroid = MapUtils.getCentroid(polygon);
             centroid = MapUtils.mapToView(centroid, getWidth(), getHeight());
             graphics.setColor(ImageUtils.armyColorToColor(territory.getOwner().getColor()));
@@ -251,7 +248,7 @@ public class MapPanel extends ImageBackgroundPanel {
             String number = String.valueOf(territory.getArmiesCount());
             FontMetrics fm = graphics.getFontMetrics();
             int xxx = (int) (centroid.x - (fm.stringWidth(number) * .5) + 1);
-            int yyy = (fm.getAscent() + (centroid.y - (fm.getAscent() + fm.getDescent()) / 2));
+            int yyy = fm.getAscent() + (centroid.y - (fm.getAscent() + fm.getDescent()) / 2);
             graphics.drawString(number, xxx, yyy);
         }
 
@@ -265,6 +262,7 @@ public class MapPanel extends ImageBackgroundPanel {
             drawArrow(graphics, centroid.x, centroid.y, MapUtils.viewToMapX(mouse.x, getWidth()),
                 MapUtils.viewToMapY(mouse.y, getHeight()), 20, 50);
         }
+        
         if (attackResult != null) {
             Point fromCentroid = MapUtils.getCentroid(MapUtils.POLYGONS.get(getAttackingFrom().getName().toString()));
             Point toCentroid = MapUtils.getCentroid(MapUtils.POLYGONS.get(getAttackingTo().getName().toString()));
@@ -292,7 +290,7 @@ public class MapPanel extends ImageBackgroundPanel {
         graphics.setFont(new Font("Arial", Font.BOLD, 24));
         FontMetrics fm = graphics.getFontMetrics();
         int x1 = (int) (xxx - (fm.stringWidth(text) * .5) + 1);
-        int y1 = (fm.getAscent() + (yyy - (fm.getAscent() + fm.getDescent()) / 2));
+        int y1 = fm.getAscent() + (yyy - (fm.getAscent() + fm.getDescent()) / 2);
         graphics.drawString(text, x1, y1);
     }
 
