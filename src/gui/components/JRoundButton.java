@@ -15,6 +15,7 @@ import javax.swing.JLabel;
 
 /**
  * The type J round button.
+ *
  * @author dallem@usi.ch
  */
 public class JRoundButton extends ImageBackgroundPanel {

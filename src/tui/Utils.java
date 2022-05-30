@@ -177,7 +177,7 @@ public class Utils {
      * @param message   the message to print.
      * @param input     the input stream.
      * @param validator a function that checks if the input is valid.
-     * @param board the board.
+     * @param board     the board.
      * @return the TerritoryName.
      */
     public static String askTerritory(String message, Scanner input,

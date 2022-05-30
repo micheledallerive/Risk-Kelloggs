@@ -5,7 +5,6 @@ import model.enums.ArmyColor;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Class AI to play versus the computer.
@@ -39,7 +38,7 @@ public class AI extends Player {
      *
      * @param board    game board.
      * @param callback the callback to be called in the Main function                 (either TUI or GUI) in order to
-     *                let the player do                 something when they are attacked by an AI.
+     *                 let the player do                 something when they are attacked by an AI.
      */
     public void attack(final Board board, final Callback callback) {
         // from AI territories, get the ones that have more than 1 army

@@ -30,6 +30,7 @@ public class Board {
     //endregion
 
     //region CONSTRUCTOR
+
     /**
      * Constructor.
      */
@@ -43,6 +44,7 @@ public class Board {
     //endregion
 
     //region GETTERS AND SETTERS
+
     /**
      * Getter of territories field.
      *

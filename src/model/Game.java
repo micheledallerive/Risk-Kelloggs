@@ -51,6 +51,7 @@ public class Game implements Serializable {
 
     /**
      * Create a new game.
+     *
      * @param players The players of the game.
      */
     public Game(final ArrayList<Player> players) {
@@ -74,8 +75,10 @@ public class Game implements Serializable {
     //endregion
 
     //region GETTERS AND SETTERS
+
     /**
      * Returns the list of players of the game.
+     *
      * @return the list of players of the game.
      */
     public ArrayList<Player> getPlayers() {
@@ -84,6 +87,7 @@ public class Game implements Serializable {
 
     /**
      * Adds a player to the list of players.
+     *
      * @param player the player to add
      */
     public void addPlayer(Player player) {
@@ -92,6 +96,7 @@ public class Game implements Serializable {
 
     /**
      * Returns the board of the current game.
+     *
      * @return the board of the game.
      */
     public Board getBoard() {
@@ -100,6 +105,7 @@ public class Game implements Serializable {
 
     /**
      * Returns the current state of the game.
+     *
      * @return the GameStatus
      */
     public GameStatus getStatus() {
@@ -108,6 +114,7 @@ public class Game implements Serializable {
 
     /**
      * Sets the current state of the game.
+     *
      * @param status the new status of the game
      */
     public void setStatus(GameStatus status) {
@@ -117,6 +124,7 @@ public class Game implements Serializable {
 
     /**
      * Returns the player that starts the game.
+     *
      * @return the player that starts the game.
      */
     public Player getPlayerStarting() {
@@ -125,6 +133,7 @@ public class Game implements Serializable {
 
     /**
      * Sets the player that starts the game.
+     *
      * @param player the player that starts the game.
      */
     public void setPlayerStarting(final Player player) {
@@ -133,6 +142,7 @@ public class Game implements Serializable {
 
     /**
      * Returns the current number of turns each player played.
+     *
      * @return the current number of turns each player played.
      */
     public int getTurnsPlayed() {
@@ -141,6 +151,7 @@ public class Game implements Serializable {
 
     /**
      * Sets the current number of turns each player played.
+     *
      * @param turnsPlayed the number of turns each player played.
      */
     public void setTurnsPlayed(int turnsPlayed) {
@@ -149,6 +160,7 @@ public class Game implements Serializable {
 
     /**
      * Returns the current turn.
+     *
      * @return the current turn
      */
     public final int getTurn() {
@@ -157,6 +169,7 @@ public class Game implements Serializable {
 
     /**
      * Sets the current turn.
+     *
      * @param turn the turn to set as the current one.
      */
     public final void setTurn(int turn) {
@@ -166,6 +179,7 @@ public class Game implements Serializable {
 
     /**
      * Sets the current turn to the player.
+     *
      * @param player the player to set as the current one.
      */
     public void setTurn(final Player player) {
@@ -216,7 +230,9 @@ public class Game implements Serializable {
     public void initArmies() {
         final int numPlayers = this.players.size();
         // fire condition - invalid number of players
-        if (numPlayers < Player.MIN_PLAYERS || Player.MAX_PLAYERS < numPlayers) { return; }
+        if (numPlayers < Player.MIN_PLAYERS || Player.MAX_PLAYERS < numPlayers) {
+            return;
+        }
 
         final int numInfantry = 35 - (numPlayers - 3) * 5;
         for (final Player player : this.players) {
@@ -236,6 +252,7 @@ public class Game implements Serializable {
 
     /**
      * Moves the chosen amount of armies from the total armies to the armies owned by the player.
+     *
      * @param player the player to give armies to
      * @param num    the amount of armies
      */
@@ -246,10 +263,13 @@ public class Game implements Serializable {
 
     /**
      * Get a random card from the deck and remove it.
+     *
      * @return the card that was randomly picked.
      */
     public Card getRandomCard() {
-        if (this.cardsDeck.size() < 1) { return null; }
+        if (this.cardsDeck.size() < 1) {
+            return null;
+        }
         int randomIndex = RandomUtil.random.nextInt(this.cardsDeck.size());
         final Card card = this.cardsDeck.get(randomIndex);
         this.cardsDeck.remove(randomIndex);
@@ -259,6 +279,7 @@ public class Game implements Serializable {
     /**
      * Gives the turn bonus to the player and returns the value of armies gained
      * divided by reason (for UI purposes).
+     *
      * @param player                the player to give the bonus to
      * @param indexCardsCombination cards combination the player wants to play (-1 to not play)
      * @return Integer array representing bonus
@@ -298,6 +319,7 @@ public class Game implements Serializable {
 
     /**
      * Initializes randomly created players.
+     *
      * @param total the total number of players
      * @param users the number of actual players (not AIs)
      * @param names the names of the players
@@ -327,6 +349,7 @@ public class Game implements Serializable {
 
     /**
      * Checks if the whole world has been conquered by only one person.
+     *
      * @return true if the whole world is owned by a single person.
      */
     public boolean isWorldConquered() {
@@ -341,6 +364,7 @@ public class Game implements Serializable {
 
     /**
      * Starts the game handling the different states.
+     *
      * @param callback The event to call with respect to game status.
      */
     public void play(GameCallback callback) {
@@ -363,7 +387,9 @@ public class Game implements Serializable {
                     result = callback.onGameEnd();
                     break;
             }
-            if (result) { this.nextStatus(); }
+            if (result) {
+                this.nextStatus();
+            }
         }
         callback.onGameExit();
     }

@@ -28,6 +28,7 @@ public class PlayerIconComponent extends TransparentPanel {
     //endregion
 
     //region CONSTRUCTORS
+
     /**
      * Constructor.
      *
@@ -63,7 +64,7 @@ public class PlayerIconComponent extends TransparentPanel {
                 super.paintComponent(graphics);
                 Graphics2D graphics2D = (Graphics2D) graphics.create();
                 graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-                        RenderingHints.VALUE_ANTIALIAS_ON);
+                    RenderingHints.VALUE_ANTIALIAS_ON);
                 graphics2D.setColor(Color.WHITE);
                 graphics2D.fillOval(0, 0, getWidth(), getHeight());
             }
@@ -80,7 +81,7 @@ public class PlayerIconComponent extends TransparentPanel {
         super.paintComponent(graphics);
         Graphics2D graphics2D = (Graphics2D) graphics.create();
         graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-                RenderingHints.VALUE_ANTIALIAS_ON);
+            RenderingHints.VALUE_ANTIALIAS_ON);
         graphics2D.setColor(ImageUtils.armyColorToColor(player.getColor()));
         int width = getComponents()[1].getX() + getComponents()[1].getWidth();
         graphics2D.fillRoundRect(0, 0, width, getHeight(), getHeight(), getHeight());

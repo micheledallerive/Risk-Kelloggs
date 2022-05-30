@@ -178,9 +178,9 @@ public class JGame extends JLayeredPane {
 
         game.addListener((TurnListener) newTurn -> {
             playerTurn.setVisible(!game.getPlayers().get(newTurn).isAI()
-                    && game.getStatus() == GameStatus.PLAYING);
+                && game.getStatus() == GameStatus.PLAYING);
             System.out.println("Change turn " + (!game.getPlayers().get(newTurn).isAI()
-                    && game.getStatus() == GameStatus.PLAYING));
+                && game.getStatus() == GameStatus.PLAYING));
             revalidate();
             repaint();
             map.clearAttacking();
@@ -260,11 +260,11 @@ public class JGame extends JLayeredPane {
                         playersDisplayer.hideDice();
                         uiPanel.setEnabled(false);
                         MessageDialog setupMessage = new MessageDialog(parent,
-                                new String[]{
-                                        "Game setup!",
-                                        "Choose your countries",
-                                        "Once they are all chosen, finish placing your armies",
-                                });
+                            new String[] {
+                                "Game setup!",
+                                "Choose your countries",
+                                "Once they are all chosen, finish placing your armies",
+                            });
                         setupMessage.addWindowListener(new WindowAdapter() {
                             @Override
                             public void windowClosed(WindowEvent event) {
@@ -355,9 +355,9 @@ public class JGame extends JLayeredPane {
             timer.stop();
 
             MessageDialog startPlaying = new MessageDialog(
-                    parent, new String[]{
-                    "The game starts!",
-                    "Destroy the other players and conquer the world!",
+                parent, new String[] {
+                "The game starts!",
+                "Destroy the other players and conquer the world!",
             });
             startPlaying.addWindowListener(new WindowAdapter() {
                 @Override
@@ -397,13 +397,13 @@ public class JGame extends JLayeredPane {
                     System.out.println("Player is getting attacked by " + attacker);
                     timer.stop();
                     QuantityDialog defendQuantity = new QuantityDialog(
-                            parent,
-                            new String[]{
-                                    "You are getting attacked by " + attacker + " in " + attackedTerritory.getName(),
-                                    "How many armies do you want to defend with?",
-                            },
-                            1,
-                            Math.min(attackedTerritory.getArmiesCount(), 3)
+                        parent,
+                        new String[] {
+                            "You are getting attacked by " + attacker + " in " + attackedTerritory.getName(),
+                            "How many armies do you want to defend with?",
+                        },
+                        1,
+                        Math.min(attackedTerritory.getArmiesCount(), 3)
                     );
                     defendQuantity.addWindowListener(new WindowAdapter() {
                         @Override
@@ -413,9 +413,9 @@ public class JGame extends JLayeredPane {
                             map.setAttackingTo(attackedTerritory);
                             map.setAttackingFrom(fromTerritory);
                             map.setAttackResult(
-                                    attacker.getAttackOutcome(fromTerritory, attackedTerritory,
-                                            Math.min(fromTerritory.getArmiesCount() - 1, 3),
-                                            Math.min(quantity, 3))
+                                attacker.getAttackOutcome(fromTerritory, attackedTerritory,
+                                    Math.min(fromTerritory.getArmiesCount() - 1, 3),
+                                    Math.min(quantity, 3))
                             );
                             Timer t1 = new Timer(1000, e1 -> {
                                 map.clearAttacking();
@@ -436,7 +436,8 @@ public class JGame extends JLayeredPane {
                                          Territory attackedTerritory) {
                     System.out.println(attacker + " is attacking " + attacked);
                     currentPlayer.getAttackOutcome(fromTerritory, attackedTerritory,
-                            Math.min(fromTerritory.getArmiesCount() - 1, 3), Math.min(attackedTerritory.getArmiesCount(), 2));
+                        Math.min(fromTerritory.getArmiesCount() - 1, 3),
+                        Math.min(attackedTerritory.getArmiesCount(), 2));
                     game.nextTurn();
                 }
             });
@@ -444,9 +445,9 @@ public class JGame extends JLayeredPane {
             int[] playerBonus = game.giveBonus(currentPlayer, -1); // im sad we didnt do cards ;(
             int totalBonus = playerBonus[0] + playerBonus[1] + playerBonus[2];
             if (totalBonus > 0 && game.getTurnsPlayed() > 0) {
-                MessageDialog bonusDialog = new MessageDialog(parent, new String[]{
-                        "You gained " + totalBonus + " bonus armies",
-                        "Place them!"
+                MessageDialog bonusDialog = new MessageDialog(parent, new String[] {
+                    "You gained " + totalBonus + " bonus armies",
+                    "Place them!"
                 });
                 bonusDialog.addWindowListener(new WindowAdapter() {
                     @Override

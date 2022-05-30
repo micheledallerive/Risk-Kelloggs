@@ -24,6 +24,7 @@ import javax.swing.Timer;
 /**
  * Class map handling initialization of methods to have a direct representation and
  * correspondence between map image and clickable map territory integrated with the game model.
+ *
  * @author dallem@usi.ch
  */
 public class MapUtils {
@@ -47,6 +48,7 @@ public class MapUtils {
     //endregion
 
     //region CONSTRUCTORS
+
     /**
      * Singleton.
      */
@@ -55,12 +57,15 @@ public class MapUtils {
     }
 
     //region METHODS
+
     /**
      * Procedure - get the polygons of the corresponding image map,
      * into a Hashmap for easy check and usage.
      */
     public static void init() {
-        if (!POLYGONS.isEmpty()) { return; }
+        if (!POLYGONS.isEmpty()) {
+            return;
+        }
 
         try (final Scanner scanner = new Scanner(new File(FILE_BOUNDS))) {
 
@@ -89,8 +94,8 @@ public class MapUtils {
     /**
      * View to map pointX int.
      *
-     * @param pointX     the pointX
-     * @param width the width
+     * @param pointX the pointX
+     * @param width  the width
      * @return the int
      */
     public static int viewToMapX(int pointX, int width) {
@@ -100,7 +105,7 @@ public class MapUtils {
     /**
      * View to map y int.
      *
-     * @param pointY      the y
+     * @param pointY the y
      * @param height the height
      * @return the int
      */
@@ -123,8 +128,8 @@ public class MapUtils {
     /**
      * Map to view x int.
      *
-     * @param pointX     the x
-     * @param width the width
+     * @param pointX the x
+     * @param width  the width
      * @return the int
      */
     public static int mapToViewX(int pointX, int width) {
@@ -134,7 +139,7 @@ public class MapUtils {
     /**
      * Map to view y int.
      *
-     * @param pointY      the y
+     * @param pointY the y
      * @param height the height
      * @return the view y
      */
@@ -194,9 +199,9 @@ public class MapUtils {
      * @return the event callback
      */
     public static EventCallback setupCallback(Game game,
-                                                MapPanel map,
-                                                Function<Void, Void> nextTurn,
-                                                JFrame parent) {
+                                              MapPanel map,
+                                              Function<Void, Void> nextTurn,
+                                              JFrame parent) {
         return (id, args) -> {
 
             int clickX = (int) args[0];
@@ -211,13 +216,13 @@ public class MapUtils {
             if (!player.getFreeArmies().isEmpty()) {
 
                 if (game.getPlayers().get(game.getTurn()).isAI()
-                        || player.getFreeArmies().isEmpty()) {
+                    || player.getFreeArmies().isEmpty()) {
                     nextTurn.apply(null);
                     return;
                 }
 
                 boolean everythingOccupied = game.getBoard().getTerritories().stream()
-                        .noneMatch(t -> t.getOwner() == null);
+                    .noneMatch(t -> t.getOwner() == null);
                 if (territory.getOwner() != null) {
                     if (territory.getOwner() == player && !everythingOccupied) {
                         PopupUtils.showPopup(parent, "You have to place armies on free territories!", clickX, clickY);
@@ -300,17 +305,17 @@ public class MapUtils {
                 System.out.println("Set where to attack to");
                 map.setAttackingTo(territory);
                 QuantityDialog quantityDialog = new QuantityDialog(
-                        parent, "How many armies do you want to attack with?",
-                        1, Math.min(map.getAttackingFrom().getArmies().size() - 1, 3));
+                    parent, "How many armies do you want to attack with?",
+                    1, Math.min(map.getAttackingFrom().getArmies().size() - 1, 3));
                 quantityDialog.addWindowListener(new WindowAdapter() {
                     @Override
                     public void windowClosed(WindowEvent event) {
                         if (quantityDialog.getSelectedQuantity() > 0) {
                             int quantity = quantityDialog.getSelectedQuantity();
                             int[] result = player.getAttackOutcome(
-                                    map.getAttackingFrom(),
-                                    map.getAttackingTo(),
-                                    quantity);
+                                map.getAttackingFrom(),
+                                map.getAttackingTo(),
+                                quantity);
                             map.setAttackResult(result);
                             Timer timer = new Timer(1000, e -> {
                                 map.clearAttacking();
@@ -364,8 +369,8 @@ public class MapUtils {
                 }
                 map.setAttackingTo(territory);
                 QuantityDialog quantityDialog = new QuantityDialog(
-                        parent, "How many armies do you want to move?",
-                        1, map.getAttackingFrom().getArmies().size() - 1);
+                    parent, "How many armies do you want to move?",
+                    1, map.getAttackingFrom().getArmies().size() - 1);
                 quantityDialog.addWindowListener(new WindowAdapter() {
                     @Override
                     public void windowClosed(WindowEvent event) {

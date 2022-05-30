@@ -16,6 +16,7 @@ import javax.swing.SwingConstants;
 
 /**
  * The type Quantity dialog.
+ *
  * @author dallem@usi.ch
  */
 public class QuantityDialog extends BaseDialog {
@@ -35,7 +36,7 @@ public class QuantityDialog extends BaseDialog {
      * @param max     the max
      */
     public QuantityDialog(JFrame parent, String message, int min, int max) {
-        this(parent, new String[]{message}, min, max);
+        this(parent, new String[] {message}, min, max);
     }
 
     public QuantityDialog(JFrame parent, String[] messages, int min, int max) {

@@ -56,8 +56,8 @@ public class ImageUtils {
      *
      * @param sbi       image to scale
      * @param imageType type of image
-     * @param width    width of destination image
-     * @param height   height of destination image
+     * @param width     width of destination image
+     * @param height    height of destination image
      * @return scaled image
      */
     public static BufferedImage scale(BufferedImage sbi, int imageType, int width, int height) {

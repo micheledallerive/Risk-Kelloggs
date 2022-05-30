@@ -30,7 +30,7 @@ public class MapPanel extends ImageBackgroundPanel {
     // region CONSTANTS
     private static final String MAP_PATH = "src/gui/assets/images/map.jpg";
     private static final float BRIGHTNESS_DEFAULT = 1f;
-    private static final  int RADIUS = 30;
+    private static final int RADIUS = 30;
     private static final int LOSS_CIRCLE_RADIUS = 20;
     // endregion
 
@@ -263,7 +263,9 @@ public class MapPanel extends ImageBackgroundPanel {
         }
 
         // fire condition - attacker
-        if (attackResult == null) { return; }
+        if (attackResult == null) {
+            return;
+        }
 
         Point fromCentroid = MapUtils.getCentroid(MapUtils.POLYGONS.get(getAttackingFrom().getName().toString()));
         Point toCentroid = MapUtils.getCentroid(MapUtils.POLYGONS.get(getAttackingTo().getName().toString()));
@@ -280,7 +282,7 @@ public class MapPanel extends ImageBackgroundPanel {
             drawString(graphics, Color.RED, "-" + attackResult[1], toCentroid.x,
                 (int) (toCentroid.y - ylabelIncrease * RADIUS), LOSS_CIRCLE_RADIUS);
 
-            }
+        }
     }
 
     private void drawString(Graphics2D graphics, Color color, String text, int xxx, int yyy, final int radius) {

@@ -10,6 +10,7 @@ import javax.swing.Timer;
 
 /**
  * The type Popup utils.
+ *
  * @author dallem@usi.ch
  */
 public class PopupUtils {
@@ -20,8 +21,8 @@ public class PopupUtils {
      * Show popup.
      *
      * @param message the message
-     * @param pointX       the x
-     * @param pointY       the y
+     * @param pointX  the x
+     * @param pointY  the y
      */
     public static void showPopup(String message, int pointX, int pointY) {
         showPopup(null, message, true, pointX, pointY);
@@ -46,8 +47,8 @@ public class PopupUtils {
      * @param parent   the parent
      * @param message  the message
      * @param autohide the autohide
-     * @param pointX        the x
-     * @param pointY        the y
+     * @param pointX   the x
+     * @param pointY   the y
      */
     public static void showPopup(Component parent, String message, boolean autohide, int pointX, int pointY) {
         JPopupMenu popup = new JPopupMenu();
