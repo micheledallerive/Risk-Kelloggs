@@ -98,7 +98,6 @@ public class Board {
     //endregion
 
     //region METHODS
-
     /**
      * Procedure - initialize contients and territories, setting adjacency list.
      */
@@ -135,7 +134,7 @@ public class Board {
                 }
             }
         } catch (final FileNotFoundException exception) {
-            exception.printStackTrace();
+            System.exit(0);
         }
     }
     //endregion

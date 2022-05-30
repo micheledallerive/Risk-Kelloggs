@@ -245,18 +245,14 @@ public class Game {
      * @return Integer array representing bonus
      */
     public int[] giveBonus(Player player, int indexCardsCombination) {
-        int[] bonus = new int[3];
-
         /* bonus = 1 every 3 territories
          *       + continent bonus
          *       + card (soon) */
 
-        // territories bonus
+        // territories and continent bonus
+        int[] bonus = new int[3];
         bonus[0] = player.getTerritories().size() / 3;
-
-        // continent bonus
         for (Continent continent : this.getBoard().getContinents()) {
-            //System.out.println(continent.getName().toString());
             if (continent.getOwner() != null
                 && continent.getOwner().getColor() == player.getColor()) {
                 bonus[1] += continent.getValue();
