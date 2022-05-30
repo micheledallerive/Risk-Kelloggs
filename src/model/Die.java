@@ -109,18 +109,16 @@ public class Die {
         blueDice.sort(comparingInt(Die::getNumber).reversed());
 
         ArrayList<DieColor> outcomes = new ArrayList<>();
-        byte red = redDice.get(0).getNumber();
-        byte blue = blueDice.get(0).getNumber();
-        for (byte i = 1; i < AMOUNT && (red != INVALID && blue != INVALID); i++) {
-            // If I reach a die that was not used in this roll (INVALID), I want to stop checking them
-            if (red > blue) {
+
+        for (int i = 0; i < AMOUNT; i++) {
+            if (redDice.get(i).getNumber() == INVALID || blueDice.get(i).getNumber() == INVALID) {
+                break;
+            }
+            if (redDice.get(i).getNumber() > blueDice.get(i).getNumber()) {
                 outcomes.add(DieColor.RED);
             } else {
                 outcomes.add(DieColor.BLUE);
             }
-
-            red = redDice.get(i).getNumber();
-            blue = blueDice.get(i).getNumber();
         }
 
         Die.resetAll();

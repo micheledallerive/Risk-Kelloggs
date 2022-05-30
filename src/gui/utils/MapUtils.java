@@ -167,7 +167,9 @@ public class MapUtils {
                     }
                 }
                 if (everythingOccupied) {
-                    QuantityDialog quantityDialog = new QuantityDialog(parent, 1, player.getFreeArmies().size());
+                    QuantityDialog quantityDialog = new QuantityDialog(
+                            parent, "How many armies do you want to place?",
+                            1, player.getFreeArmies().size());
                     quantityDialog.addWindowListener(new WindowAdapter() {
                         @Override
                         public void windowClosed(WindowEvent e) {
@@ -210,17 +212,38 @@ public class MapUtils {
                         PopupUtils.showPopup(parent, "You can't attack your own territories!", clickX, clickY);
                         return;
                     }
+                    if (game.getBoard().getAdjacent(territory).stream().noneMatch(t -> map.getAttackingFrom() == t)) {
+                        PopupUtils.showPopup(parent, "You must attack an adjacent territory", clickX, clickY);
+                        return;
+                    }
                     System.out.println("Set where to attack to");
                     map.setAttackingTo(territory);
-                    int[] result = player.attack(map.getAttackingFrom(), map.getAttackingTo(), 1, 1);
-                    map.setAttackResult(result);
-                    Timer timer = new Timer(1000, e -> {
-                        map.clearAttacking();
-                        map.repaint();
+                    QuantityDialog quantityDialog = new QuantityDialog(
+                            parent, "How many armies do you want to attack with?",
+                            1, Math.min(map.getAttackingFrom().getArmies().size() - 1, 3));
+                    quantityDialog.addWindowListener(new WindowAdapter() {
+                        @Override
+                        public void windowClosed(WindowEvent event) {
+                            if (quantityDialog.getSelectedQuantity() > 0) {
+                                int quantity = quantityDialog.getSelectedQuantity();
+                                int[] result = player.getAttackOutcome(
+                                        map.getAttackingFrom(),
+                                        map.getAttackingTo(),
+                                        quantity);
+                                map.setAttackResult(result);
+                                Timer timer = new Timer(1000, e -> {
+                                    map.clearAttacking();
+                                    map.repaint();
+                                });
+                                timer.setRepeats(false);
+                                timer.start();
+                                map.repaint();
+                            }
+                        }
                     });
-                    timer.setRepeats(false);
-                    timer.start();
-                    map.repaint();
+                    quantityDialog.pack();
+                    quantityDialog.setLocationRelativeTo(null);
+                    quantityDialog.setVisible(true);
                 }
             }
         };

@@ -200,7 +200,7 @@ public class Main {
                             + Math.min(attackedTerritory.getArmiesCount(), 3)
                             + ")?");
                     int defend = numInput.nextInt();
-                    int[] losses = attacker.attack(fromTerritory, attackedTerritory,
+                    int[] losses = attacker.getAttackOutcome(fromTerritory, attackedTerritory,
                             Math.min(fromTerritory.getArmiesCount(), 3), defend);
                     print(
                             attacker + " lost " + losses[0] + " armies",
@@ -213,7 +213,7 @@ public class Main {
                 public void onAIAttacked(Player attacker, Player attacked,
                                          Territory fromTerritory, Territory attackedTerritory) {
                     if (fromTerritory.getArmiesCount() < 2) { return; }
-                    attacker.attack(fromTerritory, attackedTerritory,
+                    attacker.getAttackOutcome(fromTerritory, attackedTerritory,
                             Math.min(fromTerritory.getArmiesCount() - 1, 3),
                             Math.min(attackedTerritory.getArmiesCount(), 3));
                 }

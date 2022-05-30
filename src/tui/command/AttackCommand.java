@@ -71,7 +71,7 @@ public class AttackCommand extends Command {
                 int attackerArmies = numInput.nextInt();
                 attackerArmies = Math.min(attackerArmies, attackerMaxArmies);
                 int defenderArmies = attackedTerritory.getArmiesCount();
-                int[] losses = player.attack(fromTerritory, attackedTerritory, attackerArmies);
+                int[] losses = player.getAttackOutcome(fromTerritory, attackedTerritory, attackerArmies);
                 print(player.getName() + " lost " + losses[0] + " armies");
                 print(attackedPlayer
                         + " lost " + losses[1] + " armies");

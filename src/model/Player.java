@@ -175,23 +175,27 @@ public class Player {
 
     /**
      * Check if the Player is an AI.
+     *
      * @return If the player is an AI
      */
     public boolean isAI() {
         return false;
     }
 
+
     /**
      * Attack a territory.
+     *
      * @param fromTerritory the territory the player is attacking from
-     * @param territory the territory to attack
-     * @param armies the number of armies to use for the attack
-     * @param defArmies The optional parameter array states number of defender armies.
+     * @param territory     the territory to attack
+     * @param armies        the number of armies to use for the attack
+     * @param defArmies     The optional parameter array states number of defender armies.
      * @return an array containing how many armies the attacker has lost
-     *          and how many armies the defender has lost.
+     * and how many armies the defender has lost.
      */
-    public int[] attack(final Territory fromTerritory, final Territory territory,
-                          int armies, int ...defArmies) {
+    public ArrayList<DieColor> getAttackDiceOutcome(final Territory fromTerritory, final Territory territory,
+                                                    int armies, int... defArmies) {
+        Die.resetAll();
         for (int i = 0; i < armies; i++) {
             Die.getRedDice().get(i).roll();
         }
@@ -217,6 +221,25 @@ public class Player {
             territory.setOwner(fromTerritory.getOwner());
         }
 
+        return rollResult;
+    }
+
+    /**
+     * Attack a territory.
+     *
+     * @param fromTerritory the territory the player is attacking from
+     * @param territory     the territory to attack
+     * @param armies        the number of armies to use for the attack
+     * @param defArmies     The optional parameter array states number of defender armies.
+     * @return an array containing how many armies the attacker has lost
+     * and how many armies the defender has lost.
+     */
+    public int[] getAttackOutcome(final Territory fromTerritory, final Territory territory,
+                                  int armies, int... defArmies) {
+        ArrayList<DieColor> rollResult = getAttackDiceOutcome(fromTerritory, territory, armies, defArmies);
+        final int defenderLost = (int) rollResult.stream()
+                .filter(dieColor -> dieColor == DieColor.RED).count();
+        final int attackerLost = rollResult.size() - defenderLost;
         return new int[]{attackerLost, defenderLost};
     }
 

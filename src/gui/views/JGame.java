@@ -85,8 +85,12 @@ public class JGame extends JLayeredPane {
                 }
                 game.initializePlayers(6, 1, new String[]{name});
                 game.initArmies();
-
-                createUI((id, args) -> askToRollDie());
+                final boolean[] askedToRoll = {false};
+                createUI((id, args) -> {
+                    if (askedToRoll[0]) return;
+                    askedToRoll[0] = true;
+                    askToRollDie();
+                });
 
             }
         });
@@ -125,6 +129,13 @@ public class JGame extends JLayeredPane {
         final JRoundButton pauseButton = new JRoundButton();
         pauseButton.setIcon(new ImageIcon("src/gui/assets/images/pause.png"));
         pauseButton.setPreferredSize(new Dimension(50, 50));
+        pauseButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                // TODO PAUSE SCREEN
+            }
+        });
         uiPane.add(pauseButton, constraints);
 
         constraints.gridx = 1;
@@ -141,12 +152,39 @@ public class JGame extends JLayeredPane {
             @Override
             public void componentResized(ComponentEvent e) {
                 super.componentResized(e);
-
                 if (callback != null) {
                     callback.onEvent(-1);
                 }
             }
         });
+
+        /*
+        This piece of code is really important: it allows the overlay items to be focusable by the user.
+        Since we are using overlays, the overlay layer covers the map, in a way that the mouse cursor does not
+        change as intended when going over a country in the map, since the overlay is "capturing" the mouse motion.
+        Therefore, to make the cursor toggle on the map, we need to make the overlay disabled (uiPane.setEnabled(false)),
+        execute in a future method (since when we roll dice we want it to be focusable to click on the die).
+        In order to make the cursor change when over a overlay component, we need to make the overlay enabled again
+        when going on the component, and disable it back when going of the component.
+
+        The problem is just about the cursor: the click events are handled correctly, the only problem is just that
+        the cursor doesn't change when going over, with a negative impact on the user experience.
+         */
+        for (Component component : uiPane.getComponents()) {
+            component.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseEntered(MouseEvent e) {
+                    super.mouseEntered(e);
+                    uiPanel.setEnabled(true);
+                }
+
+                @Override
+                public void mouseExited(MouseEvent e) {
+                    super.mouseExited(e);
+                    uiPanel.setEnabled(false);
+                }
+            });
+        }
 
         this.uiPanel = uiPane;
         add(uiPane, JLayeredPane.PALETTE_LAYER);
@@ -240,7 +278,7 @@ public class JGame extends JLayeredPane {
                 @Override
                 public void onPlayerAttacked(Player attacker, Player attacked, Territory fromTerritory, Territory attackedTerritory) {
                     System.out.println("Player is getting attacked by " + attacker);
-                    currentPlayer.attack(fromTerritory, attackedTerritory,
+                    currentPlayer.getAttackOutcome(fromTerritory, attackedTerritory,
                             Math.min(fromTerritory.getArmiesCount(), 3), Math.min(attackedTerritory.getArmiesCount(), 2));
                     game.nextTurn();
                 }
@@ -248,7 +286,7 @@ public class JGame extends JLayeredPane {
                 @Override
                 public void onAIAttacked(Player attacker, Player attacked, Territory fromTerritory, Territory attackedTerritory) {
                     System.out.println(attacker + " is attacking " + attacked);
-                    currentPlayer.attack(fromTerritory, attackedTerritory,
+                    currentPlayer.getAttackOutcome(fromTerritory, attackedTerritory,
                             Math.min(fromTerritory.getArmiesCount(), 3), Math.min(attackedTerritory.getArmiesCount(), 2));
                     game.nextTurn();
                 }

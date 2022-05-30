@@ -7,8 +7,7 @@ import gui.views.MainWindow;
 import model.Game;
 
 import java.util.Enumeration;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.*;
 import javax.swing.plaf.FontUIResource;
 
 /**
@@ -64,7 +63,7 @@ public class Main {
         // creating and showing this application's GUI.
         // EventQueue.invokeLater((Runnable) new MainWindow(this.game));
         // javax.swing.SwingUtilities.invokeLater();
-        new MainWindow(new Game());
+        SwingUtilities.invokeLater(() -> new MainWindow(new Game()));
     }
 
 
