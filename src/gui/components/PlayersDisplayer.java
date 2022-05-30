@@ -15,7 +15,9 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
 /**
- * The type Players displayer.
+ * Displays the players in the game.
+ *
+ * @author dallem@usi.ch
  */
 public class PlayersDisplayer extends TransparentPanel {
     private final Game game;
@@ -23,9 +25,9 @@ public class PlayersDisplayer extends TransparentPanel {
     private final JDie[] dice;
 
     /**
-     * Instantiates a new Players displayer.
+     * Creates a new PlayersDisplayer.
      *
-     * @param game the game
+     * @param game the game to display.
      */
     public PlayersDisplayer(Game game) {
         super();
@@ -65,14 +67,14 @@ public class PlayersDisplayer extends TransparentPanel {
                 pointer.setVisible(false);
             }
             pointers[newTurn].setVisible(true);
-//            repaint();
+            //repaint();
         });
     }
 
     /**
-     * Choose starting player.
+     * Chooses the player to start.
      *
-     * @param eventCallback the event callback
+     * @param eventCallback the callback to add.
      */
     public void chooseStartingPlayer(EventCallback eventCallback) {
         for (JDie die : dice) {
@@ -85,8 +87,8 @@ public class PlayersDisplayer extends TransparentPanel {
         dice[0].setCursor(new Cursor(Cursor.HAND_CURSOR));
         dice[0].addMouseListener(new MouseAdapter() {
             @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
+            public void mouseClicked(MouseEvent ev) {
+                super.mouseClicked(ev);
                 dice[0].roll();
             }
         });
@@ -106,7 +108,7 @@ public class PlayersDisplayer extends TransparentPanel {
     }
 
     /**
-     * Hide dice.
+     * Hides the dice.
      */
     public void hideDice() {
         for (JDie die : dice) {
