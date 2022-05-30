@@ -358,7 +358,6 @@ public class Main {
 
     /**
      * Procedure - static main method.
-     *
      * @param args arguments to set terminal interface
      */
     public static void main(String[] args) {
