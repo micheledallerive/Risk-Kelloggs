@@ -24,7 +24,6 @@ import javax.swing.Timer;
 /**
  * Class map handling initialization of methods to have a direct representation and
  * correspondence between map image and clickable map territory integrated with the game model.
- *
  * @author dallem@usi.ch
  */
 public class MapUtils {
@@ -52,26 +51,21 @@ public class MapUtils {
      * Singleton.
      */
     private MapUtils() {
-
+        // singleton
     }
 
     //region METHODS
-
     /**
      * Procedure - get the polygons of the corresponding image map,
      * into a Hashmap for easy check and usage.
      */
     public static void init() {
-        if (!POLYGONS.isEmpty()) {
-            return;
-        }
+        if (!POLYGONS.isEmpty()) { return; }
 
-        try {
+        try (final Scanner scanner = new Scanner(new File(FILE_BOUNDS))) {
 
-            final Scanner scanner = new Scanner(new File(FILE_BOUNDS));
             while (scanner.hasNextLine()) {
-                final String line = scanner.nextLine();
-                final String[] split = line.split(":");
+                final String[] split = scanner.nextLine().split(":");
                 final String name = split[0];
                 final String[] points = split[1].split(";");
                 final int[] xValues = new int[points.length];
@@ -262,14 +256,18 @@ public class MapUtils {
                         PopupUtils.showPopup(parent, "You can't attack from enemy territories!", clickX, clickY);
                         return;
                     }
+
                     if (game.getBoard().getAdjacent(territory).stream().allMatch(t -> t.getOwner() == player)) {
                         PopupUtils.showPopup(parent, "You can't attack any territory from here!", clickX, clickY);
                         return;
                     }
+
                     if (territory.getArmies().size() < 2) {
                         PopupUtils.showPopup(parent, "You don't have enough armies!", clickX, clickY);
                         return;
                     }
+
+
                     System.out.println("Set where to attack from");
                     map.setAttackingFrom(territory);
                 } else {
@@ -278,10 +276,12 @@ public class MapUtils {
                         PopupUtils.showPopup(parent, "You can't attack your own territories!", clickX, clickY);
                         return;
                     }
+
                     if (game.getBoard().getAdjacent(territory).stream().noneMatch(t -> map.getAttackingFrom() == t)) {
                         PopupUtils.showPopup(parent, "You must attack an adjacent territory", clickX, clickY);
                         return;
                     }
+
                     System.out.println("Set where to attack to");
                     map.setAttackingTo(territory);
                     QuantityDialog quantityDialog = new QuantityDialog(

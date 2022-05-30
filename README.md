@@ -58,7 +58,7 @@ This generates the compiled classes in the directory `target/classes`.
 To run this application, with the TUI, from the command line:
 
 ```bash
-java -cp target/classes tui.Main ARG ARG ARG
+java -cp target/classes tui.Main
 ```
 
 DESCRIPTION OF COMMAND LINE ARGUMENTS
@@ -68,7 +68,7 @@ DESCRIPTION OF COMMAND LINE ARGUMENTS
 To run this application, with the GUI, from the command line:
 
 ```bash
-java -cp target/classes gui.Main ARG ARG ARG
+java -cp target/classes gui.Main
 ```
 
 DESCRIPTION OF COMMAND LINE ARGUMENTS

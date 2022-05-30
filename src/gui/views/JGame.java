@@ -47,10 +47,8 @@ public class JGame extends JLayeredPane {
     // endregion
 
     // region CONSTRUCTORS
-
     /**
      * Constructor.
-     *
      * @param game   Game object.
      * @param parent JFrame parent component.
      */
@@ -211,7 +209,6 @@ public class JGame extends JLayeredPane {
         invalidate();
         validate();
         repaint();
-
     }
 
     private void chooseStartingPlayer() {
@@ -290,29 +287,30 @@ public class JGame extends JLayeredPane {
 
     private void playing(final Timer timer) {
         Player currentPlayer = game.getPlayers().get(game.getTurn());
-        if (currentPlayer.isAI()) {
-            ((AI) currentPlayer).attack(game.getBoard(), new Callback() {
-                @Override
-                public void onPlayerAttacked(Player attacker, Player attacked, Territory fromTerritory,
-                                             Territory attackedTerritory) {
-                    System.out.println("Player is getting attacked by " + attacker);
-                    currentPlayer.getAttackOutcome(fromTerritory, attackedTerritory,
-                        Math.min(fromTerritory.getArmiesCount(), 3), Math.min(attackedTerritory.getArmiesCount(), 2));
-                    game.nextTurn();
-                }
-
-                @Override
-                public void onAIAttacked(Player attacker, Player attacked, Territory fromTerritory,
-                                         Territory attackedTerritory) {
-                    System.out.println(attacker + " is attacking " + attacked);
-                    currentPlayer.getAttackOutcome(fromTerritory, attackedTerritory,
-                        Math.min(fromTerritory.getArmiesCount(), 3), Math.min(attackedTerritory.getArmiesCount(), 2));
-                    game.nextTurn();
-                }
-            });
-        } else {
+        if (!currentPlayer.isAI()) {
             timer.stop();
+            return;
         }
+
+        ((AI) currentPlayer).attack(game.getBoard(), new Callback() {
+            @Override
+            public void onPlayerAttacked(Player attacker, Player attacked, Territory fromTerritory,
+                                         Territory attackedTerritory) {
+                System.out.println("Player is getting attacked by " + attacker);
+                currentPlayer.getAttackOutcome(fromTerritory, attackedTerritory,
+                    Math.min(fromTerritory.getArmiesCount(), 3), Math.min(attackedTerritory.getArmiesCount(), 2));
+                game.nextTurn();
+            }
+
+            @Override
+            public void onAIAttacked(Player attacker, Player attacked, Territory fromTerritory,
+                                     Territory attackedTerritory) {
+                System.out.println(attacker + " is attacking " + attacked);
+                currentPlayer.getAttackOutcome(fromTerritory, attackedTerritory,
+                    Math.min(fromTerritory.getArmiesCount(), 3), Math.min(attackedTerritory.getArmiesCount(), 2));
+                game.nextTurn();
+            }
+        });
     }
     // endregion
 }

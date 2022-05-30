@@ -98,7 +98,6 @@ public class MapPanel extends ImageBackgroundPanel {
     // endregion
 
     // region METHODS
-
     /**
      * Function - give the territory clicked on the map.
      *
@@ -220,17 +219,16 @@ public class MapPanel extends ImageBackgroundPanel {
 
         Graphics2D graphics = (Graphics2D) paramGraphics;
         for (Territory territory : game.getBoard().getTerritories()) {
-            if (territory.getOwner() == null || territory.getArmiesCount() == 0) {
+
+            // don't render the territory if
+            if (territory.getOwner() == null        // territory without owner
+                || territory.getArmiesCount() == 0  //
+                || (attackingFrom != null
+                    && attackingTo == null
+                    && (!game.getBoard().getAdjacent(attackingFrom).contains(territory)
+                        || attackingFrom.getOwner() == territory.getOwner()))) {
                 continue;
             }
-
-            if (attackingFrom != null
-                && attackingTo == null
-                && !game.getBoard().getAdjacent(attackingFrom).contains(territory)
-                || attackingFrom.getOwner() == territory.getOwner()) {
-                continue;
-            }
-
 
             Polygon polygon = MapUtils.POLYGONS.get(territory.getName());
             Point centroid = MapUtils.getCentroid(polygon);
@@ -262,25 +260,27 @@ public class MapPanel extends ImageBackgroundPanel {
             drawArrow(graphics, centroid.x, centroid.y, MapUtils.viewToMapX(mouse.x, getWidth()),
                 MapUtils.viewToMapY(mouse.y, getHeight()), 20, 50);
         }
-        
-        if (attackResult != null) {
-            Point fromCentroid = MapUtils.getCentroid(MapUtils.POLYGONS.get(getAttackingFrom().getName().toString()));
-            Point toCentroid = MapUtils.getCentroid(MapUtils.POLYGONS.get(getAttackingTo().getName().toString()));
-            fromCentroid = MapUtils.mapToView(fromCentroid, getWidth(), getHeight());
-            toCentroid = MapUtils.mapToView(toCentroid, getWidth(), getHeight());
-            // draw on top of the centroid how many armies were lost
-            graphics.setColor(Color.WHITE);
-            float ylabelIncrease = 1.75f;
-            if (attackResult[0] > 0) {
-                drawString(graphics, Color.RED, "-" + attackResult[0], fromCentroid.x,
-                    (int) (fromCentroid.y - ylabelIncrease * RADIUS), LOSS_CIRCLE_RADIUS);
-            }
-            if (attackResult[1] > 0) {
-                drawString(graphics, Color.RED, "-" + attackResult[1], toCentroid.x,
-                    (int) (toCentroid.y - ylabelIncrease * RADIUS), LOSS_CIRCLE_RADIUS);
 
-            }
+        // fire condition - attacker
+        if (attackResult == null) { return; }
+
+        Point fromCentroid = MapUtils.getCentroid(MapUtils.POLYGONS.get(getAttackingFrom().getName().toString()));
+        Point toCentroid = MapUtils.getCentroid(MapUtils.POLYGONS.get(getAttackingTo().getName().toString()));
+        fromCentroid = MapUtils.mapToView(fromCentroid, getWidth(), getHeight());
+        toCentroid = MapUtils.mapToView(toCentroid, getWidth(), getHeight());
+        // draw on top of the centroid how many armies were lost
+        graphics.setColor(Color.WHITE);
+        float ylabelIncrease = 1.75f;
+        if (attackResult[0] > 0) {
+            drawString(graphics, Color.RED, "-" + attackResult[0], fromCentroid.x,
+                (int) (fromCentroid.y - ylabelIncrease * RADIUS), LOSS_CIRCLE_RADIUS);
         }
+        if (attackResult[1] > 0) {
+            drawString(graphics, Color.RED, "-" + attackResult[1], toCentroid.x,
+                (int) (toCentroid.y - ylabelIncrease * RADIUS), LOSS_CIRCLE_RADIUS);
+
+        }
+
     }
 
     private void drawString(Graphics2D graphics, Color color, String text, int xxx, int yyy, final int radius) {
@@ -304,7 +304,6 @@ public class MapPanel extends ImageBackgroundPanel {
         int[] ys = {y1 + (int) (headLength * Math.sin(angle + offs)), y1,
             y1 + (int) (headLength * Math.sin(angle - offs))};
         graphics.drawLine(x0, y0, x1, y1);
-        //g.setStroke(new BasicStroke(3));
         graphics.drawPolyline(xs, ys, 3);
     }
 

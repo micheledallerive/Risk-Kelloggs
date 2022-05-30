@@ -4,8 +4,7 @@ import java.util.Random;
 
 /**
  * Class for initialize a unique random seed to generate pseudo-random code.
- *
- * @author dallem @usi.ch, moralj@usi.ch
+ * @author dallem@usi.ch, moralj@usi.ch
  */
 public final class RandomUtil {
     /**
@@ -13,8 +12,11 @@ public final class RandomUtil {
      */
     public static Random random;
 
+    /**
+     * Singleton.
+     */
     private RandomUtil() {
-        // eskere
+        // singleton
     }
 
     /**
@@ -23,5 +25,4 @@ public final class RandomUtil {
     public static void init() {
         random = new Random();
     }
-
 }
