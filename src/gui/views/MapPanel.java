@@ -27,6 +27,7 @@ public class MapPanel extends ImageBackgroundPanel {
     // region FIELDS
     private final ArrayList<EventCallback> callbacks;
     private final Game game;
+    private Point lastMovedPoint = null;
     // endregion
 
     // region CONSTRUCTORS
@@ -60,7 +61,10 @@ public class MapPanel extends ImageBackgroundPanel {
                 int pointX = MapUtils.viewToMapX(mouseEvent.getX(), getWidth());
                 int pointY = MapUtils.viewToMapY(mouseEvent.getY(), getHeight());
                 if (getAttackingFrom() != null) {
-                    setCursor(new Cursor(Cursor.CROSSHAIR_CURSOR));
+                    if (getCursor().getType() != Cursor.CROSSHAIR_CURSOR) {
+                        setCursor(new Cursor(Cursor.CROSSHAIR_CURSOR));
+                    }
+                    lastMovedPoint = mouseEvent.getPoint();
                     repaint();
                 } else if (getClickedTerritory(pointX, pointY) != -1) {
                     if (getCursor().getType() != Cursor.HAND_CURSOR) {
@@ -139,6 +143,7 @@ public class MapPanel extends ImageBackgroundPanel {
 
     Territory attackingFrom = null;
     Territory attackingTo = null;
+    int[] attackResult = null;
 
     public void setAttackingFrom(Territory territory) {
         this.attackingFrom = territory;
@@ -156,9 +161,14 @@ public class MapPanel extends ImageBackgroundPanel {
         return this.attackingTo;
     }
 
+    public void setAttackResult(int[] attackResult) {
+        this.attackResult = attackResult;
+    }
+
     public void clearAttacking() {
         this.attackingFrom = null;
         this.attackingTo = null;
+        this.attackResult = null;
     }
 
     @Override
@@ -171,14 +181,14 @@ public class MapPanel extends ImageBackgroundPanel {
                 continue;
             }
             if (attackingFrom != null
+                    && attackingTo == null
                     && (!game.getBoard().getAdjacent(attackingFrom).contains(territory)
                     || attackingFrom.getOwner() == territory.getOwner())) {
                 continue;
             }
             Polygon polygon = MapUtils.POLYGONS.get(territory.getName().toString());
             Point centroid = MapUtils.getCentroid(polygon);
-            centroid.x = MapUtils.mapToViewX(centroid.x, getWidth());
-            centroid.y = MapUtils.mapToViewY(centroid.y, getHeight());
+            centroid = MapUtils.mapToView(centroid, getWidth(), getHeight());
             graphics.setColor(ImageUtils.armyColorToColor(territory.getOwner().getColor()));
             graphics.fillOval(centroid.x - RADIUS, centroid.y - RADIUS, RADIUS * 2, RADIUS * 2);
 
@@ -196,19 +206,42 @@ public class MapPanel extends ImageBackgroundPanel {
             graphics.drawString(number, x, y);
         }
 
-        Point mouse = MouseInfo.getPointerInfo().getLocation();
-
-        if (getAttackingFrom() != null) {
+        if (getAttackingFrom() != null && getAttackingTo() == null) {
             Point centroid = MapUtils.getCentroid(MapUtils.POLYGONS.get(getAttackingFrom().getName().toString()));
-            centroid.x = MapUtils.mapToViewX(centroid.x, getWidth());
-            centroid.y = MapUtils.mapToViewY(centroid.y, getHeight());
+            centroid = MapUtils.mapToView(centroid, getWidth(), getHeight());
             //graphics.drawLine(centroid.x, centroid.y, mouse.x, mouse.y);
+            Point mouse = lastMovedPoint;
+            mouse = MapUtils.mapToView(mouse, getWidth(), getHeight());
+            graphics.setColor(Color.BLACK);
             drawArrow(graphics, centroid.x, centroid.y, MapUtils.viewToMapX(mouse.x, getWidth()), MapUtils.viewToMapY(mouse.y, getHeight()), 20, 50);
+        }
+        if (attackResult != null) {
+            Point fromCentroid = MapUtils.getCentroid(MapUtils.POLYGONS.get(getAttackingFrom().getName().toString()));
+            Point toCentroid = MapUtils.getCentroid(MapUtils.POLYGONS.get(getAttackingTo().getName().toString()));
+            fromCentroid = MapUtils.mapToView(fromCentroid, getWidth(), getHeight());
+            toCentroid = MapUtils.mapToView(toCentroid, getWidth(), getHeight());
+            // draw on top of the centroid how many armies were lost
+            if (attackResult[0] > 0) {
+                drawString(graphics, Color.RED, "-" + attackResult[0], fromCentroid.x, (int) (fromCentroid.y - 1.5 * RADIUS));
+            }
+            if (attackResult[1] > 0) {
+                drawString(graphics, Color.RED, "-" + attackResult[1], toCentroid.x, (int) (toCentroid.y - 1.5 * RADIUS));
+            }
         }
     }
 
-    private void drawArrow(Graphics g, int x0, int y0, int x1,
+    private void drawString(Graphics2D graphics, Color color, String text, int x, int y) {
+        graphics.setColor(color);
+        graphics.setFont(new Font("Arial", Font.BOLD, 24));
+        FontMetrics fm = graphics.getFontMetrics();
+        int x1 = (int) (x - (fm.stringWidth(text) * .5) + 1);
+        int y1 = (fm.getAscent() + (y - (fm.getAscent() + fm.getDescent()) / 2));
+        graphics.drawString(text, x1, y1);
+    }
+
+    private void drawArrow(Graphics2D g, int x0, int y0, int x1,
                            int y1, int headLength, int headAngle) {
+        g.setStroke(new BasicStroke(10));
         double offs = headAngle * Math.PI / 180.0;
         double angle = Math.atan2(y0 - y1, x0 - x1);
         int[] xs = {x1 + (int) (headLength * Math.cos(angle + offs)), x1,
@@ -216,6 +249,7 @@ public class MapPanel extends ImageBackgroundPanel {
         int[] ys = {y1 + (int) (headLength * Math.sin(angle + offs)), y1,
                 y1 + (int) (headLength * Math.sin(angle - offs))};
         g.drawLine(x0, y0, x1, y1);
+        //g.setStroke(new BasicStroke(3));
         g.drawPolyline(xs, ys, 3);
     }
 

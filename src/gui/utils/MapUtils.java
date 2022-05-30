@@ -82,6 +82,10 @@ public class MapUtils {
         return (y * MapUtils.HEIGHT / height);
     }
 
+    public static Point mapToView(Point point, int width, int height) {
+        return new Point(mapToViewX(point.x, width), mapToViewY(point.y, height));
+    }
+
     public static int mapToViewX(int x, int width) {
         return (int) ((x * (width * 0.8888) / MapUtils.WIDTH));
     }
@@ -186,7 +190,16 @@ public class MapUtils {
                 System.out.println("Playing");
                 if (map.getAttackingFrom() == null) {
                     // i have to choose where to attack from
-                    if (territory.getOwner() != player || territory.getArmies().size() < 2) {
+                    if (territory.getOwner() != player) {
+                        PopupUtils.showPopup(parent, "You can't attack from enemy territories!", clickX, clickY);
+                        return;
+                    }
+                    if (game.getBoard().getAdjacent(territory).stream().allMatch(t -> t.getOwner() == player)) {
+                        PopupUtils.showPopup(parent, "You can't attack any territory from here!", clickX, clickY);
+                        return;
+                    }
+                    if (territory.getArmies().size() < 2) {
+                        PopupUtils.showPopup(parent, "You don't have enough armies!", clickX, clickY);
                         return;
                     }
                     System.out.println("Set where to attack from");
@@ -199,8 +212,14 @@ public class MapUtils {
                     }
                     System.out.println("Set where to attack to");
                     map.setAttackingTo(territory);
-                    player.attack(map.getAttackingFrom(), map.getAttackingTo(), 1, 1);
-                    map.clearAttacking();
+                    int[] result = player.attack(map.getAttackingFrom(), map.getAttackingTo(), 1, 1);
+                    map.setAttackResult(result);
+                    Timer timer = new Timer(1000, e -> {
+                        map.clearAttacking();
+                        map.repaint();
+                    });
+                    timer.setRepeats(false);
+                    timer.start();
                     map.repaint();
                 }
             }

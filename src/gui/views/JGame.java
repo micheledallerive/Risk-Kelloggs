@@ -25,6 +25,7 @@ public class JGame extends JLayeredPane {
     // region FIELDS
     private final Game game;
     private final JFrame parent;
+    private JLayeredPane uiPanel;
     private PlayersDisplayer playersDisplayer;
     private final MapPanel map;
     // endregion
@@ -76,6 +77,7 @@ public class JGame extends JLayeredPane {
             @Override
             public void windowClosed(WindowEvent windowEvent) {
                 super.windowClosed(windowEvent);
+                map.setEnabled(false);
 
                 String name = nameDialog.getName();
                 if (name == null || name.isEmpty()) {
@@ -84,20 +86,8 @@ public class JGame extends JLayeredPane {
                 game.initializePlayers(6, 1, new String[]{name});
                 game.initArmies();
 
-                createUI();
+                createUI((id, args) -> askToRollDie());
 
-                MessageDialog rollDie = new MessageDialog(parent,
-                        "Roll your die to determine who starts.");
-                rollDie.addWindowListener(new WindowAdapter() {
-                    @Override
-                    public void windowClosed(WindowEvent windowEvent) {
-                        super.windowClosed(windowEvent);
-                        chooseStartingPlayer();
-                    }
-                });
-                rollDie.pack();
-                rollDie.setLocationRelativeTo(null);
-                rollDie.setVisible(true);
             }
         });
         nameDialog.pack();
@@ -105,7 +95,23 @@ public class JGame extends JLayeredPane {
         nameDialog.setVisible(true);
     }
 
-    private void createUI() {
+    private void askToRollDie() {
+        MessageDialog rollDie = new MessageDialog(parent,
+                "Roll your die to determine who starts.");
+        rollDie.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosed(WindowEvent windowEvent) {
+                super.windowClosed(windowEvent);
+                chooseStartingPlayer();
+            }
+        });
+        rollDie.pack();
+        Component playerDie = playersDisplayer;
+        rollDie.setLocation(playerDie.getX() - rollDie.getWidth(), playerDie.getY() + rollDie.getHeight() / 2);
+        rollDie.setVisible(true);
+    }
+
+    private void createUI(EventCallback callback) {
         final JLayeredPane uiPane = new JLayeredPane();
         uiPane.setLayout(new GridBagLayout());
         GridBagConstraints constraints = new GridBagConstraints();
@@ -131,12 +137,27 @@ public class JGame extends JLayeredPane {
         uiPane.addMouseMotionListener(map.getMouseMotionListeners()[0]);
         uiPane.addMouseListener(map.getMouseListeners()[0]);
 
-        uiPane.setEnabled(false);
+        uiPane.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+                super.componentResized(e);
+
+                if (callback != null) {
+                    callback.onEvent(-1);
+                }
+            }
+        });
+
+        this.uiPanel = uiPane;
         add(uiPane, JLayeredPane.PALETTE_LAYER);
+
+        invalidate();
+        validate();
+        repaint();
+
     }
 
     private void chooseStartingPlayer() {
-        map.setEnabled(false);
         playersDisplayer.chooseStartingPlayer(new EventCallback() {
             @Override
             public void onEvent(int id, Object... args) {
@@ -149,6 +170,7 @@ public class JGame extends JLayeredPane {
                     public void windowClosed(WindowEvent e) {
                         super.windowClosed(e);
                         playersDisplayer.hideDice();
+                        uiPanel.setEnabled(false);
                         startGame();
                     }
                 });
