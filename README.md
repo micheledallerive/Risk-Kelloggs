@@ -3,6 +3,16 @@
 Our game Risk-Kellogg's is a Risk-based game: the goal of every player is to conquer the whole world.
 The game starts by placing your armies in the whole word. Once it's done, you can start attacking the other players, move armies across countries and conquer the whole world!
 
+## Instructions
+
+### GUI
+Enter your name, place armies all around the world and start attacking your opponents.
+During your turn you can attack, move armies or end your turn! 
+Click on the UI buttons on top of the screen to choose what to do.
+If you decide to take the risk of attacking, you can click on a territory to attack from it and click again on another territory to attack it!
+On the other hand, if you decide to be weak and just move some armies, you can click on a territory to move from that and click again the territory you want to move to.
+End your turn once you are satisfied!
+
 ## Team Members
 
 * Jeferson Morales Mariciano (moralj@usi.ch), JekxDevil
