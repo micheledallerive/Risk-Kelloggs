@@ -21,10 +21,11 @@ import javax.swing.JPanel;
  */
 public class PlayerIconComponent extends TransparentPanel {
 
-    //region CONSTRUCTORS
-
+    //region FIELDS
     private final Player player;
+    //endregion
 
+    //region CONSTRUCTORS
     /**
      * Constructor.
      *
@@ -56,10 +57,10 @@ public class PlayerIconComponent extends TransparentPanel {
 
         JPanel iconCircle = new TransparentPanel() {
             @Override
-            protected void paintComponent(Graphics g) {
-                super.paintComponent(g);
-                g.setColor(Color.WHITE);
-                g.fillOval(0, 0, getWidth(), getHeight());
+            protected void paintComponent(Graphics graphics) {
+                super.paintComponent(graphics);
+                graphics.setColor(Color.WHITE);
+                graphics.fillOval(0, 0, getWidth(), getHeight());
             }
         };
         iconCircle.setBorder(BorderFactory.createEmptyBorder(3, 3, 3, 3));
@@ -70,11 +71,11 @@ public class PlayerIconComponent extends TransparentPanel {
     }
 
     @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        g.setColor(ImageUtils.armyColorToColor(player.getColor()));
+    protected void paintComponent(Graphics graphics) {
+        super.paintComponent(graphics);
+        graphics.setColor(ImageUtils.armyColorToColor(player.getColor()));
         int width = getComponents()[1].getX() + getComponents()[1].getWidth();
-        g.fillRoundRect(0, 0, width, getHeight(), getHeight(), getHeight());
+        graphics.fillRoundRect(0, 0, width, getHeight(), getHeight(), getHeight());
     }
 
     //endregion

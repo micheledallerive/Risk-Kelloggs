@@ -11,17 +11,17 @@ import java.util.Scanner;
  * @author moralj @usi.ch, dallem@usi.ch
  */
 public class Board {
+    //region CONSTANTS
     /**
      * The constant PATH_ADJ.
      */
-//region CONSTANTS
     public static final String PATH_ADJ = "src/model/data/adjacency.txt";
     //endregion
 
+    //region FIELDS
     /**
      * The Adjacency.
      */
-//region FIELDS
     public final ArrayList<ArrayList<Integer>> adjacency;
     private final HashMap<String, Integer> mapTerritoryToIdx;
     private final ArrayList<Territory> territories;
@@ -29,7 +29,6 @@ public class Board {
     //endregion
 
     //region CONSTRUCTOR
-
     /**
      * Constructor.
      */
@@ -43,7 +42,6 @@ public class Board {
     //endregion
 
     //region GETTERS AND SETTERS
-
     /**
      * Getter of territories field.
      *

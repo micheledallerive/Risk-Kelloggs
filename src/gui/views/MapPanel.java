@@ -30,6 +30,8 @@ public class MapPanel extends ImageBackgroundPanel {
     // region CONSTANTS
     private static final String MAP_PATH = "src/gui/assets/images/map.jpg";
     private static final float BRIGHTNESS_DEFAULT = 1f;
+    private static final  int RADIUS = 30;
+    private static final int LOSS_CIRCLE_RADIUS = 20;
     // endregion
 
     // region FIELDS
@@ -218,15 +220,6 @@ public class MapPanel extends ImageBackgroundPanel {
         this.attackingTo = null;
         this.attackResult = null;
     }
-
-    /**
-     * The constant RADIUS.
-     */
-    final static int RADIUS = 30;
-    /**
-     * The constant LOSS_CIRCLE_RADIUS.
-     */
-    final static int LOSS_CIRCLE_RADIUS = 20;
 
     @Override
     public void paintComponent(Graphics graphcs) {

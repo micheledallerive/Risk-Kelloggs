@@ -19,10 +19,10 @@ import java.util.HashMap;
  * @author dallem @usi.ch, moralj@usi.ch
  */
 public class Game implements Serializable {
+    //region CONSTANTS
     /**
      * The constant PATH.
      */
-//region CONSTANTS
     public static final String PATH = "src/model/data/save.txt";
     //endregion
 

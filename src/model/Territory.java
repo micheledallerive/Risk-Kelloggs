@@ -8,10 +8,10 @@ import java.util.ArrayList;
  * @author dallem @usi.ch, moralj@usi.ch
  */
 public class Territory {
+    //region CONSTANTS
     /**
      * The constant PATH_TERRITORIES.
      */
-//region CONSTANTS
     public static final String PATH_TERRITORIES = "src/model/data/territories.txt";
     //endregion
 

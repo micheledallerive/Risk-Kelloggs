@@ -10,6 +10,7 @@ import javax.swing.Timer;
 
 /**
  * The type Popup utils.
+ * @author dallem@usi.ch
  */
 public class PopupUtils {
 
@@ -19,11 +20,11 @@ public class PopupUtils {
      * Show popup.
      *
      * @param message the message
-     * @param x       the x
-     * @param y       the y
+     * @param pointX       the x
+     * @param pointY       the y
      */
-    public static void showPopup(String message, int x, int y) {
-        showPopup(null, message, true, x, y);
+    public static void showPopup(String message, int pointX, int pointY) {
+        showPopup(null, message, true, pointX, pointY);
     }
 
     /**
@@ -31,12 +32,12 @@ public class PopupUtils {
      *
      * @param parent  the parent
      * @param message the message
-     * @param x       the x
-     * @param y       the y
+     * @param pointX  the pointX
+     * @param pointY  the pointY
      */
-    public static void showPopup(Component parent, String message, int x, int y) {
+    public static void showPopup(Component parent, String message, int pointX, int pointY) {
         JPopup popup = new JPopup(message, true);
-        popup.show(parent, x, y);
+        popup.show(parent, pointX, pointY);
     }
 
     /**
@@ -45,15 +46,15 @@ public class PopupUtils {
      * @param parent   the parent
      * @param message  the message
      * @param autohide the autohide
-     * @param x        the x
-     * @param y        the y
+     * @param pointX        the x
+     * @param pointY        the y
      */
-    public static void showPopup(Component parent, String message, boolean autohide, int x, int y) {
+    public static void showPopup(Component parent, String message, boolean autohide, int pointX, int pointY) {
         JPopupMenu popup = new JPopupMenu();
 
         popup.setLayout(new BorderLayout());
         popup.add(new JLabel(message), BorderLayout.CENTER);
-        popup.show(parent, x, y);
+        popup.show(parent, pointX, pointY);
         if (autohide) {
             new Timer(AUTOHIDE_DELAY, e -> popup.setVisible(false)).start();
         }

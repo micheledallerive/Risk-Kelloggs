@@ -10,21 +10,20 @@ import java.util.Locale;
  * @author dallem @usi.ch, moralj@usi.ch
  */
 public class Continent {
+
+    //region CONSTANTS
     /**
      * The constant PATH_CONTINENTS.
      */
-//region CONSTANTS
     public static final String PATH_CONTINENTS = "src/model/data/continents.txt";
+
     /**
      * The constant PATH_BONUS.
      */
     public static final String PATH_BONUS = "src/model/data/bonus.txt";
     //endregion
 
-    /**
-     * The constant TERRITORIES.
-     */
-//region FIELDS
+    //region FIELDS
     public static final ArrayList<ArrayList<Territory>> TERRITORIES = new ArrayList<>();
 
     private final String name;
@@ -33,7 +32,6 @@ public class Continent {
     //endregion
 
     //region CONSTRUCTOR
-
     /**
      * Creates a new continent in the map.
      *
@@ -101,9 +99,8 @@ public class Continent {
 
     /**
      * Returns the owner of the whole continent. If there is no unique owner, it returns null.
-     *
      * @return null if the country is now owned by a single person, otherwise returns the person that owns all the
-     * continent
+     *     continent
      */
     public Player getOwner() {
         return isOccupied() ? territories.get(0).getOwner() : null;

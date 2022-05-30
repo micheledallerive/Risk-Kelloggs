@@ -52,22 +52,22 @@ public class ImageUtils {
     }
 
     /**
-     * scale image
+     * Scale image.
      *
      * @param sbi       image to scale
      * @param imageType type of image
-     * @param dWidth    width of destination image
-     * @param dHeight   height of destination image
+     * @param width    width of destination image
+     * @param height   height of destination image
      * @return scaled image
      */
-    public static BufferedImage scale(BufferedImage sbi, int imageType, int dWidth, int dHeight) {
+    public static BufferedImage scale(BufferedImage sbi, int imageType, int width, int height) {
         BufferedImage dbi = null;
         if (sbi != null) {
-            dbi = new BufferedImage(dWidth, dHeight, imageType);
-            Graphics2D g = dbi.createGraphics();
-            AffineTransform at = AffineTransform.getScaleInstance(((float) dWidth) / sbi.getWidth(),
-                ((float) dHeight) / sbi.getHeight());
-            g.drawRenderedImage(sbi, at);
+            dbi = new BufferedImage(width, height, imageType);
+            Graphics2D graphics = dbi.createGraphics();
+            AffineTransform at = AffineTransform.getScaleInstance(((float) width) / sbi.getWidth(),
+                ((float) height) / sbi.getHeight());
+            graphics.drawRenderedImage(sbi, at);
         }
         return dbi;
     }

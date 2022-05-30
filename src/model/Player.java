@@ -14,14 +14,15 @@ import java.util.stream.Collectors;
 /**
  * Describes each player of the game.
  *
- * @author dallem @usi.ch
+ * @author dallem@usi.ch, moralj@usi.ch
  */
 public class Player {
+    //region CONSTANTS
     /**
      * The constant MIN_PLAYERS.
      */
-//region CONSTANTS
     static final byte MIN_PLAYERS = 3;
+
     /**
      * The Max players.
      */

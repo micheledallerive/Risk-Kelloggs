@@ -16,6 +16,7 @@ import javax.swing.SwingConstants;
 
 /**
  * The type Quantity dialog.
+ * @author dallem@usi.ch
  */
 public class QuantityDialog extends BaseDialog {
 

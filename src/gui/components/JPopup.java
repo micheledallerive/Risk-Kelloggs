@@ -49,13 +49,11 @@ public class JPopup extends JPopupMenu {
         label.setFont(label.getFont().deriveFont(Font.BOLD, 14));
         label.setForeground(Color.WHITE);
         add(label, BorderLayout.CENTER);
-
-
     }
 
     @Override
-    public void show(Component invoker, int x, int y) {
-        super.show(invoker, x, (int) (y + 2 * getPreferredSize().getHeight()));
+    public void show(Component invoker, int pointX, int pointY) {
+        super.show(invoker, pointX, (int) (pointY + 2 * getPreferredSize().getHeight()));
         if (autohide) {
             Timer timer = new Timer(AUTOHIDE_DELAY, e -> setVisible(false));
             timer.setRepeats(false);
@@ -64,10 +62,10 @@ public class JPopup extends JPopupMenu {
     }
 
     @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
+    protected void paintComponent(Graphics graphics) {
+        super.paintComponent(graphics);
         Image image = ImageUtils.getImage("src/gui/assets/images/dialog_texture.png");
         image = ImageUtils.makeRoundedCorner(ImageUtils.imageToBufferedImage(image), 50);
-        g.drawImage(image, 0, 0, null);
+        graphics.drawImage(image, 0, 0, null);
     }
 }
