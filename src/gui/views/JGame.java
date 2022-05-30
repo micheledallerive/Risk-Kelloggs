@@ -2,17 +2,22 @@ package gui.views;
 
 import gui.EventCallback;
 import gui.components.JRoundButton;
+import gui.components.JTurnPicker;
 import gui.components.MessageDialog;
 import gui.components.NameDialog;
 import gui.components.PlayersDisplayer;
+import gui.components.QuantityDialog;
+import gui.components.TransparentPanel;
 import gui.utils.MapUtils;
 import model.AI;
 import model.Game;
 import model.Player;
 import model.Territory;
+import model.TurnListener;
 import model.callback.Callback;
 import model.enums.GameStatus;
 
+import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
@@ -28,6 +33,7 @@ import java.util.function.Function;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLayeredPane;
+import javax.swing.JPanel;
 import javax.swing.OverlayLayout;
 import javax.swing.Timer;
 
