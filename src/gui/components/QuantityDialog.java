@@ -2,6 +2,7 @@ package gui.components;
 
 import gui.utils.FontUtils;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
@@ -16,15 +17,16 @@ import javax.swing.SwingConstants;
 
 /**
  * The type Quantity dialog.
+ *
  * @author dallem@usi.ch
  */
 public class QuantityDialog extends BaseDialog {
 
     private int selectedQuantity;
 
-    private int min;
-    private int max;
-    private String[] messages;
+    private final int min;
+    private final int max;
+    private final String[] messages;
 
     /**
      * Instantiates a new Quantity dialog.
@@ -56,8 +58,9 @@ public class QuantityDialog extends BaseDialog {
         constraints.gridy = 0;
         for (String message : messages) {
             JLabel label = new JLabel(message);
+            label.setForeground(Color.WHITE);
             label.setHorizontalAlignment(SwingConstants.CENTER);
-            label.setFont(FontUtils.addLetterSpacing(label.getFont().deriveFont(Font.PLAIN, 18f), .1f));
+            label.setFont(FontUtils.addLetterSpacing(label.getFont().deriveFont(Font.BOLD, 18f), .1f));
             add(label, constraints);
             constraints.gridy++;
         }
