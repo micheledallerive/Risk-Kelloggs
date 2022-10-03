@@ -1,26 +1,22 @@
 # Project Risk Kellogg's
 
-Our game Risk-Kellogg's is a Risk-based game: the goal of every player is to conquer the whole world.
-The game starts by placing your armies in the whole word. Once it's done, you can start attacking the other players, move armies across countries and conquer the whole world!
+Risk Kellogg's is a Risk-based game, in which the goal is to conquer the whole world!
+The game starts with the players placing armies in different countries, that will lead to the main phase: fight your opponents and reorganize your armies across the (flat) globe.
 
 ## Instructions
 
 ### GUI
 Enter your name, place armies all around the world and start attacking your opponents.
 During your turn you can attack, move armies or end your turn! 
-Click on the UI buttons on top of the screen to choose what to do.
-If you decide to take the risk of attacking, you can click on a territory to attack from it and click again on another territory to attack it!
-On the other hand, if you decide to be weak and just move some armies, you can click on a territory to move from that and click again the territory you want to move to.
+Click on the UI buttons on the top of the screen to choose what to do.
+If you decide to take the risk of attacking, after clicking on the country you want to attack from, just click the country you want to attack! Easy peasy!
+On the other hand, if you decide to be weak and just move some armies, do the same instructions as before...
 End your turn once you are satisfied!
 
-## Team Members
+## Contributors
 
 * Jeferson Morales Mariciano (moralj@usi.ch), JekxDevil
 * Michele Dalle Rive (dallem@usi.ch), micheledallerive
-
-## Mentor
-
-* Tom
 
 ## Project Structure
 
